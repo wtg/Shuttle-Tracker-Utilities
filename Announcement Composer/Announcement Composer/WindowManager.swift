@@ -11,13 +11,22 @@ enum WindowManager {
 	
 	enum Window: String {
 		
-		case main = "main"
+		case main = "ContentView"
 		
-		case keyManager = "keymanager"
+		case keyManager = "KeyManagerView"
 		
 	}
 	
 	static func open(_ window: Window) {
+		for nsWindow in NSApplication.shared.windows {
+			guard let nsWindowIdentifier = nsWindow.identifier else {
+				continue
+			}
+			if nsWindowIdentifier.rawValue.contains(window.rawValue) {
+				nsWindow.makeKeyAndOrderFront(nil)
+				return
+			}
+		}
 		let url = URL(string: "announcementcomposer://\(window.rawValue)")!
 		NSWorkspace.shared.open(url)
 	}

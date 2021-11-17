@@ -11,6 +11,10 @@ struct ContentView: View {
 	
 	@State private var announcement = Announcement()
 	
+	@State private var selectedKeyPair: KeyPair?
+	
+	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
+	
 	var body: some View {
 		VStack {
 			Form {
@@ -44,6 +48,26 @@ struct ContentView: View {
 					Text("Schedule")
 						.font(.headline)
 				}
+				Divider()
+					.padding(.vertical, 10)
+				Section {
+					HStack {
+						Picker("Key", selection: self.$selectedKeyPair) {
+							ForEach(self.keyPairs) { (keyPair) in
+								Text(keyPair.name)
+									.tag(Optional(keyPair))
+							}
+						}
+							.labelsHidden()
+							.disabled(self.keyPairs.isEmpty)
+						Button("Open Key Manager…") {
+							WindowManager.open(.keyManager)
+						}
+					}
+				} header: {
+					Text("Key")
+						.font(.headline)
+				}
 			}
 			Divider()
 				.padding(.vertical, 10)
@@ -53,15 +77,19 @@ struct ContentView: View {
 					self.announcement.body = ""
 					self.announcement.hasStart = false
 					self.announcement.hasEnd = false
+					self.selectedKeyPair = nil
 				}
 				Spacer()
 				Button("Submit") {
-					print("Not implemented")
+					print("Not yet implemented")
 				}
 					.keyboardShortcut(.defaultAction)
+					.disabled(self.announcement.subject.isEmpty || self.announcement.body.isEmpty || self.selectedKeyPair == nil)
 			}
 		}
 			.padding()
+			.animation(.default, value: self.announcement.hasStart)
+			.animation(.default, value: self.announcement.hasEnd)
 			.toolbar {
 				ToolbarItem {
 					Button {

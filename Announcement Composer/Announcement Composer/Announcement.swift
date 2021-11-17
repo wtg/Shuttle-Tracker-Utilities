@@ -15,15 +15,37 @@ struct Announcement {
 		
 	}
 	
-	var subject = ""
+	var subject = "" {
+		didSet {
+			self.signature = nil
+		}
+	}
 	
-	var body = ""
+	var body = "" {
+		didSet {
+			self.signature = nil
+		}
+	}
 	
-	var start = Date.now
+	var start = Date.now {
+		didSet {
+			self.signature = nil
+		}
+	}
 	
-	var end = Date.now + 86400
+	var end = Date.now + 86400 {
+		didSet {
+			self.signature = nil
+		}
+	}
 	
-	private var scheduleType = ScheduleType.none
+	private var scheduleType = ScheduleType.none {
+		didSet {
+			self.signature = nil
+		}
+	}
+	
+	private var signature: Data?
 	
 	var hasStart: Bool {
 		get {
@@ -87,6 +109,13 @@ struct Announcement {
 				}
 			}
 		}
+	}
+	
+	mutating func sign(with keyPair: KeyPair) throws {
+		guard let data = (self.subject + self.body).data(using: .utf8) else {
+			throw SignatureError.dataConversionFailed
+		}
+		self.signature = try keyPair.sign(data)
 	}
 	
 }

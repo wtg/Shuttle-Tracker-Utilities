@@ -9,7 +9,25 @@ import SwiftUI
 
 struct KeyCreationSheet: View {
 	
+	private var isEmptyName: Bool {
+		get {
+			return self.name
+				.trimmingCharacters(in: .whitespacesAndNewlines)
+				.isEmpty
+		}
+	}
+	
+	private var isDuplicateName: Bool {
+		get {
+			return self.keyPairs.contains { (keyPair) in
+				return keyPair.name == self.name
+			}
+		}
+	}
+	
 	@State private var name = ""
+	
+	@State private var hasSubmitted = false
 	
 	@State private var doShowAlert = false
 	
@@ -30,8 +48,13 @@ struct KeyCreationSheet: View {
 			Form {
 				TextField("Name", text: self.$name)
 					.onSubmit {
-						self.createKeyPair()
+						if !self.isEmptyName && !self.isDuplicateName {
+							self.createKeyPair()
+						}
 					}
+				if self.isDuplicateName && !self.hasSubmitted {
+					Text("This name is already taken.")
+				}
 			}
 			HStack {
 				Spacer()
@@ -45,6 +68,7 @@ struct KeyCreationSheet: View {
 					self.createKeyPair()
 				}
 					.keyboardShortcut(.defaultAction)
+					.disabled(self.isEmptyName || self.isDuplicateName)
 			}
 				.padding(.top)
 		}
@@ -68,6 +92,7 @@ struct KeyCreationSheet: View {
 			return
 		}
 		self.keyPairs.append(keyPair)
+		self.hasSubmitted = true
 	}
 	
 }
