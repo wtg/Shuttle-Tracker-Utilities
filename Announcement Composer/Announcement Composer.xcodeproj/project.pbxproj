@@ -12,6 +12,12 @@
 		C0961FF52744656300B16FDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0961FF42744656300B16FDB /* Assets.xcassets */; };
 		C0961FF82744656300B16FDB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0961FF72744656300B16FDB /* Preview Assets.xcassets */; };
 		C09620002744689500B16FDB /* Announcement.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0961FFF2744689500B16FDB /* Announcement.swift */; };
+		C096200227447C5700B16FDB /* KeyManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096200127447C5700B16FDB /* KeyManagerView.swift */; };
+		C096200427447EF000B16FDB /* KeyPair.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096200327447EF000B16FDB /* KeyPair.swift */; };
+		C096200627448E1400B16FDB /* KeyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096200527448E1400B16FDB /* KeyError.swift */; };
+		C096200827449F6C00B16FDB /* KeyCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096200727449F6C00B16FDB /* KeyCreationSheet.swift */; };
+		C096200A2744A02B00B16FDB /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09620092744A02B00B16FDB /* Utilities.swift */; };
+		C096200C2744B11800B16FDB /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C096200B2744B11800B16FDB /* WindowManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +28,13 @@
 		C0961FF72744656300B16FDB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C0961FF92744656300B16FDB /* AnnouncementComposer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AnnouncementComposer.entitlements; sourceTree = "<group>"; };
 		C0961FFF2744689500B16FDB /* Announcement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcement.swift; sourceTree = "<group>"; };
+		C096200127447C5700B16FDB /* KeyManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManagerView.swift; sourceTree = "<group>"; };
+		C096200327447EF000B16FDB /* KeyPair.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPair.swift; sourceTree = "<group>"; };
+		C096200527448E1400B16FDB /* KeyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyError.swift; sourceTree = "<group>"; };
+		C096200727449F6C00B16FDB /* KeyCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCreationSheet.swift; sourceTree = "<group>"; };
+		C09620092744A02B00B16FDB /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		C096200B2744B11800B16FDB /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
+		C096200E2744B29800B16FDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,9 +67,16 @@
 		C0961FEF2744656200B16FDB /* Announcement Composer */ = {
 			isa = PBXGroup;
 			children = (
+				C096200E2744B29800B16FDB /* Info.plist */,
 				C0961FFF2744689500B16FDB /* Announcement.swift */,
-				C0961FF22744656200B16FDB /* ContentView.swift */,
 				C0961FF02744656200B16FDB /* AnnouncementComposerApp.swift */,
+				C0961FF22744656200B16FDB /* ContentView.swift */,
+				C096200727449F6C00B16FDB /* KeyCreationSheet.swift */,
+				C096200527448E1400B16FDB /* KeyError.swift */,
+				C096200327447EF000B16FDB /* KeyPair.swift */,
+				C096200127447C5700B16FDB /* KeyManagerView.swift */,
+				C09620092744A02B00B16FDB /* Utilities.swift */,
+				C096200B2744B11800B16FDB /* WindowManager.swift */,
 				C0961FF42744656300B16FDB /* Assets.xcassets */,
 				C0961FF92744656300B16FDB /* AnnouncementComposer.entitlements */,
 				C0961FF62744656300B16FDB /* Preview Content */,
@@ -143,7 +163,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09620002744689500B16FDB /* Announcement.swift in Sources */,
+				C096200427447EF000B16FDB /* KeyPair.swift in Sources */,
 				C0961FF32744656200B16FDB /* ContentView.swift in Sources */,
+				C096200227447C5700B16FDB /* KeyManagerView.swift in Sources */,
+				C096200627448E1400B16FDB /* KeyError.swift in Sources */,
+				C096200C2744B11800B16FDB /* WindowManager.swift in Sources */,
+				C096200827449F6C00B16FDB /* KeyCreationSheet.swift in Sources */,
+				C096200A2744A02B00B16FDB /* Utilities.swift in Sources */,
 				C0961FF12744656200B16FDB /* AnnouncementComposerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,6 +306,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -307,6 +334,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

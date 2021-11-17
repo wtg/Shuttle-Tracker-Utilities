@@ -12,50 +12,65 @@ struct ContentView: View {
 	@State private var announcement = Announcement()
 	
 	var body: some View {
-		Form {
-			Section {
-				TextField("Subject", text: self.$announcement.subject, prompt: Text("Subject"))
-					.labelsHidden()
-				TextEditor(text: self.$announcement.body)
-			} header: {
-				Text("Content")
-					.font(.headline)
-			}
-			Divider()
-				.padding(.vertical, 10)
-			Section {
-				Toggle("Begin showing on a particular date", isOn: self.$announcement.hasStart)
-				if self.announcement.hasStart {
-					DatePicker("Start", selection: self.$announcement.start)
+		VStack {
+			Form {
+				Section {
+					TextField("Subject", text: self.$announcement.subject, prompt: Text("Subject"))
 						.labelsHidden()
+					TextEditor(text: self.$announcement.body)
+				} header: {
+					Text("Content")
+						.font(.headline)
 				}
-				if self.announcement.hasStart || self.announcement.hasEnd {
-					Spacer()
-						.frame(height: 5)
-						.padding(.bottom, 5)
+				Divider()
+					.padding(.vertical, 10)
+				Section {
+					Toggle("Begin showing on a particular date", isOn: self.$announcement.hasStart)
+					if self.announcement.hasStart {
+						DatePicker("Start", selection: self.$announcement.start)
+							.labelsHidden()
+					}
+					if self.announcement.hasStart || self.announcement.hasEnd {
+						Spacer()
+							.frame(height: 5)
+							.padding(.bottom, 5)
+					}
+					Toggle("Finish showing on a particular date", isOn: self.$announcement.hasEnd)
+					if self.announcement.hasEnd {
+						DatePicker("End", selection: self.$announcement.end)
+							.labelsHidden()
+					}
+				} header: {
+					Text("Schedule")
+						.font(.headline)
 				}
-				Toggle("Finish showing on a particular date", isOn: self.$announcement.hasEnd)
-				if self.announcement.hasEnd {
-					DatePicker("End", selection: self.$announcement.end)
-						.labelsHidden()
-				}
-			} header: {
-				Text("Schedule")
-					.font(.headline)
 			}
 			Divider()
 				.padding(.vertical, 10)
 			HStack {
 				Button("Clear", role: .destructive) {
-					print("Not implemented")
+					self.announcement.subject = ""
+					self.announcement.body = ""
+					self.announcement.hasStart = false
+					self.announcement.hasEnd = false
 				}
 				Spacer()
-				Button("Submit to Server") {
+				Button("Submit") {
 					print("Not implemented")
 				}
+					.keyboardShortcut(.defaultAction)
 			}
 		}
 			.padding()
+			.toolbar {
+				ToolbarItem {
+					Button {
+						WindowManager.open(.keyManager)
+					} label: {
+						Label("Key Manager", systemImage: "key")
+					}
+				}
+			}
 	}
 	
 }

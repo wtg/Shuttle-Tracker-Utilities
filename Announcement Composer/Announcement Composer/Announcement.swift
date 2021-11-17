@@ -23,7 +23,7 @@ struct Announcement {
 	
 	var end = Date.now + 86400
 	
-	var scheduleType = ScheduleType.none
+	private var scheduleType = ScheduleType.none
 	
 	var hasStart: Bool {
 		get {

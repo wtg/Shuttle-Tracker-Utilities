@@ -13,6 +13,21 @@ import SwiftUI
 		WindowGroup {
 			ContentView()
 		}
+			.handlesExternalEvents(matching: [WindowManager.Window.main.rawValue])
+		WindowGroup {
+			KeyManagerView()
+				.frame(width: 400, height: 500)
+		}
+			.handlesExternalEvents(matching: [WindowManager.Window.keyManager.rawValue])
+			.windowToolbarStyle(.unifiedCompact)
+			.commands {
+				CommandGroup(replacing: .newItem) {
+					EmptyView()
+				}
+				CommandGroup(replacing: .pasteboard) {
+					EmptyView()
+				}
+			}
 	}
 	
 }
