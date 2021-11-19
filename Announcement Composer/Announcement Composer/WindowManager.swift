@@ -17,7 +17,7 @@ enum WindowManager {
 		
 	}
 	
-	static func open(_ window: Window) {
+	static func show(_ window: Window) {
 		for nsWindow in NSApplication.shared.windows {
 			guard let nsWindowIdentifier = nsWindow.identifier else {
 				continue

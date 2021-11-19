@@ -63,3 +63,9 @@ extension Array: RawRepresentable where Element == KeyPair {
 	}
 	
 }
+
+protocol RawRepresentableByString {
+	
+	var rawValue: String { get }
+	
+}

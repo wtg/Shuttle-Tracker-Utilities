@@ -31,7 +31,7 @@ struct KeyCreationSheet: View {
 	
 	@State private var doShowAlert = false
 	
-	@State private var error: KeyError?
+	@State private var error: WrappedError?
 	
 	@Binding private(set) var sheetType: KeyManagerView.SheetType?
 	
@@ -74,11 +74,10 @@ struct KeyCreationSheet: View {
 		}
 			.padding()
 			.frame(minWidth: 300)
-			.navigationTitle("Create a Key")
-			.alert(isPresented: self.$doShowAlert, error: self.error) { (error) in
-				Text("Continue")
+			.alert(isPresented: self.$error.isNotNil, error: self.error) { (error) in
+				Button("Continue") { }
 			} message: { (error) in
-				Text(error.rawValue)
+				EmptyView()
 			}
 	}
 	
@@ -88,7 +87,7 @@ struct KeyCreationSheet: View {
 		}
 		guard let keyPair = try? KeyPair(withName: self.name) else {
 			self.doShowAlert = true
-			self.error = .creationFailed
+			self.error = WrappedError(KeyError.creationFailed)
 			return
 		}
 		self.keyPairs.append(keyPair)

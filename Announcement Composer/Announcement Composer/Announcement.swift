@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct Announcement {
+struct Announcement: Encodable {
 	
-	enum ScheduleType {
+	enum ScheduleType: Encodable {
 		
 		case none, startOnly, endOnly, startAndEnd
 		

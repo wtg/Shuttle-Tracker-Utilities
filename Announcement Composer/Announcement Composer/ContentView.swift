@@ -11,7 +11,13 @@ struct ContentView: View {
 	
 	@State private var announcement = Announcement()
 	
+	@State private var baseURLString = "https://shuttletracker.app"
+	
+	@State private var doShowSuccessAlert = false
+	
 	@State private var selectedKeyPair: KeyPair?
+	
+	@State private var error: WrappedError?
 	
 	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
 	
@@ -29,20 +35,30 @@ struct ContentView: View {
 				Divider()
 					.padding(.vertical, 10)
 				Section {
-					Toggle("Begin showing on a particular date", isOn: self.$announcement.hasStart)
-					if self.announcement.hasStart {
-						DatePicker("Start", selection: self.$announcement.start)
-							.labelsHidden()
-					}
-					if self.announcement.hasStart || self.announcement.hasEnd {
-						Spacer()
-							.frame(height: 5)
-							.padding(.bottom, 5)
-					}
-					Toggle("Finish showing on a particular date", isOn: self.$announcement.hasEnd)
-					if self.announcement.hasEnd {
-						DatePicker("End", selection: self.$announcement.end)
-							.labelsHidden()
+					HStack {
+						VStack {
+							HStack {
+								Toggle("Begin showing on a particular date", isOn: self.$announcement.hasStart)
+								Spacer()
+							}
+							if self.announcement.hasStart {
+								DatePicker("Start", selection: self.$announcement.start)
+									.labelsHidden()
+							}
+						}
+							.frame(maxWidth: .infinity)
+						Spacer(minLength: 20)
+						VStack {
+							HStack {
+								Toggle("Finish showing on a particular date", isOn: self.$announcement.hasEnd)
+								Spacer()
+							}
+							if self.announcement.hasEnd {
+								DatePicker("End", selection: self.$announcement.end)
+									.labelsHidden()
+							}
+						}
+							.frame(maxWidth: .infinity)
 					}
 				} header: {
 					Text("Schedule")
@@ -61,11 +77,20 @@ struct ContentView: View {
 							.labelsHidden()
 							.disabled(self.keyPairs.isEmpty)
 						Button("Open Key Manager…") {
-							WindowManager.open(.keyManager)
+							WindowManager.show(.keyManager)
 						}
 					}
 				} header: {
 					Text("Key")
+						.font(.headline)
+				}
+				Divider()
+					.padding(.vertical, 10)
+				Section {
+					TextField("Base URL", text: self.$baseURLString, prompt: Text("Base URL"))
+						.labelsHidden()
+				} header: {
+					Text("Server")
 						.font(.headline)
 				}
 			}
@@ -81,7 +106,34 @@ struct ContentView: View {
 				}
 				Spacer()
 				Button("Submit") {
-					print("Not yet implemented")
+					guard let selectedKeyPair = self.selectedKeyPair else {
+						self.error = WrappedError(SubmissionError.noKeySelected)
+						return
+					}
+					do {
+						try self.announcement.sign(with: selectedKeyPair)
+					} catch let newError {
+						self.error = WrappedError(newError)
+						return
+					}
+					Task {
+						guard let baseURL = URL(string: self.baseURLString) else {
+							let newError = SubmissionError.invalidBaseURL
+							self.error = WrappedError(newError)
+							throw newError
+						}
+						let url = baseURL.appendingPathComponent("announcements", isDirectory: false)
+						var request = URLRequest(url: url)
+						request.httpMethod = "POST"
+						do {
+							let data = try JSONEncoder().encode(self.announcement)
+							_ = try await URLSession.shared.upload(for: request, from: data)
+						} catch let newError {
+							self.error = WrappedError(newError)
+							throw newError
+						}
+						self.doShowSuccessAlert = true
+					}
 				}
 					.keyboardShortcut(.defaultAction)
 					.disabled(self.announcement.subject.isEmpty || self.announcement.body.isEmpty || self.selectedKeyPair == nil)
@@ -93,11 +145,17 @@ struct ContentView: View {
 			.toolbar {
 				ToolbarItem {
 					Button {
-						WindowManager.open(.keyManager)
+						WindowManager.show(.keyManager)
 					} label: {
 						Label("Key Manager", systemImage: "key")
 					}
 				}
+			}
+			.alert(isPresented: self.$error.isNotNil, error: self.error) {
+				Button("Continue") { }
+			}
+			.alert("The submission was successful!", isPresented: self.$doShowSuccessAlert) {
+				Button("Continue") { }
 			}
 	}
 	
