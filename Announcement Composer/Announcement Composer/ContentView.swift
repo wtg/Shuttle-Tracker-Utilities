@@ -121,15 +121,38 @@ struct ContentView: View {
 						let url = baseURL.appendingPathComponent("announcements", isDirectory: false)
 						var request = URLRequest(url: url)
 						request.httpMethod = "POST"
+						let response: URLResponse
 						do {
-							let data = try JSONEncoder().encode(self.announcement)
-							_ = try await URLSession.shared.upload(for: request, from: data)
+							let encoder = JSONEncoder()
+							encoder.dateEncodingStrategy = .iso8601
+							let data = try encoder.encode(self.announcement)
+							(_, response) = try await URLSession.shared.upload(for: request, from: data)
 						} catch let newError {
 							self.error = WrappedError(newError)
 							throw newError
 						}
-						self.doShowSuccessAlert = true
-						self.clear()
+						guard let httpResponse = response as? HTTPURLResponse else {
+							let newError = SubmissionError.malformedResponse
+							self.error = WrappedError(newError)
+							throw newError
+						}
+						let newError: SubmissionError
+						switch httpResponse.statusCode {
+						case 200:
+							self.doShowSuccessAlert = true
+							self.clear()
+							return
+						case 401:
+							newError = .keyNotVerified
+						case 403:
+							newError = .keyRejected
+						case 500:
+							newError = .internalServerError
+						default:
+							newError = .unknown
+						}
+						self.error = WrappedError(newError)
+						throw newError
 					}
 				}
 					.keyboardShortcut(.defaultAction)
@@ -162,7 +185,6 @@ struct ContentView: View {
 		self.announcement.hasStart = false
 		self.announcement.hasEnd = false
 		self.selectedKeyPair = nil
-		self.baseURLString = "https://shuttletracker.app"
 	}
 	
 }

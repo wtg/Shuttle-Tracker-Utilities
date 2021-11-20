@@ -9,9 +9,15 @@ import Foundation
 
 struct Announcement: Encodable {
 	
-	enum ScheduleType: Encodable {
+	enum ScheduleType: String, Codable {
 		
-		case none, startOnly, endOnly, startAndEnd
+		case none = "none"
+		
+		case startOnly = "startOnly"
+		
+		case endOnly = "endOnly"
+		
+		case startAndEnd = "startAndEnd"
 		
 	}
 	
