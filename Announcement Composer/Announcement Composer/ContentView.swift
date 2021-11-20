@@ -98,11 +98,7 @@ struct ContentView: View {
 				.padding(.vertical, 10)
 			HStack {
 				Button("Clear", role: .destructive) {
-					self.announcement.subject = ""
-					self.announcement.body = ""
-					self.announcement.hasStart = false
-					self.announcement.hasEnd = false
-					self.selectedKeyPair = nil
+					self.clear()
 				}
 				Spacer()
 				Button("Submit") {
@@ -133,6 +129,7 @@ struct ContentView: View {
 							throw newError
 						}
 						self.doShowSuccessAlert = true
+						self.clear()
 					}
 				}
 					.keyboardShortcut(.defaultAction)
@@ -157,6 +154,15 @@ struct ContentView: View {
 			.alert("The submission was successful!", isPresented: self.$doShowSuccessAlert) {
 				Button("Continue") { }
 			}
+	}
+	
+	private func clear() {
+		self.announcement.subject = ""
+		self.announcement.body = ""
+		self.announcement.hasStart = false
+		self.announcement.hasEnd = false
+		self.selectedKeyPair = nil
+		self.baseURLString = "https://shuttletracker.app"
 	}
 	
 }

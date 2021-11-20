@@ -31,12 +31,12 @@ struct KeyManagerView: View {
 		List(self.keyPairs, id: \.self, selection: self.$selectedKeyPairs) { (keyPair) in
 			Text(keyPair.name)
 				.contextMenu {
-					Button("Export...") {
+					Button("Export…") {
 						self.selectedKeyPairForExport = keyPair
 						self.doShowFileExporter = true
 					}
 					Divider()
-					Button("Delete...", role: .destructive) {
+					Button("Delete…", role: .destructive) {
 						if !self.selectedKeyPairs.contains(keyPair) {
 							self.selectedKeyPairs = [keyPair]
 						}
