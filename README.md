@@ -1,2 +1,2 @@
-# Shuttle Tracker Announcements
+# Shuttle Tracker Utilities
 Contains the Announcement Composer app
