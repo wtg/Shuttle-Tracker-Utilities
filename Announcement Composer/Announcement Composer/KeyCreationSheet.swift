@@ -85,7 +85,7 @@ struct KeyCreationSheet: View {
 		defer {
 			self.sheetType = nil
 		}
-		guard let keyPair = try? KeyPair(withName: self.name) else {
+		guard let keyPair = try? KeyPair(name: self.name) else {
 			self.doShowAlert = true
 			self.error = WrappedError(KeyError.creationFailed)
 			return

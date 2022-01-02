@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C077D5EC274B155F000ED94F /* AnnouncementManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C077D5EB274B155F000ED94F /* AnnouncementManagerView.swift */; };
+		C077D5EE274B4A45000ED94F /* AnnouncementDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C077D5ED274B4A45000ED94F /* AnnouncementDetailView.swift */; };
+		C077D5F0274C4BAE000ED94F /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C077D5EF274C4BAE000ED94F /* ServerSelectionSheet.swift */; };
 		C0961FF12744656200B16FDB /* AnnouncementComposerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0961FF02744656200B16FDB /* AnnouncementComposerApp.swift */; };
 		C0961FF32744656200B16FDB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0961FF22744656200B16FDB /* ContentView.swift */; };
 		C0961FF52744656300B16FDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0961FF42744656300B16FDB /* Assets.xcassets */; };
@@ -21,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C077D5EB274B155F000ED94F /* AnnouncementManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementManagerView.swift; sourceTree = "<group>"; };
+		C077D5ED274B4A45000ED94F /* AnnouncementDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementDetailView.swift; sourceTree = "<group>"; };
+		C077D5EF274C4BAE000ED94F /* ServerSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionSheet.swift; sourceTree = "<group>"; };
 		C0961FED2744656200B16FDB /* Announcement Composer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Announcement Composer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0961FF02744656200B16FDB /* AnnouncementComposerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementComposerApp.swift; sourceTree = "<group>"; };
 		C0961FF22744656200B16FDB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,11 +76,14 @@
 				C096200E2744B29800B16FDB /* Info.plist */,
 				C0961FFF2744689500B16FDB /* Announcement.swift */,
 				C0961FF02744656200B16FDB /* AnnouncementComposerApp.swift */,
+				C077D5ED274B4A45000ED94F /* AnnouncementDetailView.swift */,
+				C077D5EB274B155F000ED94F /* AnnouncementManagerView.swift */,
 				C0961FF22744656200B16FDB /* ContentView.swift */,
 				C096200527448E1400B16FDB /* Errors.swift */,
 				C096200727449F6C00B16FDB /* KeyCreationSheet.swift */,
 				C096200127447C5700B16FDB /* KeyManagerView.swift */,
 				C096200327447EF000B16FDB /* KeyPair.swift */,
+				C077D5EF274C4BAE000ED94F /* ServerSelectionSheet.swift */,
 				C09620092744A02B00B16FDB /* Utilities.swift */,
 				C096200B2744B11800B16FDB /* WindowManager.swift */,
 				C0961FF42744656300B16FDB /* Assets.xcassets */,
@@ -167,8 +176,11 @@
 				C0961FF32744656200B16FDB /* ContentView.swift in Sources */,
 				C096200227447C5700B16FDB /* KeyManagerView.swift in Sources */,
 				C096200627448E1400B16FDB /* Errors.swift in Sources */,
+				C077D5EC274B155F000ED94F /* AnnouncementManagerView.swift in Sources */,
 				C096200C2744B11800B16FDB /* WindowManager.swift in Sources */,
+				C077D5F0274C4BAE000ED94F /* ServerSelectionSheet.swift in Sources */,
 				C096200827449F6C00B16FDB /* KeyCreationSheet.swift in Sources */,
+				C077D5EE274B4A45000ED94F /* AnnouncementDetailView.swift in Sources */,
 				C096200A2744A02B00B16FDB /* Utilities.swift in Sources */,
 				C0961FF12744656200B16FDB /* AnnouncementComposerApp.swift in Sources */,
 			);

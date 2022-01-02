@@ -15,9 +15,9 @@ struct ContentView: View {
 	
 	@State private var doShowSuccessAlert = false
 	
-	@State private var selectedKeyPair: KeyPair?
-	
 	@State private var error: WrappedError?
+	
+	@State private var selectedKeyPair: KeyPair?
 	
 	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
 	
@@ -107,7 +107,7 @@ struct ContentView: View {
 						return
 					}
 					do {
-						try self.announcement.sign(with: selectedKeyPair)
+						try self.announcement.sign(using: selectedKeyPair)
 					} catch let newError {
 						self.error = WrappedError(newError)
 						return
@@ -168,6 +168,13 @@ struct ContentView: View {
 						WindowManager.show(.keyManager)
 					} label: {
 						Label("Key Manager", systemImage: "key")
+					}
+				}
+				ToolbarItem {
+					Button {
+						WindowManager.show(.announcementManager)
+					} label: {
+						Label("Announcement Manager", systemImage: "calendar.badge.exclamationmark")
 					}
 				}
 			}

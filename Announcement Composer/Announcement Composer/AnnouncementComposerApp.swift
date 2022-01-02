@@ -26,6 +26,12 @@ import SwiftUI
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.keyManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
+		WindowGroup {
+			AnnouncementManagerView()
+				.frame(width: 700, height: 500)
+		}
+			.handlesExternalEvents(matching: [WindowManager.Window.announcementManager.rawValue])
+			.windowToolbarStyle(.unifiedCompact)
 	}
 	
 }

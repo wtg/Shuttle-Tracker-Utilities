@@ -43,27 +43,6 @@ extension SecureEnclave.P256.Signing.PrivateKey: Codable, Hashable {
 	
 }
 
-extension Array: RawRepresentable where Element == KeyPair {
-	
-	public var rawValue: String {
-		let encoder = JSONEncoder()
-		let data = try! encoder.encode(self)
-		return data.base64EncodedString()
-	}
-	
-	public init?(rawValue: String) {
-		guard let data = Data(base64Encoded: rawValue) else {
-			return nil
-		}
-		let decoder = JSONDecoder()
-		guard let keyPairs = try? decoder.decode(Self.self, from: data) else {
-			return nil
-		}
-		self = keyPairs
-	}
-	
-}
-
 protocol RawRepresentableByString {
 	
 	var rawValue: String { get }

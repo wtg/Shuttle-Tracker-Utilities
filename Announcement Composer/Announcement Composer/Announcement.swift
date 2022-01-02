@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Announcement: Encodable {
+struct Announcement: Codable, Hashable, Identifiable {
 	
 	enum ScheduleType: String, Codable {
 		
@@ -20,6 +20,8 @@ struct Announcement: Encodable {
 		case startAndEnd = "startAndEnd"
 		
 	}
+	
+	let id: UUID
 	
 	var subject = "" {
 		didSet {
@@ -45,7 +47,7 @@ struct Announcement: Encodable {
 		}
 	}
 	
-	private var scheduleType = ScheduleType.none {
+	private(set) var scheduleType = ScheduleType.none {
 		didSet {
 			self.signature = nil
 		}
@@ -117,11 +119,54 @@ struct Announcement: Encodable {
 		}
 	}
 	
-	mutating func sign(with keyPair: KeyPair) throws {
+	var startString: String {
+		get {
+			let formatter = RelativeDateTimeFormatter()
+			formatter.formattingContext = .dynamic
+			if #available(iOS 15, macOS 12, *) {
+				return formatter.localizedString(for: self.start, relativeTo: .now)
+			} else {
+				return formatter.localizedString(for: self.start, relativeTo: Date())
+			}
+		}
+	}
+	
+	var endString: String {
+		get {
+			let formatter = RelativeDateTimeFormatter()
+			formatter.formattingContext = .dynamic
+			if #available(iOS 15, macOS 12, *) {
+				return formatter.localizedString(for: self.end, relativeTo: .now)
+			} else {
+				return formatter.localizedString(for: self.end, relativeTo: Date())
+			}
+		}
+	}
+	
+	init() {
+		self.id = UUID()
+	}
+	
+	static func == (_ lhs: Announcement, _ rhs: Announcement) -> Bool {
+		return lhs.id == rhs.id && lhs.subject == rhs.subject && lhs.body == rhs.body && lhs.start == rhs.start && lhs.end == rhs.end && lhs.scheduleType == rhs.scheduleType
+	}
+	
+	mutating func sign(using keyPair: KeyPair) throws {
 		guard let data = (self.subject + self.body).data(using: .utf8) else {
 			throw SignatureError.dataConversionFailed
 		}
-		self.signature = try keyPair.sign(data)
+		self.signature = try keyPair.signature(for: data)
+	}
+	
+	func signatureForDeletion(using keyPair: KeyPair) throws -> Data {
+		guard let data = self.id.uuidString.data(using: .utf8) else {
+			throw SignatureError.dataConversionFailed
+		}
+		return try keyPair.signature(for: data)
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(self.id)
 	}
 	
 }

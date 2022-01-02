@@ -15,6 +15,8 @@ enum WindowManager {
 		
 		case keyManager = "KeyManagerView"
 		
+		case announcementManager = "AnnouncementManagerView"
+		
 	}
 	
 	static func show(_ window: Window) {

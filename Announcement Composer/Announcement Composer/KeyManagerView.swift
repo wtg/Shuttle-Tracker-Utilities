@@ -28,7 +28,7 @@ struct KeyManagerView: View {
 	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
 	
 	var body: some View {
-		List(self.keyPairs, id: \.self, selection: self.$selectedKeyPairs) { (keyPair) in
+		List(self.keyPairs, selection: self.$selectedKeyPairs) { (keyPair) in
 			Text(keyPair.name)
 				.contextMenu {
 					Button("Export…") {
@@ -57,12 +57,6 @@ struct KeyManagerView: View {
 				}
 			}
 			.fileExporter(isPresented: self.$doShowFileExporter, document: self.selectedKeyPairForExport, contentType: .text, defaultFilename: "Key.pem") { (_) in }
-			.sheet(item: self.$sheetType) { (sheetType) in
-				switch sheetType {
-				case .keyCreation:
-					KeyCreationSheet(sheetType: self.$sheetType)
-				}
-			}
 			.confirmationDialog("Delete \(self.selectedKeyPairs.count) \(self.selectedKeyPairs.count == 1 ? "Key" : "Keys")", isPresented: self.$doShowConfirmationDialog) {
 				Button("Cancel", role: .cancel) { }
 					.keyboardShortcut(.cancelAction)
@@ -75,6 +69,12 @@ struct KeyManagerView: View {
 				}
 			} message: {
 				Text("Are you sure that you want to delete the selected \(self.selectedKeyPairs.count == 1 ? "key" : "keys")? You can’t undo this action.")
+			}
+			.sheet(item: self.$sheetType) { (sheetType) in
+				switch sheetType {
+				case .keyCreation:
+					KeyCreationSheet(sheetType: self.$sheetType)
+				}
 			}
 	}
 	
