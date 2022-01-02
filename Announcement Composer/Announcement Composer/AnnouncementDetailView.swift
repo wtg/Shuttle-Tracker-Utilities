@@ -34,11 +34,11 @@ struct AnnouncementDetailView: View {
 				case .none:
 					EmptyView()
 				case .startOnly:
-					Text("Posted \(self.announcement.startString)")
+					Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString)")
 				case .endOnly:
-					Text("Expires \(self.announcement.endString)")
+					Text("\(self.announcement.end > .now ? "Expires" : "Expired") \(self.announcement.endString)")
 				case .startAndEnd:
-					Text("Posted \(self.announcement.startString); expires \(self.announcement.endString)")
+					Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString); \(self.announcement.end > .now ? "expires" : "expired") \(self.announcement.endString)")
 				}
 				Spacer()
 			}
