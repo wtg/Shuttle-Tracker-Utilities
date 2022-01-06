@@ -21,39 +21,33 @@ struct Announcement: Codable, Hashable, Identifiable {
 		
 	}
 	
+	struct DeletionRequest: Encodable {
+		
+		let signature: Data
+		
+	}
+	
 	let id: UUID
 	
 	var subject = "" {
-		didSet {
+		willSet {
 			self.signature = nil
 		}
 	}
 	
 	var body = "" {
-		didSet {
+		willSet {
 			self.signature = nil
 		}
 	}
 	
-	var start = Date.now {
-		didSet {
-			self.signature = nil
-		}
-	}
+	var start = Date.now
 	
-	var end = Date.now + 86400 {
-		didSet {
-			self.signature = nil
-		}
-	}
+	var end = Date.now + 86400
 	
-	private(set) var scheduleType = ScheduleType.none {
-		didSet {
-			self.signature = nil
-		}
-	}
+	private(set) var scheduleType = ScheduleType.none
 	
-	private var signature: Data?
+	private(set) var signature: Data?
 	
 	var hasStart: Bool {
 		get {
@@ -147,15 +141,20 @@ struct Announcement: Codable, Hashable, Identifiable {
 		self.id = UUID()
 	}
 	
-	static func == (_ lhs: Announcement, _ rhs: Announcement) -> Bool {
-		return lhs.id == rhs.id && lhs.subject == rhs.subject && lhs.body == rhs.body && lhs.start == rhs.start && lhs.end == rhs.end && lhs.scheduleType == rhs.scheduleType
-	}
-	
-	mutating func sign(using keyPair: KeyPair) throws {
+	private init(asSignedVersionOf unsignedAnnouncement: Announcement, using keyPair: KeyPair) throws {
+		self = unsignedAnnouncement
 		guard let data = (self.subject + self.body).data(using: .utf8) else {
 			throw SignatureError.dataConversionFailed
 		}
 		self.signature = try keyPair.signature(for: data)
+	}
+	
+	static func == (_ lhs: Announcement, _ rhs: Announcement) -> Bool {
+		return lhs.id == rhs.id && lhs.subject == rhs.subject && lhs.body == rhs.body && lhs.start == rhs.start && lhs.end == rhs.end && lhs.scheduleType == rhs.scheduleType
+	}
+	
+	func signed(using keyPair: KeyPair) throws -> Announcement {
+		return try Announcement(asSignedVersionOf: self, using: keyPair)
 	}
 	
 	func signatureForDeletion(using keyPair: KeyPair) throws -> Data {

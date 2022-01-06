@@ -106,8 +106,9 @@ struct ContentView: View {
 						self.error = WrappedError(SubmissionError.noKeySelected)
 						return
 					}
+					let signedAnnouncement: Announcement
 					do {
-						try self.announcement.sign(using: selectedKeyPair)
+						signedAnnouncement = try self.announcement.signed(using: selectedKeyPair)
 					} catch let newError {
 						self.error = WrappedError(newError)
 						return
@@ -125,8 +126,10 @@ struct ContentView: View {
 						do {
 							let encoder = JSONEncoder()
 							encoder.dateEncodingStrategy = .iso8601
-							let data = try encoder.encode(self.announcement)
+							assert(signedAnnouncement.signature != nil)
+							let data = try encoder.encode(signedAnnouncement)
 							(_, response) = try await URLSession.shared.upload(for: request, from: data)
+							self.announcement = Announcement()
 						} catch let newError {
 							self.error = WrappedError(newError)
 							throw newError
