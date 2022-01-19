@@ -64,7 +64,7 @@ class Bus: NSObject, Codable, CustomAnnotation {
 			let markerAnnotationView = MKMarkerAnnotationView()
 			markerAnnotationView.displayPriority = .required
 			markerAnnotationView.canShowCallout = true
-			let colorBlindMode = UserDefaults.standard.bool(forKey: "colorBlindMode")
+			let colorBlindMode = UserDefaults.standard.bool(forKey: "ColorBlindMode")
 			let colorBlindSymbolName: String
 			switch self.location.type {
 			case .system:

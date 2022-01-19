@@ -14,7 +14,7 @@ class Pin: NSObject, CustomAnnotation {
 	let annotationView: MKAnnotationView = {
 		let markerAnnotationView = MKMarkerAnnotationView()
 		markerAnnotationView.displayPriority = .required
-		markerAnnotationView.glyphImage = NSImage(systemSymbolName: "pin", accessibilityDescription: nil)
+		markerAnnotationView.glyphTintColor = .white
 		return markerAnnotationView
 	}()
 	

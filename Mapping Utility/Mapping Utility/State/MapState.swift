@@ -5,6 +5,7 @@
 //  Created by Gabriel Jacoby-Cooper on 1/8/22.
 //
 
+import SwiftUI
 import CoreLocation
 
 class MapState: ObservableObject {
@@ -24,6 +25,18 @@ class MapState: ObservableObject {
 	@Published var doShowRoutes = true
 	
 	@Published var pinCoordinate: CLLocationCoordinate2D?
+	
+	lazy var pinLatitude = Binding {
+		return self.pinCoordinate?.latitude ?? MapUtilities.Constants.originCoordinate.latitude
+	} set: { (newValue, transaction) in
+		self.pinCoordinate?.latitude = newValue
+	}
+	
+	lazy var pinLongitude = Binding {
+		return self.pinCoordinate?.longitude ?? MapUtilities.Constants.originCoordinate.longitude
+	} set: { (newValue) in
+		self.pinCoordinate?.longitude = newValue
+	}
 	
 	private init() { }
 	

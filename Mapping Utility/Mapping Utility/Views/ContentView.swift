@@ -22,9 +22,9 @@ struct ContentView: View {
 	var body: some View {
 		HSplitView {
 			MapView()
-				.frame(minWidth: 300, idealWidth: 500)
+				.frame(minWidth: 400, idealWidth: 600)
 			if self.doShowInspector {
-				VStack {
+				ScrollView {
 					DisclosureGroup {
 						VStack(alignment: .leading) {
 							Toggle("Show buses", isOn: self.$mapState.doShowBuses)
@@ -41,6 +41,15 @@ struct ContentView: View {
 								self.mapState.pinCoordinate = MapUtilities.Constants.originCoordinate
 							}
 						} else {
+							VStack(alignment: .leading) {
+								Text("Coordinate")
+									.font(.headline)
+								HStack {
+									TextField("Latitude", value: self.mapState.pinLatitude, format: .number, prompt: Text("Latitude"))
+									TextField("Longitude", value: self.mapState.pinLongitude, format: .number, prompt: Text("Longitude"))
+								}
+							}
+								.padding(.bottom)
 							Button("Remove Pin") {
 								self.mapState.pinCoordinate = nil
 							}
@@ -52,7 +61,7 @@ struct ContentView: View {
 					Spacer()
 				}
 					.padding()
-					.frame(minWidth: 100, idealWidth: 200, maxWidth: 200, maxHeight: .infinity)
+					.frame(minWidth: 200, idealWidth: 200, maxWidth: 300, maxHeight: .infinity)
 			}
 		}
 			.frame(minHeight: 300, idealHeight: 500)
