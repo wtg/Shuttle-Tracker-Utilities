@@ -24,43 +24,7 @@ struct ContentView: View {
 			MapView()
 				.frame(minWidth: 400, idealWidth: 600)
 			if self.doShowInspector {
-				ScrollView {
-					DisclosureGroup {
-						VStack(alignment: .leading) {
-							Toggle("Show buses", isOn: self.$mapState.doShowBuses)
-							Toggle("Show stops", isOn: self.$mapState.doShowStops)
-							Toggle("Show routes", isOn: self.$mapState.doShowRoutes)
-						}
-					} label: {
-						Text("Visibility")
-							.font(.title3)
-					}
-					DisclosureGroup {
-						if self.mapState.pinCoordinate == nil {
-							Button("Drop Pin") {
-								self.mapState.pinCoordinate = MapUtilities.Constants.originCoordinate
-							}
-						} else {
-							VStack(alignment: .leading) {
-								Text("Coordinate")
-									.font(.headline)
-								HStack {
-									TextField("Latitude", value: self.mapState.pinLatitude, format: .number, prompt: Text("Latitude"))
-									TextField("Longitude", value: self.mapState.pinLongitude, format: .number, prompt: Text("Longitude"))
-								}
-							}
-								.padding(.bottom)
-							Button("Remove Pin") {
-								self.mapState.pinCoordinate = nil
-							}
-						}
-					} label: {
-						Text("Pin")
-							.font(.title3)
-					}
-					Spacer()
-				}
-					.padding()
+				Inspector()
 					.frame(minWidth: 200, idealWidth: 200, maxWidth: 300, maxHeight: .infinity)
 			}
 		}
@@ -108,7 +72,7 @@ struct ContentView: View {
 			}
 	}
 	
-	@MainActor  private func refreshBuses() async {
+	@MainActor private func refreshBuses() async {
 		self.mapState.buses = await [Bus].download()
 		self.isRefreshing = false
 	}
