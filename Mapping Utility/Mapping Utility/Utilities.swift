@@ -35,6 +35,13 @@ extension CLLocationCoordinate2D: Equatable {
 		return Coordinate(latitude: self.latitude, longitude: self.longitude)
 	}
 	
+	func convertedForFlatGrid(centeredAtLatitude centerLatitude: Double) -> (x: Double, y: Double) {
+		let r = 6.3781E6
+		let x = r * self.longitude * cos(centerLatitude)
+		let y = r * self.latitude
+		return (x: x, y: y)
+	}
+	
 }
 
 extension MKMapPoint: Equatable {

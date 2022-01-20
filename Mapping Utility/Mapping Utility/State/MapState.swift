@@ -26,6 +26,10 @@ class MapState: ObservableObject {
 	
 	@Published var pinCoordinate: CLLocationCoordinate2D?
 	
+	@Published var centerLatitudeForCheckingIfOnRoute = MapUtilities.Constants.originCoordinate.latitude
+	
+	@Published var thresholdForCheckingIfOnRoute: Double = 10
+	
 	lazy var pinLatitude = Binding {
 		return self.pinCoordinate?.latitude ?? MapUtilities.Constants.originCoordinate.latitude
 	} set: { (newValue, transaction) in
