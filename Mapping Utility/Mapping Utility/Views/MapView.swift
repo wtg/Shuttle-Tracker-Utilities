@@ -31,7 +31,10 @@ struct MapView: NSViewRepresentable {
 	
 	func updateNSView(_ nsView: MKMapView, context: Context) {
 		self.mapView.delegate = context.coordinator
-		nsView.removeAnnotations(nsView.annotations)
+		let annotationsToRemove = nsView.annotations.filter { (annotation) in
+			return annotation is Bus || annotation is Stop
+		}
+		nsView.removeAnnotations(annotationsToRemove)
 		if self.mapState.doShowBuses {
 			nsView.addAnnotations(Array(self.mapState.buses))
 		}
@@ -39,8 +42,18 @@ struct MapView: NSViewRepresentable {
 			nsView.addAnnotations(Array(self.mapState.stops))
 		}
 		if let pinCoordinate = self.mapState.pinCoordinate {
-			self.pin.coordinate = pinCoordinate
-			nsView.addAnnotation(self.pin)
+			switch self.pin.annotationView.dragState {
+			case .dragging:
+				break
+			default:
+				self.pin.coordinate = pinCoordinate
+				let isAlreadyAdded = nsView.annotations.contains { (annotation) in
+					return annotation is Pin
+				}
+				if !isAlreadyAdded {
+					nsView.addAnnotation(self.pin)
+				}
+			}
 		}
 		nsView.removeOverlays(nsView.overlays)
 		if self.mapState.doShowRoutes {

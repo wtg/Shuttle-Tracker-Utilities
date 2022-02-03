@@ -24,4 +24,11 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
 		return MKOverlayRenderer()
 	}
 	
+	func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
+		guard view.annotation is Pin else {
+			return
+		}
+		MapState.shared.pinCoordinate = view.annotation?.coordinate
+	}
+	
 }
