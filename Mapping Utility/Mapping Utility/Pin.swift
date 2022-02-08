@@ -11,8 +11,6 @@ class Pin: NSObject, CustomAnnotation {
 	
 	var coordinate: CLLocationCoordinate2D
 	
-	let title: String? = "Pin"
-	
 	let annotationView: MKAnnotationView = {
 		let markerAnnotationView = MKMarkerAnnotationView()
 		markerAnnotationView.displayPriority = .required

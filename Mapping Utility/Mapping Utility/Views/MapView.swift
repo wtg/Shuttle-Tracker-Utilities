@@ -18,6 +18,7 @@ struct MapView: NSViewRepresentable {
 	
 	func makeNSView(context: Context) -> MKMapView {
 		self.mapView.delegate = context.coordinator
+		self.mapView.mapType = .satelliteFlyover
 		self.mapView.showsUserLocation = true
 		self.mapView.showsCompass = true
 		self.mapView.setVisibleMapRect(MapUtilities.mapRect, animated: true)
