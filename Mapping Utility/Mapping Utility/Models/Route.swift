@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import Turf
 
 class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 	
@@ -95,30 +96,15 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 		return oldIndex + 1
 	}
 	
-	func checkIfValid(coordinate: CLLocationCoordinate2D, centerLatitude: CLLocationDegrees, threshold: Double) -> Bool {
-		return self.mapPoints
-			.enumerated()
-			.compactMap { (offset, mapPoint2) -> Double? in
-				let mapPoint1: MKMapPoint
-				if offset == 0 {
-					mapPoint1 = self.mapPoints.last!
-				} else {
-					mapPoint1 = self.mapPoints[offset - 1]
-				}
-				let (x0, y0) = coordinate.convertedForFlatGrid(centeredAtLatitude: centerLatitude)
-				let (x1, y1) = mapPoint1.coordinate.convertedForFlatGrid(centeredAtLatitude: centerLatitude)
-				let (x2, y2) = mapPoint2.coordinate.convertedForFlatGrid(centeredAtLatitude: centerLatitude)
-				let a = y1 - y2
-				let b = x2 - x1
-				let c = x1 * y2 - x2 * y1
-				let distance = abs(a * x0 + b * y0 + c) / sqrt(pow(a, 2) + pow(b, 2))
-				return distance.isNaN ? nil : distance
-			}
-			.reduce(into: false) { (partialResult, distance) in
-				if distance < threshold {
-					partialResult = true
-				}
-			}
+	func checkIfValid(coordinate testCoordinate: CLLocationCoordinate2D, threshold: Double) -> Bool {
+		let routeCoordinates = self.mapPoints.map { (mapPoint) in
+			return mapPoint.coordinate
+		}
+		let distance = LineString(routeCoordinates)
+			.closestCoordinate(to: testCoordinate)!
+			.coordinate
+			.distance(to: testCoordinate)
+		return distance < threshold
 	}
 	
 }

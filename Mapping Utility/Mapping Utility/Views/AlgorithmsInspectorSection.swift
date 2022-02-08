@@ -17,12 +17,11 @@ struct AlgorithmsInspectorSection: View {
 				Text("Is on Route")
 					.font(.headline)
 				Form {
-					TextField("Center Latitude", value: self.$mapState.centerLatitudeForCheckingIfOnRoute, format: .number)
 					TextField("Threshold", value: self.$mapState.thresholdForCheckingIfOnRoute, format: .number)
 				}
 				if let pinCoordinate = self.mapState.pinCoordinate {
 					ForEach(self.mapState.routes) { (route) in
-						if route.checkIfValid(coordinate: pinCoordinate, centerLatitude: self.mapState.centerLatitudeForCheckingIfOnRoute, threshold: self.mapState.thresholdForCheckingIfOnRoute) {
+						if route.checkIfValid(coordinate: pinCoordinate, threshold: self.mapState.thresholdForCheckingIfOnRoute) {
 							Text("Is on route “\(route.name)”")
 						}
 						else {

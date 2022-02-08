@@ -13,6 +13,7 @@
 		C039B06D2798FC5400416725 /* VisibilityInspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039B06C2798FC5400416725 /* VisibilityInspectorSection.swift */; };
 		C039B06F2798FC9B00416725 /* PinInspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039B06E2798FC9B00416725 /* PinInspectorSection.swift */; };
 		C039B0712798FCEE00416725 /* AlgorithmsInspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039B0702798FCEE00416725 /* AlgorithmsInspectorSection.swift */; };
+		C0735FC627B1FE1B00C6CAFB /* Turf in Frameworks */ = {isa = PBXBuildFile; productRef = C0735FC527B1FE1B00C6CAFB /* Turf */; };
 		C09316D5278A071C009A4DC5 /* MappingUtilityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316D4278A071C009A4DC5 /* MappingUtilityApp.swift */; };
 		C09316D7278A071C009A4DC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316D6278A071C009A4DC5 /* ContentView.swift */; };
 		C09316D9278A071C009A4DC5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C09316D8278A071C009A4DC5 /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09316F8278A0993009A4DC5 /* Moya in Frameworks */,
+				C0735FC627B1FE1B00C6CAFB /* Turf in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +171,7 @@
 			name = "Mapping Utility";
 			packageProductDependencies = (
 				C09316F7278A0993009A4DC5 /* Moya */,
+				C0735FC527B1FE1B00C6CAFB /* Turf */,
 			);
 			productName = "Mapping Utility";
 			productReference = C09316D1278A071C009A4DC5 /* Mapping Utility.app */;
@@ -200,6 +203,7 @@
 			mainGroup = C09316C8278A071C009A4DC5;
 			packageReferences = (
 				C09316F6278A0993009A4DC5 /* XCRemoteSwiftPackageReference "Moya" */,
+				C0735FC427B1FE1B00C6CAFB /* XCRemoteSwiftPackageReference "turf-swift" */,
 			);
 			productRefGroup = C09316D2278A071C009A4DC5 /* Products */;
 			projectDirPath = "";
@@ -444,6 +448,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C0735FC427B1FE1B00C6CAFB /* XCRemoteSwiftPackageReference "turf-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/turf-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.0;
+			};
+		};
 		C09316F6278A0993009A4DC5 /* XCRemoteSwiftPackageReference "Moya" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Moya/Moya";
@@ -455,6 +467,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C0735FC527B1FE1B00C6CAFB /* Turf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0735FC427B1FE1B00C6CAFB /* XCRemoteSwiftPackageReference "turf-swift" */;
+			productName = Turf;
+		};
 		C09316F7278A0993009A4DC5 /* Moya */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C09316F6278A0993009A4DC5 /* XCRemoteSwiftPackageReference "Moya" */;

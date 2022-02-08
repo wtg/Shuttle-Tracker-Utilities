@@ -25,11 +25,7 @@ enum MapUtilities {
 	
 }
 
-extension CLLocationCoordinate2D: Equatable {
-	
-	public static func == (_ left: CLLocationCoordinate2D, _ right: CLLocationCoordinate2D) -> Bool {
-		return left.latitude == right.latitude && left.longitude == right.longitude
-	}
+extension CLLocationCoordinate2D {
 	
 	func convertedToCoordinate() -> Coordinate {
 		return Coordinate(latitude: self.latitude, longitude: self.longitude)
