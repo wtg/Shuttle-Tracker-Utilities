@@ -5,7 +5,7 @@
 //  Created by Gabriel Jacoby-Cooper on 11/16/21.
 //
 
-import Foundation
+import KeyManagement
 
 struct Announcement: Codable, Hashable, Identifiable {
 	

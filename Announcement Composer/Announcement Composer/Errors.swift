@@ -7,16 +7,6 @@
 
 import SwiftUI
 
-enum KeyError: String, Error, RawRepresentableByString {
-	
-	case creationFailed = "Failed to create a new key"
-	
-	case serializationFailed = "Failed to serialize the public key"
-	
-	case importUnsupported = "Importing keys is unsupported"
-	
-}
-
 enum SignatureError: String, Error, RawRepresentableByString {
 	
 	case dataConversionFailed = "Failed to convert the content of the announcement into raw data"
