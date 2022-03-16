@@ -21,8 +21,6 @@ struct ServerSelectionSheet: View {
 	
 	@Binding private(set) var sheetType: AnnouncementManagerView.SheetType?
 	
-	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
-	
 	private var isValidURLString: Bool {
 		get {
 			let isEmpty = self.baseURLString

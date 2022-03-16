@@ -19,7 +19,7 @@ struct ContentView: View {
 	
 	@State private var selectedKeyPair: KeyPair?
 	
-	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		VStack {

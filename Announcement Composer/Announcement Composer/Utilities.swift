@@ -8,6 +8,12 @@
 import Foundation
 import CryptoKit
 
+enum DefaultsUtilities {
+	
+	static let store = UserDefaults(suiteName: "SYBLH277NF.com.gerzer.shuttletracker.composers")
+	
+}
+
 protocol IdentifiableByHashValue: Identifiable, Hashable { }
 
 extension IdentifiableByHashValue {

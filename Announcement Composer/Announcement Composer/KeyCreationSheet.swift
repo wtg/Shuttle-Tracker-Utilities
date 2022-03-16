@@ -35,7 +35,7 @@ struct KeyCreationSheet: View {
 	
 	@Binding private(set) var sheetType: KeyManagerView.SheetType?
 	
-	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		VStack {

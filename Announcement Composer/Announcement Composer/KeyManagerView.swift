@@ -25,7 +25,7 @@ struct KeyManagerView: View {
 	
 	@State private var selectedKeyPairForExport: KeyPair?
 	
-	@AppStorage("KeyPairs") private var keyPairs = [KeyPair]()
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		List(self.keyPairs, selection: self.$selectedKeyPairs) { (keyPair) in
