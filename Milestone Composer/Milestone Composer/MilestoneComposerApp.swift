@@ -13,7 +13,26 @@ import KeyManagement
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
+				.frame(minWidth: 800, minHeight: 600)
 		}
+			.handlesExternalEvents(matching: [WindowManager.Window.main.rawValue])
+			.commands {
+				CommandGroup(replacing: .newItem) {
+					EmptyView()
+				}
+			}
+		WindowGroup {
+			KeyManagerView()
+				.frame(width: 400, height: 500)
+		}
+			.handlesExternalEvents(matching: [WindowManager.Window.keyManager.rawValue])
+			.windowToolbarStyle(.unifiedCompact)
+		WindowGroup {
+			MilestoneManagerView()
+				.frame(width: 700, height: 500)
+		}
+			.handlesExternalEvents(matching: [WindowManager.Window.milestoneManager.rawValue])
+			.windowToolbarStyle(.unifiedCompact)
 	}
 	
 }
