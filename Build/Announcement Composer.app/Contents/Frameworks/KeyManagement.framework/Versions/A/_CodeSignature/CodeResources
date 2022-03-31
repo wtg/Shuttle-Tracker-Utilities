@@ -4,38 +4,18 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Resources/AppIcon.icns</key>
+		<key>Resources/Info.plist</key>
 		<data>
-		ADwJ0L/F+fRmBDrzh0kKutdv5bk=
-		</data>
-		<key>Resources/Assets.car</key>
-		<data>
-		DtoKlEOsaOI2vEJGQlskCb8+od0=
+		b+w6yxrsF5JEDrIOXLcrRBCJScc=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Frameworks/KeyManagement.framework</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			yI5YMhdRx72yUjEmwYdehjFkMNQ=
-			</data>
-			<key>requirement</key>
-			<string>anchor apple generic and identifier "com.gerzer.shuttletracker.keymanagement" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SYBLH277NF)</string>
-		</dict>
-		<key>Resources/AppIcon.icns</key>
+		<key>Resources/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			isrchW1v+FSdYv4HAcdVKGVyezgsQX7SaCK+Vf6u2s0=
-			</data>
-		</dict>
-		<key>Resources/Assets.car</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			6mHAWrR2UTFXN1jTPMxDtKKjwzJpvsen18Qo4NfQYLY=
+			FGwOzSa2sVelr6Z9BHvRrntCPXPQDYYPBBkoR0K0GmI=
 			</data>
 		</dict>
 	</dict>
