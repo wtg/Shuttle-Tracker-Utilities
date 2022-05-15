@@ -55,6 +55,11 @@ struct MapView: NSViewRepresentable {
 					nsView.addAnnotation(self.pin)
 				}
 			}
+		} else {
+			let pinAnnotations = nsView.annotations.filter { (annotation) in
+				return annotation is Pin
+			}
+			nsView.removeAnnotations(pinAnnotations)
 		}
 		nsView.removeOverlays(nsView.overlays)
 		if self.mapState.doShowRoutes {
