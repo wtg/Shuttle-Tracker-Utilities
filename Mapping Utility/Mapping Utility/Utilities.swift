@@ -7,6 +7,18 @@
 
 import MapKit
 
+protocol IdentifiableByRawValue: Identifiable, RawRepresentable { }
+
+extension IdentifiableByRawValue where RawValue: Hashable {
+	
+	var id: RawValue {
+		get {
+			return self.rawValue
+		}
+	}
+	
+}
+
 enum MapUtilities {
 	
 	enum Constants {
