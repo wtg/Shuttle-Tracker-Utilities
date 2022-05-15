@@ -12,11 +12,18 @@ struct Inspector: View {
 	@EnvironmentObject private var mapState: MapState
 	
 	var body: some View {
-		ScrollView {
-			VisibilityInspectorSection()
-			PinInspectorSection()
-			AlgorithmsInspectorSection()
-			Spacer()
+		VStack {
+			HStack {
+				Text("Inspector")
+					.font(.title)
+				Spacer()
+			}
+			ScrollView {
+				VisibilityInspectorSection()
+				PinInspectorSection()
+				AlgorithmsInspectorSection()
+				Spacer()
+			}
 		}
 			.padding()
 	}
