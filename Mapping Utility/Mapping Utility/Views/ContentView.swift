@@ -9,6 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
 	
+	enum SheetType: Int, IdentifiableByRawValue {
+		
+		case serverSelection
+		
+	}
+	
+	@State private var sheetType: SheetType?
+	
 	@State private var isRefreshing = false
 	
 	@State private var doShowInspector = true
@@ -43,13 +51,29 @@ struct ContentView: View {
 				}
 				ToolbarItem {
 					Button {
+						self.sheetType = .serverSelection
+					} label: {
+						Label("Select Server", systemImage: "server.rack")
+					}
+				}
+				ToolbarItem {
+					Button {
 						withAnimation {
 							self.doShowInspector.toggle()
 						}
 					} label: {
 						Label("Toggle Inspector", systemImage: "sidebar.right")
 					}
-
+				}
+			}
+			.sheet(item: self.$sheetType) {
+				Task {
+					await self.refreshMap()
+				}
+			} content: { (sheetType) in
+				switch sheetType {
+				case .serverSelection:
+					ServerSelectionSheet(sheetType: self.$sheetType)
 				}
 			}
 			.onAppear {
@@ -61,13 +85,15 @@ struct ContentView: View {
 				}
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 					Task {
-						await self.refreshBuses()
+						await self.refreshMap()
 					}
 				}
 			}
 			.onReceive(self.timer) { (_) in
-				Task {
-					await self.refreshBuses()
+				if self.mapState.doShowBuses {
+					Task {
+						await self.refreshBuses()
+					}
 				}
 			}
 	}
@@ -75,6 +101,12 @@ struct ContentView: View {
 	@MainActor private func refreshBuses() async {
 		self.mapState.buses = await [Bus].download()
 		self.isRefreshing = false
+	}
+	
+	@MainActor private func refreshMap() async {
+		self.mapState.routes = await [Route].download()
+		self.mapState.stops = await [Stop].download()
+		await self.refreshBuses()
 	}
 	
 }

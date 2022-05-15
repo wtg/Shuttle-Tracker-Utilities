@@ -22,9 +22,11 @@ enum API: TargetType {
 	
 	static let lastVersion = 2
 	
+	static var baseURL = URL(string: "https://shuttletracker.app")!
+	
 	var baseURL: URL {
 		get {
-			return URL(string: "https://shuttletracker.app")!
+			return Self.baseURL
 		}
 	}
 	

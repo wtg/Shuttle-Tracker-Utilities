@@ -14,6 +14,7 @@
 		C039B06F2798FC9B00416725 /* PinInspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039B06E2798FC9B00416725 /* PinInspectorSection.swift */; };
 		C039B0712798FCEE00416725 /* AlgorithmsInspectorSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039B0702798FCEE00416725 /* AlgorithmsInspectorSection.swift */; };
 		C0735FC627B1FE1B00C6CAFB /* Turf in Frameworks */ = {isa = PBXBuildFile; productRef = C0735FC527B1FE1B00C6CAFB /* Turf */; };
+		C07C7703283030D0006DF0AC /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C7702283030D0006DF0AC /* ServerSelectionSheet.swift */; };
 		C09316D5278A071C009A4DC5 /* MappingUtilityApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316D4278A071C009A4DC5 /* MappingUtilityApp.swift */; };
 		C09316D7278A071C009A4DC5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316D6278A071C009A4DC5 /* ContentView.swift */; };
 		C09316D9278A071C009A4DC5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C09316D8278A071C009A4DC5 /* Assets.xcassets */; };
@@ -38,6 +39,7 @@
 		C039B06C2798FC5400416725 /* VisibilityInspectorSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisibilityInspectorSection.swift; sourceTree = "<group>"; };
 		C039B06E2798FC9B00416725 /* PinInspectorSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinInspectorSection.swift; sourceTree = "<group>"; };
 		C039B0702798FCEE00416725 /* AlgorithmsInspectorSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmsInspectorSection.swift; sourceTree = "<group>"; };
+		C07C7702283030D0006DF0AC /* ServerSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionSheet.swift; sourceTree = "<group>"; };
 		C09316D1278A071C009A4DC5 /* Mapping Utility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mapping Utility.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C09316D4278A071C009A4DC5 /* MappingUtilityApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingUtilityApp.swift; sourceTree = "<group>"; };
 		C09316D6278A071C009A4DC5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 				C039B06A2798F45A00416725 /* InspectorSection.swift */,
 				C09316E4278A07D7009A4DC5 /* MapView.swift */,
 				C039B06E2798FC9B00416725 /* PinInspectorSection.swift */,
+				C07C7702283030D0006DF0AC /* ServerSelectionSheet.swift */,
 				C039B06C2798FC5400416725 /* VisibilityInspectorSection.swift */,
 			);
 			path = Views;
@@ -185,7 +188,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					C09316D0278A071C009A4DC5 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -247,6 +250,7 @@
 				C09316EF278A0850009A4DC5 /* Route.swift in Sources */,
 				C039B06F2798FC9B00416725 /* PinInspectorSection.swift in Sources */,
 				C039B06D2798FC5400416725 /* VisibilityInspectorSection.swift in Sources */,
+				C07C7703283030D0006DF0AC /* ServerSelectionSheet.swift in Sources */,
 				C039B0712798FCEE00416725 /* AlgorithmsInspectorSection.swift in Sources */,
 				C09316ED278A084A009A4DC5 /* Coordinate.swift in Sources */,
 			);
@@ -376,6 +380,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Mapping Utility/MappingUtility.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
@@ -384,6 +389,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -403,6 +409,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Mapping Utility/MappingUtility.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
@@ -411,6 +418,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
