@@ -16,11 +16,8 @@ struct InspectorSection<Content>: View where Content: View {
 	let content: Content
 	
 	var body: some View {
-		DisclosureGroup {
+		DisclosureGroup(self.title) {
 			self.content
-		} label: {
-			Text(self.title)
-				.font(.title3)
 		}
 	}
 	
