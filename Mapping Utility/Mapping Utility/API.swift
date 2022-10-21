@@ -14,6 +14,8 @@ enum API: TargetType {
 	
 	case readBuses
 	
+	case updateBus(id: Int, location: Bus.Location)
+	
 	case readRoutes
 	
 	case readStops
@@ -35,6 +37,8 @@ enum API: TargetType {
 			switch self {
 			case .readBuses:
 				return "/buses"
+			case .updateBus(let id, _):
+				return "/buses/\(id)"
 			case .readRoutes:
 				return "/routes"
 			case .readStops:
@@ -48,6 +52,8 @@ enum API: TargetType {
 			switch self {
 			case .readBuses, .readRoutes, .readStops:
 				return .get
+			case .updateBus:
+				return .patch
 			}
 		}
 	}
@@ -57,6 +63,10 @@ enum API: TargetType {
 			switch self {
 			case .readBuses, .readRoutes, .readStops:
 				return .requestPlain
+			case .updateBus(_, let location):
+				let encoder = JSONEncoder()
+				encoder.dateEncodingStrategy = .iso8601
+				return .requestCustomJSONEncodable(location, encoder: encoder)
 			}
 		}
 	}

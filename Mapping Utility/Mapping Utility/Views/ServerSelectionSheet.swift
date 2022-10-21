@@ -31,6 +31,9 @@ struct ServerSelectionSheet: View {
 						if let baseURL = self.sanitizedBaseURL() {
 							API.baseURL = baseURL
 							self.sheetType = nil
+							Task {
+								await MapState.shared.refresh()
+							}
 						}
 					}
 				if self.sanitizedBaseURL() == nil {

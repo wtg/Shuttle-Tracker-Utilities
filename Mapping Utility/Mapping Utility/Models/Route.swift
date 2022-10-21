@@ -5,21 +5,23 @@
 //  Created by Gabriel Jacoby-Cooper on 1/8/22.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 import Turf
 
 class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 	
 	enum CodingKeys: String, CodingKey {
 		
-		case coordinates
+		case id, coordinates, name, colorName
 		
 	}
 	
 	let startIndex = 0
 	
 	private(set) lazy var endIndex = self.mapPoints.count - 1
+	
+	let id: UUID
 	
 	let mapPoints: [MKMapPoint]
 	
@@ -29,15 +31,19 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 		}
 	}
 	
+	let name: String
+	
+	let color: Color
+	
 	var polylineRenderer: MKPolylineRenderer {
 		get {
 			let polyline = self.mapPoints.withUnsafeBufferPointer { (mapPointsPointer) -> MKPolyline in
 				return MKPolyline(points: mapPointsPointer.baseAddress!, count: mapPointsPointer.count)
 			}
 			let polylineRenderer = MKPolylineRenderer(polyline: polyline)
-			polylineRenderer.strokeColor = NSColor(.blue)
-				.withAlphaComponent(0.5)
-			polylineRenderer.lineWidth = 3
+			polylineRenderer.strokeColor = NSColor(self.color)
+				.withAlphaComponent(0.7)
+			polylineRenderer.lineWidth = 5
 			return polylineRenderer
 		}
 	}
@@ -74,14 +80,15 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 		}
 	}
 	
-	let name = "Default Route"
-	
 	required init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
+		self.id = try container.decode(UUID.self, forKey: .id)
 		self.mapPoints = try container.decode([Coordinate].self, forKey: .coordinates)
 			.map { (coordinate) in
 				return MKMapPoint(coordinate)
 			}
+		self.name = try container.decode(String.self, forKey: .name)
+		self.color = try container.decode(ColorName.self, forKey: .colorName).color
 	}
 	
 	subscript(position: Int) -> MKMapPoint {

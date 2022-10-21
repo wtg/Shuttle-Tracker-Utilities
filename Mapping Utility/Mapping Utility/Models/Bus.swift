@@ -36,6 +36,8 @@ class Bus: NSObject, Codable, CustomAnnotation {
 	
 	let id: Int
 	
+	let routeID: UUID?
+	
 	private(set) var location: Location
 	
 	var coordinate: CLLocationCoordinate2D {
@@ -54,8 +56,16 @@ class Bus: NSObject, Codable, CustomAnnotation {
 		get {
 			let formatter = RelativeDateTimeFormatter()
 			formatter.dateTimeStyle = .named
-			formatter.formattingContext = .standalone
-			return formatter.localizedString(for: self.location.date, relativeTo: Date())
+			formatter.formattingContext = self.routeID == nil ? .standalone : .middleOfSentence
+			let dateTimeString = formatter.localizedString(for: self.location.date, relativeTo: Date())
+			if let routeID = self.routeID {
+				let routeName = MapState.shared.routes.first { (route) in
+					return route.id == routeID
+				}?.name ?? "unknown route"
+				return "On “\(routeName)” \(dateTimeString)"
+			} else {
+				return dateTimeString
+			}
 		}
 	}
 	
@@ -80,8 +90,9 @@ class Bus: NSObject, Codable, CustomAnnotation {
 		}
 	}
 	
-	init(id: Int, location: Location) {
+	init(id: Int, routeID: UUID, location: Location) {
 		self.id = id
+		self.routeID = routeID
 		self.location = location
 	}
 	

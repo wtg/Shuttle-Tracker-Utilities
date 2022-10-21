@@ -5,8 +5,8 @@
 //  Created by Gabriel Jacoby-Cooper on 1/8/22.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 
 struct MapView: NSViewRepresentable {
 	
@@ -23,9 +23,7 @@ struct MapView: NSViewRepresentable {
 		self.mapView.showsCompass = true
 		self.mapView.setVisibleMapRect(MapUtilities.mapRect, animated: true)
 		Task {
-			self.mapState.buses = await [Bus].download()
-			self.mapState.stops = await [Stop].download()
-			self.mapState.routes = await [Route].download()
+			await self.mapState.refresh()
 		}
 		return self.mapView
 	}

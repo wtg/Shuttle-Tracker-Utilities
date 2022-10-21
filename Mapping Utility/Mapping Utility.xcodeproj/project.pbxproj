@@ -30,6 +30,7 @@
 		C09316F8278A0993009A4DC5 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = C09316F7278A0993009A4DC5 /* Moya */; };
 		C09316FA278A09E7009A4DC5 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316F9278A09E7009A4DC5 /* Utilities.swift */; };
 		C09316FD278A0B4E009A4DC5 /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09316FC278A0B4E009A4DC5 /* MapViewDelegate.swift */; };
+		C0F84F0428FA0674005F9B09 /* ColorName.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F84F0328FA0674005F9B09 /* ColorName.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		C09316F4278A08C3009A4DC5 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		C09316F9278A09E7009A4DC5 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C09316FC278A0B4E009A4DC5 /* MapViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
+		C0F84F0328FA0674005F9B09 /* ColorName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorName.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				C09316EA278A0843009A4DC5 /* Bus.swift */,
+				C0F84F0328FA0674005F9B09 /* ColorName.swift */,
 				C09316EC278A084A009A4DC5 /* Coordinate.swift */,
 				C09316EE278A0850009A4DC5 /* Route.swift */,
 				C09316F0278A0856009A4DC5 /* Stop.swift */,
@@ -188,7 +191,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1330;
+				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					C09316D0278A071C009A4DC5 = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -244,6 +247,7 @@
 				C09316F5278A08C3009A4DC5 /* API.swift in Sources */,
 				C09316F1278A0856009A4DC5 /* Stop.swift in Sources */,
 				C039B0692798F23F00416725 /* Inspector.swift in Sources */,
+				C0F84F0428FA0674005F9B09 /* ColorName.swift in Sources */,
 				C039B06B2798F45A00416725 /* InspectorSection.swift in Sources */,
 				C09316D5278A071C009A4DC5 /* MappingUtilityApp.swift in Sources */,
 				C09316EB278A0843009A4DC5 /* Bus.swift in Sources */,
@@ -293,6 +297,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -354,6 +359,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -383,19 +389,22 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Mapping Utility/Preview Content\"";
 				DEVELOPMENT_TEAM = SYBLH277NF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Mapping Utility";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.mappingutility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -412,19 +421,22 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Mapping Utility/Preview Content\"";
 				DEVELOPMENT_TEAM = SYBLH277NF;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Mapping Utility";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.mappingutility;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
