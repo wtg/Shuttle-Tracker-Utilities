@@ -14,12 +14,12 @@
 		C0730C6427F559E200EF7550 /* MilestoneManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */; };
 		C0730C6727F55A7700EF7550 /* MilestoneDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */; };
 		C0730C6927F55AF800EF7550 /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6827F55AF800EF7550 /* ServerSelectionSheet.swift */; };
+		C07D642F2914AF9B00E5D9DF /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; };
+		C07D64302914AF9B00E5D9DF /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C08614AE27E185D000766418 /* MilestoneComposerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08614AD27E185D000766418 /* MilestoneComposerApp.swift */; };
 		C08614B027E185D000766418 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08614AF27E185D000766418 /* ContentView.swift */; };
 		C08614B227E185D000766418 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C08614B127E185D000766418 /* Assets.xcassets */; };
 		C08614B527E185D000766418 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C08614B427E185D000766418 /* Preview Assets.xcassets */; };
-		C086151227E18B2200766418 /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; };
-		C086151327E18B2200766418 /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,13 +33,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C086151427E18B2200766418 /* Embed Frameworks */ = {
+		C07D64312914AF9B00E5D9DF /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C086151327E18B2200766418 /* KeyManagement.framework in Embed Frameworks */,
+				C07D64302914AF9B00E5D9DF /* KeyManagement.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,7 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C086151227E18B2200766418 /* KeyManagement.framework in Frameworks */,
+				C07D642F2914AF9B00E5D9DF /* KeyManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,7 +147,7 @@
 				C08614A627E185D000766418 /* Sources */,
 				C08614A727E185D000766418 /* Frameworks */,
 				C08614A827E185D000766418 /* Resources */,
-				C086151427E18B2200766418 /* Embed Frameworks */,
+				C07D64312914AF9B00E5D9DF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -361,6 +361,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Milestone Composer/MilestoneComposer.entitlements";
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
@@ -393,6 +394,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Milestone Composer/MilestoneComposer.entitlements";
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 2;
