@@ -28,12 +28,14 @@ struct AnnouncementComposerApp: App {
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.keyManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
+			.windowResizability(.contentSize)
 		WindowGroup {
 			AnnouncementManagerView()
 				.frame(width: 700, height: 500)
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.announcementManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
+			.windowResizability(.contentSize)
 	}
 	
 }
