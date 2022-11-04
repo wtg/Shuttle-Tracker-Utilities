@@ -5,20 +5,25 @@
 //  Created by Gabriel Jacoby-Cooper on 3/30/22.
 //
 
-import SwiftUI
 import KeyManagement
+import SwiftUI
 
 struct MilestoneDetailView: View {
 	
-	@State private var doShowConfirmationDialog = false
+	@State
+	private var doShowConfirmationDialog = false
 	
-	@State private var doShowSuccessAlert = false
+	@State
+	private var doShowSuccessAlert = false
 	
-	@State private var error: WrappedError?
+	@State
+	private var error: WrappedError?
 	
-	@State private var selectedKeyPair: KeyPair?
+	@State
+	private var selectedKeyPair: KeyPair?
 	
-	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store)
+	private var keyPairs: [KeyPair] = []
 	
 	let milestone: Milestone
 	

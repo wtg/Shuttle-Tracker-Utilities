@@ -5,16 +5,19 @@
 //  Created by Gabriel Jacoby-Cooper on 3/29/22.
 //
 
-import SwiftUI
 import KeyManagement
 
 struct Milestone: Codable, Hashable, Identifiable {
 	
-	enum ProgressType: String, Codable, IdentifiableByHashValue {
+	enum ProgressType: String, CaseIterable, Codable, Identifiable {
 		
 		case boardBusCount = "BoardBusCount"
 		
-		static let all: [ProgressType] = [.boardBusCount]
+		var id: String {
+			get {
+				return self.rawValue
+			}
+		}
 		
 	}
 	

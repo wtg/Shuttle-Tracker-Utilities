@@ -5,21 +5,28 @@
 //  Created by Gabriel Jacoby-Cooper on 3/30/22.
 //
 
+import KeyManagement
 import SwiftUI
 
 struct ServerSelectionSheet: View {
 	
-	@State private var baseURLString: String
+	@State
+	private var baseURLString: String
 	
-	@State private var hasSubmitted = false
+	@State
+	private var hasSubmitted = false
 	
-	@State private var doShowAlert = false
+	@State
+	private var doShowAlert = false
 	
-	@State private var error: WrappedError?
+	@State
+	private var error: WrappedError?
 	
-	@Binding private(set) var baseURL: URL
+	@Binding
+	private(set) var baseURL: URL
 	
-	@Binding private(set) var sheetType: MilestoneManagerView.SheetType?
+	@Binding
+	private(set) var sheetType: MilestoneManagerView.SheetType?
 	
 	private var isValidURLString: Bool {
 		get {

@@ -9,10 +9,7 @@
 /* Begin PBXBuildFile section */
 		C0730C4F27F3C64B00EF7550 /* Milestone.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C4E27F3C64B00EF7550 /* Milestone.swift */; };
 		C0730C5227F3C86600EF7550 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5127F3C86600EF7550 /* Errors.swift */; };
-		C0730C5427F3C87D00EF7550 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5327F3C87D00EF7550 /* Utilities.swift */; };
 		C0730C5627F3DC4600EF7550 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5527F3DC4600EF7550 /* WindowManager.swift */; };
-		C0730C5827F3DDB800EF7550 /* KeyCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5727F3DDB800EF7550 /* KeyCreationSheet.swift */; };
-		C0730C5A27F3DDE300EF7550 /* KeyManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5927F3DDE300EF7550 /* KeyManagerView.swift */; };
 		C0730C5F27F5534400EF7550 /* GoalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5E27F5534400EF7550 /* GoalEntryView.swift */; };
 		C0730C6427F559E200EF7550 /* MilestoneManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */; };
 		C0730C6727F55A7700EF7550 /* MilestoneDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */; };
@@ -52,10 +49,7 @@
 /* Begin PBXFileReference section */
 		C0730C4E27F3C64B00EF7550 /* Milestone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Milestone.swift; sourceTree = "<group>"; };
 		C0730C5127F3C86600EF7550 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		C0730C5327F3C87D00EF7550 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0730C5527F3DC4600EF7550 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
-		C0730C5727F3DDB800EF7550 /* KeyCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCreationSheet.swift; sourceTree = "<group>"; };
-		C0730C5927F3DDE300EF7550 /* KeyManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManagerView.swift; sourceTree = "<group>"; };
 		C0730C5C27F3DF7000EF7550 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		C0730C5E27F5534400EF7550 /* GoalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalEntryView.swift; sourceTree = "<group>"; };
 		C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneManagerView.swift; sourceTree = "<group>"; };
@@ -107,14 +101,11 @@
 				C08614AF27E185D000766418 /* ContentView.swift */,
 				C0730C5127F3C86600EF7550 /* Errors.swift */,
 				C0730C5E27F5534400EF7550 /* GoalEntryView.swift */,
-				C0730C5727F3DDB800EF7550 /* KeyCreationSheet.swift */,
-				C0730C5927F3DDE300EF7550 /* KeyManagerView.swift */,
 				C0730C4E27F3C64B00EF7550 /* Milestone.swift */,
 				C08614AD27E185D000766418 /* MilestoneComposerApp.swift */,
 				C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */,
 				C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */,
 				C0730C6827F55AF800EF7550 /* ServerSelectionSheet.swift */,
-				C0730C5327F3C87D00EF7550 /* Utilities.swift */,
 				C0730C5527F3DC4600EF7550 /* WindowManager.swift */,
 				C08614B127E185D000766418 /* Assets.xcassets */,
 				C08614B627E185D000766418 /* MilestoneComposer.entitlements */,
@@ -237,12 +228,9 @@
 				C0730C4F27F3C64B00EF7550 /* Milestone.swift in Sources */,
 				C08614B027E185D000766418 /* ContentView.swift in Sources */,
 				C0730C6427F559E200EF7550 /* MilestoneManagerView.swift in Sources */,
-				C0730C5427F3C87D00EF7550 /* Utilities.swift in Sources */,
 				C0730C5F27F5534400EF7550 /* GoalEntryView.swift in Sources */,
 				C08614AE27E185D000766418 /* MilestoneComposerApp.swift in Sources */,
 				C0730C6927F55AF800EF7550 /* ServerSelectionSheet.swift in Sources */,
-				C0730C5827F3DDB800EF7550 /* KeyCreationSheet.swift in Sources */,
-				C0730C5A27F3DDE300EF7550 /* KeyManagerView.swift in Sources */,
 				C0730C6727F55A7700EF7550 /* MilestoneDetailView.swift in Sources */,
 				C0730C5627F3DC4600EF7550 /* WindowManager.swift in Sources */,
 			);
@@ -383,11 +371,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Milestone Composer";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.milestonecomposer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -413,11 +403,13 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Milestone Composer";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.milestonecomposer;
 				PRODUCT_NAME = "$(TARGET_NAME)";

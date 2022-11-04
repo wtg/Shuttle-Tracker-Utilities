@@ -5,22 +5,28 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-import SwiftUI
 import KeyManagement
+import SwiftUI
 
 struct ContentView: View {
 	
-	@State private var milestone = Milestone()
+	@State
+	private var milestone = Milestone()
 	
-	@State private var baseURLString = "https://shuttletracker.app"
+	@State
+	private var baseURLString = "https://shuttletracker.app"
 	
-	@State private var doShowSuccessAlert = false
+	@State
+	private var doShowSuccessAlert = false
 	
-	@State private var error: WrappedError?
+	@State
+	private var error: WrappedError?
 	
-	@State private var selectedKeyPair: KeyPair?
+	@State
+	private var selectedKeyPair: KeyPair?
 	
-	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store)
+	private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		VStack {
@@ -71,7 +77,7 @@ struct ContentView: View {
 						TextField("Progress", value: self.$milestone.progress, format: .number)
 							.frame(width: 50)
 						Picker("Progress Type", selection: self.$milestone.progressType) {
-							ForEach(Milestone.ProgressType.all) { (progressType) in
+							ForEach(Milestone.ProgressType.allCases) { (progressType) in
 								Text(progressType.rawValue)
 									.tag(Optional(progressType))
 							}

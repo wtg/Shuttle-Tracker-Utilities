@@ -5,10 +5,11 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-import SwiftUI
 import KeyManagement
+import SwiftUI
 
-@main struct MilestoneComposerApp: App {
+@main
+struct MilestoneComposerApp: App {
 	
 	var body: some Scene {
 		WindowGroup {

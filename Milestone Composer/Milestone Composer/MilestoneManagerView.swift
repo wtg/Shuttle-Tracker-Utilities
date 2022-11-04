@@ -5,25 +5,33 @@
 //  Created by Gabriel Jacoby-Cooper on 3/30/22.
 //
 
+import KeyManagement
 import SwiftUI
 
 struct MilestoneManagerView: View {
 	
-	enum SheetType: IdentifiableByHashValue {
+	enum SheetType: Int, IdentifiableByRawValue {
 		
 		case serverSelection
 		
+		typealias ID = Int
+		
 	}
 	
-	@State private var sheetType: SheetType?
+	@State
+	private var sheetType: SheetType?
 	
-	@State private var milestones: [Milestone]?
+	@State
+	private var milestones: [Milestone]?
 	
-	@State private var selectedMilestone: Milestone?
+	@State
+	private var selectedMilestone: Milestone?
 	
-	@State private var baseURL = URL(string: "https://shuttletracker.app")!
+	@State
+	private var baseURL = URL(string: "https://shuttletracker.app")!
 	
-	@State private var error: WrappedError?
+	@State
+	private var error: WrappedError?
 	
 	var body: some View {
 		NavigationView {

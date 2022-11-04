@@ -9,9 +9,11 @@ import SwiftUI
 
 struct GoalEntryView: View {
 	
-	@State private var goal: Int
+	@State
+	private var goal: Int
 	
-	@Binding private var goals: [Int]
+	@Binding
+	private var goals: [Int]
 	
 	private let index: Int
 	
@@ -35,9 +37,9 @@ struct GoalEntryView: View {
 	}
 	
 	init(goals: Binding<[Int]>, index: Int) {
-		self.index = index
-		self._goals = goals
 		self._goal = State(initialValue: goals[index].wrappedValue)
+		self._goals = goals
+		self.index = index
 	}
 	
 }
