@@ -47,7 +47,7 @@ struct MilestoneManagerView: View {
 										}
 									}
 								}
-								.listStyle(.inset(alternatesRowBackgrounds: true))
+									.listStyle(.inset(alternatesRowBackgrounds: true))
 							}
 						} else {
 							Text("No Milestones")
@@ -96,25 +96,25 @@ struct MilestoneManagerView: View {
 						}
 					}
 			}
-			.frame(minWidth: 200)
-			.navigationTitle("Milestone Manager")
+				.frame(minWidth: 200)
+				.navigationTitle("Milestone Manager")
 		}
-		.alert(isPresented: self.$error.isNotNil, error: self.error) {
-			Button("Continue") { }
-		}
-		.sheet(item: self.$sheetType) {
-			Task {
+			.alert(isPresented: self.$error.isNotNil, error: self.error) {
+				Button("Continue") { }
+			}
+			.sheet(item: self.$sheetType) {
+				Task {
+					await self.refresh()
+				}
+			} content: { (sheetType) in
+				switch sheetType {
+				case .serverSelection:
+					ServerSelectionSheet(baseURL: self.$baseURL, sheetType: self.$sheetType)
+				}
+			}
+			.task {
 				await self.refresh()
 			}
-		} content: { (sheetType) in
-			switch sheetType {
-			case .serverSelection:
-				ServerSelectionSheet(baseURL: self.$baseURL, sheetType: self.$sheetType)
-			}
-		}
-		.task {
-			await self.refresh()
-		}
 	}
 	
 	private func refresh() async {

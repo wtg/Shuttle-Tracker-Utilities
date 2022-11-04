@@ -64,23 +64,23 @@ struct ServerSelectionSheet: View {
 				} label: {
 					Text("Cancel")
 				}
-				.keyboardShortcut(.cancelAction)
+					.keyboardShortcut(.cancelAction)
 				Button("Save") {
 					self.baseURL = URL(string: self.baseURLString)!
 					self.sheetType = nil
 				}
-				.keyboardShortcut(.defaultAction)
-				.disabled(!self.isValidURLString)
+					.keyboardShortcut(.defaultAction)
+					.disabled(!self.isValidURLString)
 			}
-			.padding(.top)
+				.padding(.top)
 		}
-		.padding()
-		.frame(minWidth: 300)
-		.alert(isPresented: self.$error.isNotNil, error: self.error) { (error) in
-			Button("Continue") { }
-		} message: { (error) in
-			EmptyView()
-		}
+			.padding()
+			.frame(minWidth: 300)
+			.alert(isPresented: self.$error.isNotNil, error: self.error) { (error) in
+				Button("Continue") { }
+			} message: { (error) in
+				EmptyView()
+			}
 	}
 	
 	init(baseURL: Binding<URL>, sheetType: Binding<MilestoneManagerView.SheetType?>) {
