@@ -24,7 +24,7 @@ enum API: TargetType {
 	
 	static let lastVersion = 2
 	
-	static var baseURL = URL(string: "https://shuttletracker.app")!
+	static var baseURL = URL(string: "https://staging.shuttletracker.app")!
 	
 	var baseURL: URL {
 		get {
