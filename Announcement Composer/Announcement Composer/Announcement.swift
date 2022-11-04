@@ -11,13 +11,7 @@ struct Announcement: Codable, Hashable, Identifiable {
 	
 	enum ScheduleType: String, Codable {
 		
-		case none = "none"
-		
-		case startOnly = "startOnly"
-		
-		case endOnly = "endOnly"
-		
-		case startAndEnd = "startAndEnd"
+		case none, startOnly, endOnly, startAndEnd
 		
 	}
 	
@@ -117,11 +111,7 @@ struct Announcement: Codable, Hashable, Identifiable {
 		get {
 			let formatter = RelativeDateTimeFormatter()
 			formatter.formattingContext = .dynamic
-			if #available(iOS 15, macOS 12, *) {
-				return formatter.localizedString(for: self.start, relativeTo: .now)
-			} else {
-				return formatter.localizedString(for: self.start, relativeTo: Date())
-			}
+			return formatter.localizedString(for: self.start, relativeTo: .now)
 		}
 	}
 	
@@ -129,11 +119,7 @@ struct Announcement: Codable, Hashable, Identifiable {
 		get {
 			let formatter = RelativeDateTimeFormatter()
 			formatter.formattingContext = .dynamic
-			if #available(iOS 15, macOS 12, *) {
-				return formatter.localizedString(for: self.end, relativeTo: .now)
-			} else {
-				return formatter.localizedString(for: self.end, relativeTo: Date())
-			}
+			return formatter.localizedString(for: self.end, relativeTo: .now)
 		}
 	}
 	

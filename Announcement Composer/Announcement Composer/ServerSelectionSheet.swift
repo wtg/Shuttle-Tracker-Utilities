@@ -5,21 +5,28 @@
 //  Created by Gabriel Jacoby-Cooper on 11/22/21.
 //
 
+import KeyManagement
 import SwiftUI
 
 struct ServerSelectionSheet: View {
 	
-	@State private var baseURLString: String
+	@State
+	private var hasSubmitted = false
 	
-	@State private var hasSubmitted = false
+	@State
+	private var doShowAlert = false
 	
-	@State private var doShowAlert = false
+	@State
+	private var error: WrappedError?
 	
-	@State private var error: WrappedError?
+	@Binding
+	private(set) var baseURL: URL
 	
-	@Binding private(set) var baseURL: URL
+	@State
+	private var baseURLString: String
 	
-	@Binding private(set) var sheetType: AnnouncementManagerView.SheetType?
+	@Binding
+	private(set) var sheetType: AnnouncementManagerView.SheetType?
 	
 	private var isValidURLString: Bool {
 		get {
@@ -78,8 +85,8 @@ struct ServerSelectionSheet: View {
 	
 	init(baseURL: Binding<URL>, sheetType: Binding<AnnouncementManagerView.SheetType?>) {
 		self._baseURL = baseURL
-		self._sheetType = sheetType
 		self._baseURLString = State(initialValue: baseURL.wrappedValue.absoluteString)
+		self._sheetType = sheetType
 	}
 	
 }

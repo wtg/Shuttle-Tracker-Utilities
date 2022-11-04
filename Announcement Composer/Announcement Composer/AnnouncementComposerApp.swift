@@ -5,9 +5,11 @@
 //  Created by Gabriel Jacoby-Cooper on 11/16/21.
 //
 
+import KeyManagement
 import SwiftUI
 
-@main struct AnnouncementComposerApp: App {
+@main
+struct AnnouncementComposerApp: App {
 	
 	var body: some Scene {
 		WindowGroup {

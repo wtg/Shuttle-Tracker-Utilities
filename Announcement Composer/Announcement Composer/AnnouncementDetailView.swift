@@ -5,26 +5,31 @@
 //  Created by Gabriel Jacoby-Cooper on 11/21/21.
 //
 
-import SwiftUI
 import KeyManagement
+import SwiftUI
 
 struct AnnouncementDetailView: View {
-	
-	@State private var doShowConfirmationDialog = false
-	
-	@State private var doShowSuccessAlert = false
-	
-	@State private var error: WrappedError?
-	
-	@State private var selectedKeyPair: KeyPair?
-	
-	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
 	
 	let announcement: Announcement
 	
 	let baseURL: URL
 	
 	let deletionHandler: () async -> Void
+	
+	@State
+	private var doShowConfirmationDialog = false
+	
+	@State
+	private var doShowSuccessAlert = false
+	
+	@State
+	private var error: WrappedError?
+	
+	@State
+	private var selectedKeyPair: KeyPair?
+	
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store)
+	private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		ScrollView {

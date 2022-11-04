@@ -5,25 +5,33 @@
 //  Created by Gabriel Jacoby-Cooper on 11/21/21.
 //
 
+import KeyManagement
 import SwiftUI
 
 struct AnnouncementManagerView: View {
 	
-	enum SheetType: IdentifiableByHashValue {
+	enum SheetType: Int, IdentifiableByRawValue {
 		
 		case serverSelection
 		
+		typealias ID = RawValue
+		
 	}
 	
-	@State private var sheetType: SheetType?
+	@State
+	private var sheetType: SheetType?
 	
-	@State private var announcements: [Announcement]?
+	@State
+	private var announcements: [Announcement]?
 	
-	@State private var selectedAnnouncement: Announcement?
+	@State
+	private var selectedAnnouncement: Announcement?
 	
-	@State private var baseURL = URL(string: "https://shuttletracker.app")!
+	@State
+	private var baseURL = URL(string: "https://shuttletracker.app")!
 	
-	@State private var error: WrappedError?
+	@State
+	private var error: WrappedError?
 	
 	var body: some View {
 		NavigationView {
