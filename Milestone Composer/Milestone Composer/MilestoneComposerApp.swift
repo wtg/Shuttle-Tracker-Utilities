@@ -28,12 +28,14 @@ struct MilestoneComposerApp: App {
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.keyManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
+			.windowResizability(.contentSize)
 		WindowGroup {
 			MilestoneManagerView()
 				.frame(width: 700, height: 500)
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.milestoneManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
+			.windowResizability(.contentSize)
 	}
 	
 }
