@@ -5,8 +5,8 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-import SwiftUI
 import CryptoKit
+import SwiftUI
 import UniformTypeIdentifiers
 
 public struct KeyPair: Codable, Identifiable, Hashable, FileDocument {

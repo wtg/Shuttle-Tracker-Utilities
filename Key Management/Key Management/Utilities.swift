@@ -5,8 +5,13 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-import Foundation
 import CryptoKit
+
+public enum DefaultsUtilities {
+	
+	public static let store = UserDefaults(suiteName: "SYBLH277NF.com.gerzer.shuttletracker.composers")
+	
+}
 
 extension SecureEnclave.P256.Signing.PrivateKey: Codable, Hashable {
 	
@@ -28,11 +33,5 @@ extension SecureEnclave.P256.Signing.PrivateKey: Codable, Hashable {
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(self.dataRepresentation)
 	}
-	
-}
-
-protocol RawRepresentableByString {
-	
-	var rawValue: String { get }
 	
 }
