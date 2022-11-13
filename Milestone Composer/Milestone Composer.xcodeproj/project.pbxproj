@@ -13,24 +13,15 @@
 		C0730C5F27F5534400EF7550 /* GoalEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C5E27F5534400EF7550 /* GoalEntryView.swift */; };
 		C0730C6427F559E200EF7550 /* MilestoneManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */; };
 		C0730C6727F55A7700EF7550 /* MilestoneDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */; };
-		C0730C6927F55AF800EF7550 /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0730C6827F55AF800EF7550 /* ServerSelectionSheet.swift */; };
-		C07D642F2914AF9B00E5D9DF /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; };
-		C07D64302914AF9B00E5D9DF /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C086150E27E18AE100766418 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C08614AE27E185D000766418 /* MilestoneComposerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08614AD27E185D000766418 /* MilestoneComposerApp.swift */; };
 		C08614B027E185D000766418 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08614AF27E185D000766418 /* ContentView.swift */; };
 		C08614B227E185D000766418 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C08614B127E185D000766418 /* Assets.xcassets */; };
 		C08614B527E185D000766418 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C08614B427E185D000766418 /* Preview Assets.xcassets */; };
+		C0F420BD2920226000CC0F91 /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420BC2920226000CC0F91 /* KeyManagement.framework */; };
+		C0F420BE2920226000CC0F91 /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420BC2920226000CC0F91 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C0F420C02920226500CC0F91 /* ServerSelection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420BF2920226500CC0F91 /* ServerSelection.framework */; };
+		C0F420C12920226500CC0F91 /* ServerSelection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420BF2920226500CC0F91 /* ServerSelection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		C086150D27E18AE100766418 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C086150927E18AE100766418 /* Key Management.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C08614F727E1896200766418;
-			remoteInfo = "Key Management";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		C07D64312914AF9B00E5D9DF /* Embed Frameworks */ = {
@@ -39,7 +30,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C07D64302914AF9B00E5D9DF /* KeyManagement.framework in Embed Frameworks */,
+				C0F420C12920226500CC0F91 /* ServerSelection.framework in Embed Frameworks */,
+				C0F420BE2920226000CC0F91 /* KeyManagement.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,14 +46,14 @@
 		C0730C5E27F5534400EF7550 /* GoalEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalEntryView.swift; sourceTree = "<group>"; };
 		C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneManagerView.swift; sourceTree = "<group>"; };
 		C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneDetailView.swift; sourceTree = "<group>"; };
-		C0730C6827F55AF800EF7550 /* ServerSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionSheet.swift; sourceTree = "<group>"; };
 		C08614AA27E185D000766418 /* Milestone Composer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Milestone Composer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C08614AD27E185D000766418 /* MilestoneComposerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneComposerApp.swift; sourceTree = "<group>"; };
 		C08614AF27E185D000766418 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C08614B127E185D000766418 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C08614B427E185D000766418 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C08614B627E185D000766418 /* MilestoneComposer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MilestoneComposer.entitlements; sourceTree = "<group>"; };
-		C086150927E18AE100766418 /* Key Management.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Key Management.xcodeproj"; path = "../Key Management/Key Management.xcodeproj"; sourceTree = "<group>"; };
+		C0F420BC2920226000CC0F91 /* KeyManagement.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KeyManagement.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0F420BF2920226500CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C07D642F2914AF9B00E5D9DF /* KeyManagement.framework in Frameworks */,
+				C0F420C02920226500CC0F91 /* ServerSelection.framework in Frameworks */,
+				C0F420BD2920226000CC0F91 /* KeyManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +72,6 @@
 		C08614A127E185D000766418 = {
 			isa = PBXGroup;
 			children = (
-				C086150927E18AE100766418 /* Key Management.xcodeproj */,
 				C08614AC27E185D000766418 /* Milestone Composer */,
 				C08614AB27E185D000766418 /* Products */,
 				C086151027E18B2200766418 /* Frameworks */,
@@ -105,7 +97,6 @@
 				C08614AD27E185D000766418 /* MilestoneComposerApp.swift */,
 				C0730C6627F55A7700EF7550 /* MilestoneDetailView.swift */,
 				C0730C6327F559E200EF7550 /* MilestoneManagerView.swift */,
-				C0730C6827F55AF800EF7550 /* ServerSelectionSheet.swift */,
 				C0730C5527F3DC4600EF7550 /* WindowManager.swift */,
 				C08614B127E185D000766418 /* Assets.xcassets */,
 				C08614B627E185D000766418 /* MilestoneComposer.entitlements */,
@@ -122,17 +113,11 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C086150A27E18AE100766418 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C086150E27E18AE100766418 /* KeyManagement.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		C086151027E18B2200766418 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0F420BF2920226500CC0F91 /* ServerSelection.framework */,
+				C0F420BC2920226000CC0F91 /* KeyManagement.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -184,28 +169,12 @@
 			mainGroup = C08614A127E185D000766418;
 			productRefGroup = C08614AB27E185D000766418 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = C086150A27E18AE100766418 /* Products */;
-					ProjectRef = C086150927E18AE100766418 /* Key Management.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				C08614A927E185D000766418 /* Milestone Composer */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		C086150E27E18AE100766418 /* KeyManagement.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KeyManagement.framework;
-			remoteRef = C086150D27E18AE100766418 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C08614A827E185D000766418 /* Resources */ = {
@@ -230,7 +199,6 @@
 				C0730C6427F559E200EF7550 /* MilestoneManagerView.swift in Sources */,
 				C0730C5F27F5534400EF7550 /* GoalEntryView.swift in Sources */,
 				C08614AE27E185D000766418 /* MilestoneComposerApp.swift in Sources */,
-				C0730C6927F55AF800EF7550 /* ServerSelectionSheet.swift in Sources */,
 				C0730C6727F55A7700EF7550 /* MilestoneDetailView.swift in Sources */,
 				C0730C5627F3DC4600EF7550 /* WindowManager.swift in Sources */,
 			);
