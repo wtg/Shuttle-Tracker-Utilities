@@ -211,6 +211,8 @@ struct ContentView: View {
 	private func clear() {
 		self.milestone.name = ""
 		self.milestone.extendedDescription = ""
+		self.milestone.goals = []
+		self.milestone.progress = 0
 		self.milestone.progressType = nil
 		self.selectedKeyPair = nil
 	}
