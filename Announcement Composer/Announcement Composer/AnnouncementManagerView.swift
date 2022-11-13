@@ -39,7 +39,13 @@ struct AnnouncementManagerView: View {
 			Group {
 				Group {
 					if let announcements = self.announcements {
-						if announcements.count > 0 {
+						if announcements.isEmpty {
+							Text("No Announcements")
+								.font(.callout)
+								.multilineTextAlignment(.center)
+								.foregroundColor(.secondary)
+								.padding()
+						} else {
 							VStack {
 								List(announcements, selection: self.$selectedAnnouncement) { (announcement) in
 									NavigationLink(announcement.subject) {
@@ -50,15 +56,9 @@ struct AnnouncementManagerView: View {
 								}
 									.listStyle(.inset(alternatesRowBackgrounds: true))
 							}
-						} else {
-							Text("No Announcements")
-								.font(.callout)
-								.multilineTextAlignment(.center)
-								.foregroundColor(.secondary)
-								.padding()
 						}
 					} else {
-						ProgressView("Loading…")
+						ProgressView("Loading")
 							.font(.callout)
 							.textCase(.uppercase)
 							.foregroundColor(.secondary)
@@ -66,21 +66,17 @@ struct AnnouncementManagerView: View {
 					}
 				}
 					.toolbar {
-						ToolbarItem {
-							Button {
-								self.sheetType = .serverSelection
-							} label: {
-								Label("Select Server", systemImage: "server.rack")
-							}
+						Button {
+							self.sheetType = .serverSelection
+						} label: {
+							Label("Select Server", systemImage: "server.rack")
 						}
-						ToolbarItem {
-							Button {
-								Task {
-									await self.refresh()
-								}
-							} label: {
-								Label("Refresh", systemImage: "arrow.clockwise")
+						Button {
+							Task {
+								await self.refresh()
 							}
+						} label: {
+							Label("Refresh", systemImage: "arrow.clockwise")
 						}
 					}
 				Text("No Announcement Selected")

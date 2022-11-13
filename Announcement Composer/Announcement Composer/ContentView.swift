@@ -173,19 +173,15 @@ struct ContentView: View {
 			.animation(.default, value: self.announcement.hasStart)
 			.animation(.default, value: self.announcement.hasEnd)
 			.toolbar {
-				ToolbarItem {
-					Button {
-						WindowManager.show(.keyManager)
-					} label: {
-						Label("Key Manager", systemImage: "key")
-					}
+				Button {
+					WindowManager.show(.keyManager)
+				} label: {
+					Label("Key Manager", systemImage: "key")
 				}
-				ToolbarItem {
-					Button {
-						WindowManager.show(.announcementManager)
-					} label: {
-						Label("Announcement Manager", systemImage: "calendar.badge.exclamationmark")
-					}
+				Button {
+					WindowManager.show(.announcementManager)
+				} label: {
+					Label("Announcement Manager", systemImage: "slider.horizontal.2.square.on.square")
 				}
 			}
 			.alert(isPresented: self.$error.isNotNil, error: self.error) {

@@ -59,28 +59,22 @@ struct AnnouncementDetailView: View {
 			.frame(minWidth: 300)
 			.navigationTitle(self.announcement.subject)
 			.toolbar {
-				ToolbarItem {
-					Picker("Key", selection: self.$selectedKeyPair) {
-						ForEach(self.keyPairs) { (keyPair) in
-							Text(keyPair.name)
-								.tag(Optional(keyPair))
-						}
-					}
-						.disabled(self.keyPairs.isEmpty)
-				}
-				ToolbarItem {
-					HStack {
-						Divider()
+				Picker("Key", selection: self.$selectedKeyPair) {
+					ForEach(self.keyPairs) { (keyPair) in
+						Text(keyPair.name)
+							.tag(Optional(keyPair))
 					}
 				}
-				ToolbarItem {
-					Button {
-						self.doShowConfirmationDialog = true
-					} label: {
-						Label("Delete…", systemImage: "trash")
-					}
-						.disabled(self.selectedKeyPair == nil)
+					.disabled(self.keyPairs.isEmpty)
+				HStack {
+					Divider()
 				}
+				Button {
+					self.doShowConfirmationDialog = true
+				} label: {
+					Label("Delete…", systemImage: "trash")
+				}
+					.disabled(self.selectedKeyPair == nil)
 			}
 			.confirmationDialog("Delete Announcement", isPresented: self.$doShowConfirmationDialog) {
 				Button("Cancel", role: .cancel) { }
