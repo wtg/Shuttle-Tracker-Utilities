@@ -189,19 +189,15 @@ struct ContentView: View {
 		}
 			.padding()
 			.toolbar {
-				ToolbarItem {
-					Button {
-						WindowManager.show(.keyManager)
-					} label: {
-						Label("Key Manager", systemImage: "key")
-					}
+				Button {
+					WindowManager.show(.keyManager)
+				} label: {
+					Label("Key Manager", systemImage: "key")
 				}
-				ToolbarItem {
-					Button {
-						WindowManager.show(.milestoneManager)
-					} label: {
-						Label("Milestone Manager", systemImage: "list.bullet.rectangle")
-					}
+				Button {
+					WindowManager.show(.milestoneManager)
+				} label: {
+					Label("Milestone Manager", systemImage: "slider.horizontal.2.square.on.square")
 				}
 			}
 			.alert(isPresented: self.$error.isNotNil, error: self.error) {

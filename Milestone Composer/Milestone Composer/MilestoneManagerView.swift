@@ -66,21 +66,17 @@ struct MilestoneManagerView: View {
 					}
 				}
 					.toolbar {
-						ToolbarItem {
-							Button {
-								self.sheetType = .serverSelection
-							} label: {
-								Label("Select Server", systemImage: "server.rack")
-							}
+						Button {
+							self.sheetType = .serverSelection
+						} label: {
+							Label("Select Server", systemImage: "server.rack")
 						}
-						ToolbarItem {
-							Button {
-								Task {
-									await self.refresh()
-								}
-							} label: {
-								Label("Refresh", systemImage: "arrow.clockwise")
+						Button {
+							Task {
+								await self.refresh()
 							}
+						} label: {
+							Label("Refresh", systemImage: "arrow.clockwise")
 						}
 					}
 				Text("No Milestone Selected")
