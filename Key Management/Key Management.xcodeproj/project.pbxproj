@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C01B6163291EE9C6008BF777 /* Signable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01B6162291EE9C6008BF777 /* Signable.swift */; };
 		C07D642A2914953700E5D9DF /* KeyManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D64292914953700E5D9DF /* KeyManagerView.swift */; };
 		C07D642C2914958D00E5D9DF /* KeyCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D642B2914958D00E5D9DF /* KeyCreationSheet.swift */; };
 		C07D642E29149A4C00E5D9DF /* IdentifiableByRawValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D642D29149A4C00E5D9DF /* IdentifiableByRawValue.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C01B6162291EE9C6008BF777 /* Signable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signable.swift; sourceTree = "<group>"; };
 		C07D64292914953700E5D9DF /* KeyManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyManagerView.swift; sourceTree = "<group>"; };
 		C07D642B2914958D00E5D9DF /* KeyCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCreationSheet.swift; sourceTree = "<group>"; };
 		C07D642D29149A4C00E5D9DF /* IdentifiableByRawValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableByRawValue.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				C07D642B2914958D00E5D9DF /* KeyCreationSheet.swift */,
 				C07D64292914953700E5D9DF /* KeyManagerView.swift */,
 				C086150327E1897000766418 /* KeyPair.swift */,
+				C01B6162291EE9C6008BF777 /* Signable.swift */,
 				C086150727E189C400766418 /* Utilities.swift */,
 			);
 			path = "Key Management";
@@ -152,6 +155,7 @@
 				C07D642C2914958D00E5D9DF /* KeyCreationSheet.swift in Sources */,
 				C07D642E29149A4C00E5D9DF /* IdentifiableByRawValue.swift in Sources */,
 				C07D642A2914953700E5D9DF /* KeyManagerView.swift in Sources */,
+				C01B6163291EE9C6008BF777 /* Signable.swift in Sources */,
 				C086150427E1897000766418 /* KeyPair.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
-/// Project version number
+//! Project version number
 FOUNDATION_EXPORT double KeyManagementVersionNumber;
 
-/// Project version string
+//! Project version string
 FOUNDATION_EXPORT const unsigned char KeyManagementVersionString[];

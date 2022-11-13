@@ -15,6 +15,12 @@ enum KeyError: String, Error {
 	
 }
 
+enum SignatureError: String, Error {
+	
+	case dataConversionFailed = "Failed to convert the content into raw data"
+	
+}
+
 enum UnknownError: String, Error {
 	
 	case unknown = "Unknown error"
