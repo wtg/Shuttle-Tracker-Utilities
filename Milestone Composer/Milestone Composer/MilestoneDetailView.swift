@@ -103,8 +103,7 @@ struct MilestoneDetailView: View {
 						request.httpMethod = "DELETE"
 						let response: URLResponse
 						do {
-							let signature = try self.milestone.signatureForDeletion(using: selectedKeyPair)
-							let deletionRequest = Milestone.DeletionRequest(signature: signature)
+							let deletionRequest = try self.milestone.deletionRequest(signedUsing: selectedKeyPair)
 							let data = try JSONEncoder()
 								.encode(deletionRequest)
 							(_, response) = try await URLSession.shared.upload(for: request, from: data)

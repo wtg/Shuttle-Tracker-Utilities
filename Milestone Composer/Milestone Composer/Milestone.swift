@@ -7,7 +7,9 @@
 
 import KeyManagement
 
-struct Milestone: Codable, Hashable, Identifiable {
+struct Milestone: Codable, Hashable, Identifiable, Signable {
+	
+	typealias DeletionRequest = SimpleDeletionRequest
 	
 	enum ProgressType: String, CaseIterable, Codable, Identifiable {
 		
@@ -18,12 +20,6 @@ struct Milestone: Codable, Hashable, Identifiable {
 				return self.rawValue
 			}
 		}
-		
-	}
-	
-	struct DeletionRequest: Encodable {
-		
-		let signature: Data
 		
 	}
 	
@@ -86,29 +82,16 @@ struct Milestone: Codable, Hashable, Identifiable {
 		}
 	}
 	
-	private(set) var signature: Data?
+	var signature: Data?
+	
+	var dataToSign: Data? {
+		get {
+			return (self.name + self.extendedDescription + self.goals.description).data(using: .utf8)
+		}
+	}
 	
 	init() {
 		self.id = UUID()
-	}
-	
-	private init(asSignedVersionOf unsignedMilestone: Milestone, using keyPair: KeyPair) throws {
-		self = unsignedMilestone
-		guard let data = (self.name + self.extendedDescription + self.goals.description).data(using: .utf8) else {
-			throw SignatureError.dataConversionFailed
-		}
-		self.signature = try keyPair.signature(for: data)
-	}
-	
-	func signed(using keyPair: KeyPair) throws -> Milestone {
-		return try Milestone(asSignedVersionOf: self, using: keyPair)
-	}
-	
-	func signatureForDeletion(using keyPair: KeyPair) throws -> Data {
-		guard let data = self.id.uuidString.data(using: .utf8) else {
-			throw SignatureError.dataConversionFailed
-		}
-		return try keyPair.signature(for: data)
 	}
 	
 	func hash(into hasher: inout Hasher) {
