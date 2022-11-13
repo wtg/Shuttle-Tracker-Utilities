@@ -5,14 +5,6 @@
 //  Created by Gabriel Jacoby-Cooper on 11/16/21.
 //
 
-import SwiftUI
-
-enum SignatureError: String, Error {
-	
-	case dataConversionFailed = "Failed to convert the content of the announcement into raw data"
-	
-}
-
 enum SubmissionError: String, Error {
 	
 	case noKeySelected = "No key is selected"

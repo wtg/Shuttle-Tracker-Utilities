@@ -99,8 +99,7 @@ struct AnnouncementDetailView: View {
 						request.httpMethod = "DELETE"
 						let response: URLResponse
 						do {
-							let signature = try self.announcement.signatureForDeletion(using: selectedKeyPair)
-							let deletionRequest = Announcement.DeletionRequest(signature: signature)
+							let deletionRequest = try self.announcement.deletionRequest(signedUsing: selectedKeyPair)
 							let data = try JSONEncoder().encode(deletionRequest)
 							(_, response) = try await URLSession.shared.upload(for: request, from: data)
 							await self.deletionHandler()
