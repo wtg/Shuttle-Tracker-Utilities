@@ -66,10 +66,10 @@ struct LogDetailView: View {
 							}
 							var request = URLRequest(url: url)
 							request.httpMethod = "DELETE"
-							let response: URLResponse
+							request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 							let deletionRequest = try self.log.deletionRequest(signedUsing: keyPair)
 							let data = try JSONEncoder().encode(deletionRequest)
-							(_, response) = try await URLSession.shared.upload(for: request, from: data)
+							let (_, response) = try await URLSession.shared.upload(for: request, from: data)
 							await self.deletionHandler()
 							guard let httpResponse = response as? HTTPURLResponse else {
 								throw OperationError.malformedResponse
