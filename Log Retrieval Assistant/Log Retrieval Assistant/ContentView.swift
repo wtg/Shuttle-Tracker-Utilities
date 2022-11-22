@@ -48,7 +48,7 @@ struct ContentView: View {
 				if let logs = self.logs {
 					if logs.isEmpty {
 						Text("No Logs")
-							.font(.callout)
+							.font(.title2)
 							.multilineTextAlignment(.center)
 							.foregroundColor(.secondary)
 							.padding()
