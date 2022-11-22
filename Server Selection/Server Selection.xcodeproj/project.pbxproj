@@ -10,22 +10,7 @@
 		C0F4209829201B6600CC0F91 /* ServerSelection.h in Headers */ = {isa = PBXBuildFile; fileRef = C0F4209729201B6600CC0F91 /* ServerSelection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0F420A929201C3200CC0F91 /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F420A829201C3200CC0F91 /* ServerSelectionSheet.swift */; };
 		C0F420B92920211000CC0F91 /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420B52920210B00CC0F91 /* KeyManagement.framework */; };
-		C0F420BA2920211000CC0F91 /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420B52920210B00CC0F91 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		C0F420BB2920211000CC0F91 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				C0F420BA2920211000CC0F91 /* KeyManagement.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C0F4209429201B6600CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,7 +87,6 @@
 				C0F4209029201B6600CC0F91 /* Sources */,
 				C0F4209129201B6600CC0F91 /* Frameworks */,
 				C0F4209229201B6600CC0F91 /* Resources */,
-				C0F420BB2920211000CC0F91 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
