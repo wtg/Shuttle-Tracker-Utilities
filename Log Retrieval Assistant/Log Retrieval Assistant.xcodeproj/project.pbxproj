@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		C01B615C291EE534008BF777 /* LogDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01B615B291EE534008BF777 /* LogDetailView.swift */; };
 		C01B615F291EE65B008BF777 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01B615E291EE65B008BF777 /* Errors.swift */; };
+		C0703B17292C91DD001D2D11 /* KeyManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0703B16292C91DD001D2D11 /* KeyManagement.framework */; };
+		C0703B18292C91DD001D2D11 /* KeyManagement.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0703B16292C91DD001D2D11 /* KeyManagement.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C07D64082914932800E5D9DF /* LogRetrievalAssistantApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D64072914932800E5D9DF /* LogRetrievalAssistantApp.swift */; };
 		C07D640A2914932800E5D9DF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D64092914932800E5D9DF /* ContentView.swift */; };
 		C07D640C2914932900E5D9DF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C07D640B2914932900E5D9DF /* Assets.xcassets */; };
@@ -27,6 +29,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				C0F420AC29201FFF00CC0F91 /* ServerSelection.framework in Embed Frameworks */,
+				C0703B18292C91DD001D2D11 /* KeyManagement.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,6 +39,7 @@
 /* Begin PBXFileReference section */
 		C01B615B291EE534008BF777 /* LogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogDetailView.swift; sourceTree = "<group>"; };
 		C01B615E291EE65B008BF777 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		C0703B16292C91DD001D2D11 /* KeyManagement.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KeyManagement.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C07D64042914932800E5D9DF /* Log Retrieval Assistant.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Log Retrieval Assistant.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C07D64072914932800E5D9DF /* LogRetrievalAssistantApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogRetrievalAssistantApp.swift; sourceTree = "<group>"; };
 		C07D64092914932800E5D9DF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -54,6 +58,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0F420AB29201FFF00CC0F91 /* ServerSelection.framework in Frameworks */,
+				C0703B17292C91DD001D2D11 /* KeyManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +110,7 @@
 		C07D6421291493FE00E5D9DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0703B16292C91DD001D2D11 /* KeyManagement.framework */,
 				C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */,
 			);
 			name = Frameworks;
