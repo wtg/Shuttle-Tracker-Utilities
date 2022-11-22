@@ -48,7 +48,7 @@ public struct ServerSelectionSheet<SheetType>: View {
 			Form {
 				TextField("Base URL", text: self.$baseURLString)
 					.onSubmit {
-						if !self.isValidURLString {
+						if self.isValidURLString {
 							self.baseURL = URL(string: self.baseURLString)!
 							self.sheetType = nil
 						}
