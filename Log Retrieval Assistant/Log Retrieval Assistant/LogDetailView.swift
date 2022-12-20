@@ -10,42 +10,70 @@ import SwiftUI
 
 struct LogDetailView: View {
 	
-	let log: Log
+	@Binding
+	private var logs: Set<Log>
 	
-	let baseURL: URL
+	private let baseURL: URL
 	
-	let keyPair: KeyPair?
+	private let keyPair: KeyPair?
 	
-	let deletionHandler: () async -> Void
-	
-	@State
-	private var doShowConfirmationDialog = false
+	private let refresh: () async throws -> Void
 	
 	@State
-	private var doShowSuccessAlert = false
+	private var doTriggerDeletion = false
 	
-	@State
-	private var error: WrappedError?
+	@WrappedError
+	private var error: Error?
 	
 	var body: some View {
-		ScrollView {
-			Spacer()
-			HStack {
-				Text(log.content)
-					.fontDesign(.monospaced)
-				Spacer()
+		Group {
+			if self.logs.isEmpty {
+				Text("No Log Selected")
+					.font(.title2)
+					.multilineTextAlignment(.center)
+					.foregroundColor(.secondary)
+					.padding()
+			} else {
+				ScrollView {
+					HStack {
+						VStack(alignment: .leading) {
+							if self.logs.count == 1 {
+								let log = self.logs.first!
+								LogContentView(log: log)
+									.navigationSubtitle(log.id.uuidString)
+							} else { // There are guaranteed to be two or more logs at this point
+								Group {
+									let sortedLogs = Array(self.logs)
+										.sorted { (first, second) in
+											return first.date < second.date
+										}
+										.reversed()
+									LogContentView(log: sortedLogs.first!, doShowID: true)
+									ForEach(sortedLogs.dropFirst()) { (log) in
+										Divider()
+										LogContentView(log: log, doShowID: true)
+									}
+								}
+									.navigationSubtitle("\(self.logs.count) Logs Selected")
+							}
+						}
+						Spacer(minLength: 0)
+					}
+						.padding(.horizontal, 10)
+						.padding(.vertical)
+				}
 			}
 		}
-			.padding(.horizontal, 10)
 			.frame(minWidth: 500)
 			.toolbar {
-				Button {
-					self.doShowConfirmationDialog = true
+				Button(role: .destructive) {
+					self.doTriggerDeletion = true
 				} label: {
 					Label("Delete…", systemImage: "trash")
 				}
-					.disabled(self.keyPair == nil)
-				if let url = try? self.log.writeToDisk() {
+					.keyboardShortcut(.delete, modifiers: [])
+					.disabled(self.logs.isEmpty || self.keyPair == nil)
+				if self.logs.count == 1, let url = try? self.logs.first!.writeToDisk() {
 					ShareLink(item: url)
 					Button {
 						NSWorkspace.shared.open(url)
@@ -54,53 +82,125 @@ struct LogDetailView: View {
 					}
 				}
 			}
-			.confirmationDialog("Delete Log", isPresented: self.$doShowConfirmationDialog) {
+			.alert(isPresented: self.$error.$doShowAlert, error: self.$error) {
+				Button("Continue") { }
+			}
+			.logDeletion(
+				self.$logs,
+				isTriggered: self.$doTriggerDeletion,
+				baseURL: self.baseURL,
+				keyPair: self.keyPair,
+				errorProjection: self.$error,
+				refresh: self.refresh
+			)
+	}
+	
+	init(
+		logs: Binding<Set<Log>>,
+		baseURL: URL,
+		keyPair: KeyPair?,
+		refresh: @escaping () async throws -> Void
+	) {
+		self._logs = logs
+		self.baseURL = baseURL
+		self.keyPair = keyPair
+		self.refresh = refresh
+	}
+	
+}
+
+struct LogDeletion: ViewModifier {
+	
+	@Binding
+	private var logs: Set<Log>
+	
+	@Binding
+	private var isTriggered: Bool
+	
+	private let baseURL: URL
+	
+	private let keyPair: KeyPair?
+	
+	private let errorProjection: WrappedError.Projection
+	
+	private let refresh: () async throws -> Void
+	
+	@State
+	private var doShowSuccessAlert = false
+	
+	func body(content: Content) -> some View {
+		return content
+			.confirmationDialog("Delete Log\(self.logs.count == 1 ? "" : "s")", isPresented: self.$isTriggered) {
 				Button("Cancel", role: .cancel) { }
 					.keyboardShortcut(.cancelAction)
-				Button("Delete", role: .destructive) {
-					Task {
-						do {
-							let url = self.baseURL.appending(components: "logs", self.log.id.uuidString)
-							guard let keyPair = self.keyPair else {
-								throw OperationError.noKeySelected
-							}
-							var request = URLRequest(url: url)
-							request.httpMethod = "DELETE"
-							request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-							let deletionRequest = try self.log.deletionRequest(signedUsing: keyPair)
-							let data = try JSONEncoder().encode(deletionRequest)
-							let (_, response) = try await URLSession.shared.upload(for: request, from: data)
-							await self.deletionHandler()
-							guard let httpResponse = response as? HTTPURLResponse else {
-								throw OperationError.malformedResponse
-							}
-							switch httpResponse.statusCode {
-							case 200:
+				if !self.logs.isEmpty {
+					Button("Delete", role: .destructive) {
+						Task {
+							do {
+								guard let keyPair = self.keyPair else {
+									throw OperationError.noKeySelected
+								}
+								try await self.logs.delete(baseURL: self.baseURL, keyPair: keyPair)
 								self.doShowSuccessAlert = true
-								return
-							case 401:
-								throw OperationError.keyNotVerified
-							case 403:
-								throw OperationError.keyRejected
-							case 500:
-								throw OperationError.internalServerError
-							default:
-								throw OperationError.unknown
+								try await self.refresh()
+							} catch let error {
+								self.errorProjection.error = error
 							}
-						} catch let newError {
-							self.error = WrappedError(newError)
 						}
 					}
 				}
 			} message: {
-				Text("Are you sure that you want to delete this log? You can’t undo this action.")
-			}
-			.alert(isPresented: self.$error.isNotNil, error: self.error) {
-				Button("Continue") { }
+				if self.logs.count == 1 {
+					Text("Are you sure that you want to delete this log? You can’t undo this action.")
+				} else if self.logs.count > 1 {
+					Text("Are you sure that you want to delete these \(self.logs.count) logs? You can’t undo this action.")
+				} else {
+					Text("No logs are selected.")
+				}
 			}
 			.alert("The deletion was successful!", isPresented: self.$doShowSuccessAlert) {
 				Button("Continue") { }
 			}
+	}
+	
+	init(
+		_ logs: Binding<Set<Log>>,
+		isTriggered: Binding<Bool>,
+		baseURL: URL,
+		keyPair: KeyPair?,
+		errorProjection: WrappedError.Projection,
+		refresh: @escaping () async throws -> Void
+	) {
+		self._logs = logs
+		self._isTriggered = isTriggered
+		self.baseURL = baseURL
+		self.keyPair = keyPair
+		self.errorProjection = errorProjection
+		self.refresh = refresh
+	}
+	
+}
+
+extension View {
+	
+	func logDeletion(
+		_ logs: Binding<Set<Log>>,
+		isTriggered: Binding<Bool>,
+		baseURL: URL,
+		keyPair: KeyPair?,
+		errorProjection: WrappedError.Projection,
+		refresh: @escaping () async throws -> Void
+	) -> some View {
+		return self.modifier(
+			LogDeletion(
+				logs,
+				isTriggered: isTriggered,
+				baseURL: baseURL,
+				keyPair: keyPair,
+				errorProjection: errorProjection,
+				refresh: refresh
+			)
+		)
 	}
 	
 }

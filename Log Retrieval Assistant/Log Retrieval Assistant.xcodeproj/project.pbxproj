@@ -17,8 +17,8 @@
 		C07D640F2914932900E5D9DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C07D640E2914932900E5D9DF /* Preview Assets.xcassets */; };
 		C07D6428291494AD00E5D9DF /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D6427291494AD00E5D9DF /* WindowManager.swift */; };
 		C07D643329188A7500E5D9DF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D643229188A7500E5D9DF /* Log.swift */; };
-		C0C8DCF629463FF6009D6047 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C8DCF529463FF6009D6047 /* SettingsView.swift */; };
-		C0C8DCF8294640A0009D6047 /* AppStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */; };
+		C0C8DCFB2946CFAB009D6047 /* HTTPStatus in Frameworks */ = {isa = PBXBuildFile; productRef = C0C8DCFA2946CFAB009D6047 /* HTTPStatus */; };
+		C0D30D2A2946E09400127D65 /* LogContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D30D292946E09400127D65 /* LogContentView.swift */; };
 		C0F420AB29201FFF00CC0F91 /* ServerSelection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; };
 		C0F420AC29201FFF00CC0F91 /* ServerSelection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -50,8 +50,7 @@
 		C07D64102914932900E5D9DF /* LogRetrievalAssistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogRetrievalAssistant.entitlements; sourceTree = "<group>"; };
 		C07D6427291494AD00E5D9DF /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		C07D643229188A7500E5D9DF /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
-		C0C8DCF529463FF6009D6047 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageManager.swift; sourceTree = "<group>"; };
+		C0D30D292946E09400127D65 /* LogContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContentView.swift; sourceTree = "<group>"; };
 		C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F420C2292049B900CC0F91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -62,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0F420AB29201FFF00CC0F91 /* ServerSelection.framework in Frameworks */,
+				C0C8DCFB2946CFAB009D6047 /* HTTPStatus in Frameworks */,
 				C0703B17292C91DD001D2D11 /* KeyManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,14 +93,13 @@
 				C07D64092914932800E5D9DF /* ContentView.swift */,
 				C01B615E291EE65B008BF777 /* Errors.swift */,
 				C07D643229188A7500E5D9DF /* Log.swift */,
+				C0D30D292946E09400127D65 /* LogContentView.swift */,
 				C01B615B291EE534008BF777 /* LogDetailView.swift */,
 				C07D64072914932800E5D9DF /* LogRetrievalAssistantApp.swift */,
-				C0C8DCF529463FF6009D6047 /* SettingsView.swift */,
 				C07D6427291494AD00E5D9DF /* WindowManager.swift */,
 				C07D640B2914932900E5D9DF /* Assets.xcassets */,
 				C07D64102914932900E5D9DF /* LogRetrievalAssistant.entitlements */,
 				C07D640D2914932900E5D9DF /* Preview Content */,
-				C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */,
 			);
 			path = "Log Retrieval Assistant";
 			sourceTree = "<group>";
@@ -139,6 +138,9 @@
 			dependencies = (
 			);
 			name = "Log Retrieval Assistant";
+			packageProductDependencies = (
+				C0C8DCFA2946CFAB009D6047 /* HTTPStatus */,
+			);
 			productName = "Log Retrieval Assistant";
 			productReference = C07D64042914932800E5D9DF /* Log Retrieval Assistant.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +169,9 @@
 				Base,
 			);
 			mainGroup = C07D63FB2914932800E5D9DF;
+			packageReferences = (
+				C0C8DCF92946CFAB009D6047 /* XCRemoteSwiftPackageReference "HTTP-Status" */,
+			);
 			productRefGroup = C07D64052914932800E5D9DF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -193,10 +198,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0C8DCF629463FF6009D6047 /* SettingsView.swift in Sources */,
 				C07D640A2914932800E5D9DF /* ContentView.swift in Sources */,
+				C0D30D2A2946E09400127D65 /* LogContentView.swift in Sources */,
 				C07D64082914932800E5D9DF /* LogRetrievalAssistantApp.swift in Sources */,
-				C0C8DCF8294640A0009D6047 /* AppStorageManager.swift in Sources */,
 				C07D643329188A7500E5D9DF /* Log.swift in Sources */,
 				C07D6428291494AD00E5D9DF /* WindowManager.swift in Sources */,
 				C01B615F291EE65B008BF777 /* Errors.swift in Sources */,
@@ -408,6 +412,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C0C8DCF92946CFAB009D6047 /* XCRemoteSwiftPackageReference "HTTP-Status" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Gerzer/HTTP-Status/";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0C8DCFA2946CFAB009D6047 /* HTTPStatus */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0C8DCF92946CFAB009D6047 /* XCRemoteSwiftPackageReference "HTTP-Status" */;
+			productName = HTTPStatus;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C07D63FC2914932800E5D9DF /* Project object */;
 }

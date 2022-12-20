@@ -5,20 +5,118 @@
 //  Created by Gabriel Jacoby-Cooper on 11/11/22.
 //
 
-enum OperationError: String, Error {
+import Foundation
+import SwiftUI
+
+enum OperationError: LocalizedError {
 	
-	case noKeySelected = "No key is selected"
+	case noKeySelected
 	
-	case invalidBaseURL = "Invalid base URL for the server"
+	case invalidBaseURL
 	
-	case malformedResponse = "Received a malformed response from the server"
+	case malformedResponse
 	
-	case keyNotVerified = "The selected key couldn’t be verified by the server"
+	case keyNotVerified
 	
-	case keyRejected = "The selected key was rejected by the server"
+	case keyRejected
 	
-	case internalServerError = "The server encountered an internal error"
+	case unknown
 	
-	case unknown = "Unknown operation error"
+	var localizedDescription: String {
+		get {
+			switch self {
+			case .noKeySelected:
+				return "No key is selected."
+			case .invalidBaseURL:
+				return "The server base URL is invalid."
+			case .malformedResponse:
+				return "A malformed response from the server was received."
+			case .keyNotVerified:
+				return "The selected key couldn’t be verified by the server."
+			case .keyRejected:
+				return "The selected key was rejected by the server."
+			case .unknown:
+				return "An unknown operation error occurred."
+			}
+		}
+	}
+	
+	var errorDescription: String? {
+		get {
+			return self.localizedDescription
+		}
+	}
+	
+}
+
+@propertyWrapper
+struct WrappedError: DynamicProperty {
+	
+	struct Projection: LocalizedError {
+		
+		private static let unknownDescription = "An unknown error occurred."
+		
+		@Binding
+		var error: (any Error)? {
+			didSet {
+				if self.error != nil {
+					self.doShowAlert = true
+				}
+			}
+		}
+		
+		@Binding
+		var doShowAlert: Bool
+		
+		var localizedDescription: String {
+			get {
+				return self.error?.localizedDescription ?? Self.unknownDescription
+			}
+		}
+		
+		var errorDescription: String? {
+			get {
+				if let localizedError = self.error as? any LocalizedError {
+					return localizedError.errorDescription ?? localizedError.localizedDescription
+				} else {
+					return self.error?.localizedDescription ?? Self.unknownDescription
+				}
+			}
+		}
+		
+		fileprivate init(error: Binding<(any Error)?>, doShowAlert: Binding<Bool>) {
+			self._error = error
+			self._doShowAlert = doShowAlert
+		}
+		
+	}
+	
+	@State
+	private var error: (any Error)?
+	
+	@State
+	private var doShowAlert = false
+	
+	var wrappedValue: (any Error)? {
+		get {
+			return self.error
+		}
+		nonmutating set {
+			self.error = newValue
+			if self.error != nil {
+				self.doShowAlert = true
+			}
+		}
+	}
+	
+	var projectedValue: Projection {
+		get {
+			return Projection(error: self.$error, doShowAlert: self.$doShowAlert)
+		}
+	}
+	
+	init(wrappedValue: (any Error)?) {
+		self.wrappedValue = wrappedValue
+	}
 	
 }

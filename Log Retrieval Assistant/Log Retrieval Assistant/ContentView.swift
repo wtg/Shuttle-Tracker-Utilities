@@ -5,6 +5,7 @@
 //  Created by Gabriel Jacoby-Cooper on 11/3/22.
 //
 
+import HTTPStatus
 import KeyManagement
 import ServerSelection
 import SwiftUI
@@ -23,12 +24,10 @@ struct ContentView: View {
 	private var sheetType: SheetType?
 	
 	@State
-	private var logs: [Log]? = [
-		Log(id: UUID(), content: "Hello, world!", clientPlatform: .macos, date: .now)
-	]
+	private var logs: [Log]?
 	
 	@State
-	private var selectedLog: Log?
+	private var selectedLogs: Set<Log> = []
 	
 	@AppStorage("KeyPairs", store: DefaultsUtilities.store)
 	private var keyPairs: [KeyPair] = []
@@ -40,10 +39,16 @@ struct ContentView: View {
 	private var baseURL = URL(string: "https://shuttletracker.app")!
 	
 	@State
-	private var error: WrappedError?
+	private var logListMessage: String?
+	
+	@State
+	private var doTriggerDeletion = false
+	
+	@WrappedError
+	private var error: (any Error)?
 	
 	var body: some View {
-		NavigationView {
+		NavigationSplitView {
 			Group {
 				if let logs = self.logs {
 					if logs.isEmpty {
@@ -53,10 +58,8 @@ struct ContentView: View {
 							.foregroundColor(.secondary)
 							.padding()
 					} else {
-						List(logs, selection: self.$selectedLog) { (log) in
-							NavigationLink {
-								LogDetailView(log: log, baseURL: self.baseURL, keyPair: self.selectedKeyPair, deletionHandler: self.refresh)
-							} label: {
+						List(logs, selection: self.$selectedLogs) { (log) in
+							NavigationLink(value: log) {
 								VStack(spacing: 0) {
 									HStack {
 										Text(log.id.uuidString)
@@ -64,7 +67,6 @@ struct ContentView: View {
 										Spacer()
 									}
 									HStack(spacing: 5) {
-										Text(log.date.formatted())
 										Text(log.clientPlatform.name)
 											.padding(.horizontal, 5)
 											.padding(.vertical, 1)
@@ -72,18 +74,46 @@ struct ContentView: View {
 												RoundedRectangle(cornerRadius: 10, style: .continuous)
 													.fill(.gray)
 											}
+										Text(log.date.formatted())
 										Spacer()
 									}
 								}
 							}
 						}
+							.contextMenu(forSelectionType: Log.self) { (_) in
+								Button("Delete…", role: .destructive) {
+									self.doTriggerDeletion = true
+								}
+									.keyboardShortcut(.delete, modifiers: [])
+							}
+							.onDeleteCommand {
+								self.doTriggerDeletion = true
+							}
 					}
 				} else {
-					ProgressView("Loading")
-						.font(.callout)
-						.textCase(.uppercase)
-						.foregroundColor(.secondary)
-						.padding()
+					if let error = self.error {
+						VStack(alignment: .center) {
+							Text("Couldn’t Refresh Logs")
+								.font(.title2)
+								.foregroundColor(.secondary)
+							if error is OperationError {
+								Text(error.localizedDescription)
+									.foregroundColor(.secondary)
+									.multilineTextAlignment(.center)
+							} else {
+								Text("An error occurred.")
+									.foregroundColor(.secondary)
+									.multilineTextAlignment(.center)
+							}
+						}
+							.padding()
+					} else {
+						ProgressView("Loading")
+							.font(.callout)
+							.textCase(.uppercase)
+							.foregroundColor(.secondary)
+							.padding()
+					}
 				}
 			}
 				.frame(width: 350)
@@ -95,11 +125,16 @@ struct ContentView: View {
 					}
 					Button {
 						Task {
-							await self.refresh()
+							do {
+								try await self.refresh()
+							} catch let error {
+								self.error = error
+							}
 						}
 					} label: {
 						Label("Refresh", systemImage: "arrow.clockwise")
 					}
+						.keyboardShortcut("r", modifiers: .command)
 						.disabled(self.selectedKeyPair == nil)
 					HStack {
 						Divider()
@@ -117,64 +152,71 @@ struct ContentView: View {
 						Label("Key Manager", systemImage: "key")
 					}
 				}
-			Text("No Log Selected")
-				.font(.title2)
-				.multilineTextAlignment(.center)
-				.foregroundColor(.secondary)
-				.padding()
-				.toolbar {
-					ToolbarItem {
-						Button { } label: {
-							Label("Delete", systemImage: "trash")
-						}
-						.disabled(true)
-					}
-				}
+		} detail: {
+			LogDetailView(
+				logs: self.$selectedLogs,
+				baseURL: self.baseURL,
+				keyPair: self.selectedKeyPair,
+				refresh: self.refresh
+			)
 		}
-			.alert(isPresented: self.$error.isNotNil, error: self.error) {
+			.alert(isPresented: self.$error.$doShowAlert, error: self.$error) {
 				Button("Continue") { }
 			}
 			.sheet(item: self.$sheetType) {
 				Task {
-					await self.refresh()
+					do {
+						try await self.refresh()
+					} catch let error {
+						self.error = error
+					}
 				}
 			} content: { (sheetType) in
 				switch sheetType {
 				case .serverSelection:
-					ServerSelectionSheet(baseURL: self.$baseURL, sheetType: self.$sheetType)
+					ServerSelectionSheet(baseURL: self.$baseURL, item: self.$sheetType)
 				}
 			}
 			.task {
-				await self.refresh()
+				do {
+					try await self.refresh()
+				} catch let error {
+					self.error = error
+				}
 			}
+			.logDeletion(
+				self.$selectedLogs,
+				isTriggered: self.$doTriggerDeletion,
+				baseURL: self.baseURL,
+				keyPair: self.selectedKeyPair,
+				errorProjection: self.$error,
+				refresh: self.refresh
+			)
 	}
 	
-	private func refresh() async {
-		self.selectedLog = nil
+	private func refresh() async throws {
+		self.error = nil
 		self.logs = nil
+		self.selectedLogs = []
 		let url = self.baseURL.appending(component: "logs")
-		do {
-			let (data, _) = try await URLSession.shared.data(from: url)
-			let decoder = JSONDecoder()
-			decoder.dateDecodingStrategy = .iso8601
-			let ids = try decoder.decode([UUID].self, from: data)
-			self.logs = try await withThrowingTaskGroup(of: Log.self, returning: [Log].self) { (taskGroup) in
-				for id in ids {
-					taskGroup.addTask {
-						return try await self.log(withID: id, decoder: decoder)
-					}
+		let (data, _) = try await URLSession.shared.data(from: url)
+		let decoder = JSONDecoder()
+		decoder.dateDecodingStrategy = .iso8601
+		let ids = try decoder.decode([UUID].self, from: data)
+		self.logs = try await withThrowingTaskGroup(of: Log.self, returning: [Log].self) { (taskGroup) in
+			for id in ids {
+				taskGroup.addTask {
+					return try await self.log(withID: id, decoder: decoder)
 				}
-				return try await taskGroup
-					.reduce(into: []) { (partialResult, log) in
-						partialResult.append(log)
-					}
-					.sorted { (first, second) in
-						return first.date < second.date
-					}
-					.reversed()
 			}
-		} catch let newError {
-			self.error = WrappedError(newError)
+			return try await taskGroup
+				.reduce(into: []) { (partialResult, log) in
+					partialResult.append(log)
+				}
+				.sorted { (first, second) in
+					return first.date < second.date
+				}
+				.reversed()
 		}
 	}
 	
@@ -190,18 +232,18 @@ struct ContentView: View {
 			.appending(components: "logs", id.uuidString)
 			.appending(queryItems: queryItems)
 		let (data, response) = try await URLSession.shared.data(from: url)
-		guard let httpResponse = response as? HTTPURLResponse else {
+		guard let httpResponse = response as? HTTPURLResponse, let statusCode = HTTPStatusCodes.statusCode(httpResponse.statusCode) else {
 			throw OperationError.malformedResponse
 		}
-		switch httpResponse.statusCode {
-		case 200:
+		switch statusCode {
+		case HTTPStatusCodes.Success.ok:
 			return try decoder.decode(Log.self, from: data)
-		case 401:
+		case HTTPStatusCodes.ClientError.unauthorized:
 			throw OperationError.keyNotVerified
-		case 403:
+		case HTTPStatusCodes.ClientError.forbidden:
 			throw OperationError.keyRejected
-		case 500:
-			throw OperationError.internalServerError
+		case let statusCodeError as any Error:
+			throw statusCodeError
 		default:
 			throw OperationError.unknown
 		}
