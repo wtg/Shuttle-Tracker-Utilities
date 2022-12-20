@@ -36,6 +36,7 @@ struct AnnouncementDetailView: View {
 			Spacer()
 			HStack {
 				Text(self.announcement.body)
+					.textSelection(.enabled)
 				Spacer()
 			}
 			Spacer()
@@ -54,6 +55,7 @@ struct AnnouncementDetailView: View {
 			}
 				.font(.footnote)
 				.foregroundColor(.secondary)
+				.padding(.bottom)
 		}
 			.padding(.horizontal, 10)
 			.frame(minWidth: 300)
