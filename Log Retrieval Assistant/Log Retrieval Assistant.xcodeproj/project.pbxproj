@@ -17,6 +17,8 @@
 		C07D640F2914932900E5D9DF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C07D640E2914932900E5D9DF /* Preview Assets.xcassets */; };
 		C07D6428291494AD00E5D9DF /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D6427291494AD00E5D9DF /* WindowManager.swift */; };
 		C07D643329188A7500E5D9DF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D643229188A7500E5D9DF /* Log.swift */; };
+		C0C8DCF629463FF6009D6047 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C8DCF529463FF6009D6047 /* SettingsView.swift */; };
+		C0C8DCF8294640A0009D6047 /* AppStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */; };
 		C0F420AB29201FFF00CC0F91 /* ServerSelection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; };
 		C0F420AC29201FFF00CC0F91 /* ServerSelection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -48,6 +50,8 @@
 		C07D64102914932900E5D9DF /* LogRetrievalAssistant.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LogRetrievalAssistant.entitlements; sourceTree = "<group>"; };
 		C07D6427291494AD00E5D9DF /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		C07D643229188A7500E5D9DF /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		C0C8DCF529463FF6009D6047 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageManager.swift; sourceTree = "<group>"; };
 		C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F420C2292049B900CC0F91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -91,10 +95,12 @@
 				C07D643229188A7500E5D9DF /* Log.swift */,
 				C01B615B291EE534008BF777 /* LogDetailView.swift */,
 				C07D64072914932800E5D9DF /* LogRetrievalAssistantApp.swift */,
+				C0C8DCF529463FF6009D6047 /* SettingsView.swift */,
 				C07D6427291494AD00E5D9DF /* WindowManager.swift */,
 				C07D640B2914932900E5D9DF /* Assets.xcassets */,
 				C07D64102914932900E5D9DF /* LogRetrievalAssistant.entitlements */,
 				C07D640D2914932900E5D9DF /* Preview Content */,
+				C0C8DCF7294640A0009D6047 /* AppStorageManager.swift */,
 			);
 			path = "Log Retrieval Assistant";
 			sourceTree = "<group>";
@@ -145,7 +151,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					C07D64032914932800E5D9DF = {
 						CreatedOnToolsVersion = 14.1;
@@ -187,8 +193,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C8DCF629463FF6009D6047 /* SettingsView.swift in Sources */,
 				C07D640A2914932800E5D9DF /* ContentView.swift in Sources */,
 				C07D64082914932800E5D9DF /* LogRetrievalAssistantApp.swift in Sources */,
+				C0C8DCF8294640A0009D6047 /* AppStorageManager.swift in Sources */,
 				C07D643329188A7500E5D9DF /* Log.swift in Sources */,
 				C07D6428291494AD00E5D9DF /* WindowManager.swift in Sources */,
 				C01B615F291EE65B008BF777 /* Errors.swift in Sources */,
@@ -232,6 +240,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -292,6 +301,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -318,9 +328,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Log Retrieval Assistant/LogRetrievalAssistant.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Log Retrieval Assistant/Preview Content\"";
 				DEVELOPMENT_TEAM = SYBLH277NF;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -347,9 +360,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "Log Retrieval Assistant/LogRetrievalAssistant.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Log Retrieval Assistant/Preview Content\"";
 				DEVELOPMENT_TEAM = SYBLH277NF;
 				ENABLE_HARDENED_RUNTIME = YES;

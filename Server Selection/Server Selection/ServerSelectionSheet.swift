@@ -5,10 +5,10 @@
 //  Created by Gabriel Jacoby-Cooper on 11/12/22.
 //
 
-import KeyManagement
+import RegexBuilder
 import SwiftUI
 
-public struct ServerSelectionSheet<SheetType>: View {
+public struct ServerSelectionSheet<Item>: View {
 	
 	@State
 	private var hasSubmitted = false
@@ -16,26 +16,29 @@ public struct ServerSelectionSheet<SheetType>: View {
 	@State
 	private var doShowAlert = false
 	
-	@State
-	private var error: WrappedError?
-	
 	@Binding
 	private(set) var baseURL: URL
+	
+	private var newBaseURL: URL? {
+		get {
+			let regex = Regex {
+				.url()
+			}
+			
+			// wholeMatch(in:) crashes when the provided string doesn’t have a URL host component, so exit this getter early instead
+			guard !self.baseURLString.hasSuffix("://") else {
+				return nil
+			}
+			
+			return try? regex.wholeMatch(in: self.baseURLString)?.output
+		}
+	}
 	
 	@State
 	private var baseURLString: String
 	
 	@Binding
-	private(set) var sheetType: SheetType?
-	
-	private var isValidURLString: Bool {
-		get {
-			let isEmpty = self.baseURLString
-				.trimmingCharacters(in: .whitespacesAndNewlines)
-				.isEmpty
-			return !isEmpty && URL(string: self.baseURLString) != nil
-		}
-	}
+	private(set) var item: Item?
 	
 	public var body: some View {
 		VStack {
@@ -46,47 +49,44 @@ public struct ServerSelectionSheet<SheetType>: View {
 				Spacer()
 			}
 			Form {
+				// TextField has issues with data formatters, so proxy the value through a string instead
 				TextField("Base URL", text: self.$baseURLString)
 					.onSubmit {
-						if self.isValidURLString {
-							self.baseURL = URL(string: self.baseURLString)!
-							self.sheetType = nil
+						if let newBaseURL = self.newBaseURL {
+							self.baseURL = newBaseURL
+							self.item = nil
 						}
 					}
-				if !self.isValidURLString {
+				
+				if self.newBaseURL == nil {
 					Text("This URL is invalid.")
 				}
 			}
 			HStack {
 				Spacer()
 				Button(role: .cancel) {
-					self.sheetType = nil
+					self.item = nil
 				} label: {
 					Text("Cancel")
 				}
-				.keyboardShortcut(.cancelAction)
+					.keyboardShortcut(.cancelAction)
 				Button("Save") {
-					self.baseURL = URL(string: self.baseURLString)!
-					self.sheetType = nil
+					self.baseURL = self.newBaseURL! // newBaseURL should not be nil because this button would otherwise be disabled
+					self.item = nil
 				}
-				.keyboardShortcut(.defaultAction)
-				.disabled(!self.isValidURLString)
+					.keyboardShortcut(.defaultAction)
+					.disabled(self.newBaseURL == nil)
 			}
-			.padding(.top)
+				.padding(.top)
 		}
-		.padding()
-		.frame(minWidth: 300)
-		.alert(isPresented: self.$error.isNotNil, error: self.error) { (error) in
-			Button("Continue") { }
-		} message: { (error) in
-			EmptyView()
-		}
+			.padding()
+			.frame(minWidth: 300)
 	}
 	
-	public init(baseURL: Binding<URL>, sheetType: Binding<SheetType?>) {
+	public init(baseURL: Binding<URL>, item: Binding<Item?>) {
 		self._baseURL = baseURL
 		self._baseURLString = State(initialValue: baseURL.wrappedValue.absoluteString)
-		self._sheetType = sheetType
+		self._item = item
 	}
 	
 }
