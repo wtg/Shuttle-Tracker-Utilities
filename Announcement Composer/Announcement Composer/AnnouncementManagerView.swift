@@ -106,7 +106,7 @@ struct AnnouncementManagerView: View {
 			} content: { (sheetType) in
 				switch sheetType {
 				case .serverSelection:
-					ServerSelectionSheet(baseURL: self.$baseURL, sheetType: self.$sheetType)
+					ServerSelectionSheet(baseURL: self.$baseURL, item: self.$sheetType)
 				}
 			}
 			.task {
