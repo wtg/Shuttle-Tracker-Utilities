@@ -42,6 +42,12 @@ struct ContentView: View {
 	private var logListMessage: String?
 	
 	@State
+	private var searchText: String = ""
+	
+	@State
+	private var searchScope: Log.SearchScope = .id
+	
+	@State
 	private var doTriggerDeletion = false
 	
 	@WrappedError
@@ -58,7 +64,10 @@ struct ContentView: View {
 							.foregroundColor(.secondary)
 							.padding()
 					} else {
-						List(logs, selection: self.$selectedLogs) { (log) in
+						List(
+							logs.filter(on: self.searchText, in: self.searchScope),
+							selection: self.$selectedLogs
+						) { (log) in
 							NavigationLink(value: log) {
 								VStack(spacing: 0) {
 									HStack {
@@ -160,6 +169,13 @@ struct ContentView: View {
 				refresh: self.refresh
 			)
 		}
+			.searchable(text: self.$searchText)
+			.searchScopes(self.$searchScope) {
+				Text("ID")
+					.tag(Log.SearchScope.id)
+				Text("Content")
+					.tag(Log.SearchScope.content)
+			}
 			.alert(isPresented: self.$error.$doShowAlert, error: self.$error) {
 				Button("Continue") { }
 			}

@@ -19,6 +19,7 @@
 		C07D643329188A7500E5D9DF /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07D643229188A7500E5D9DF /* Log.swift */; };
 		C0C8DCFB2946CFAB009D6047 /* HTTPStatus in Frameworks */ = {isa = PBXBuildFile; productRef = C0C8DCFA2946CFAB009D6047 /* HTTPStatus */; };
 		C0D30D2A2946E09400127D65 /* LogContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D30D292946E09400127D65 /* LogContentView.swift */; };
+		C0E9520F2953E0E000945ABC /* Searchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E9520E2953E0E000945ABC /* Searchable.swift */; };
 		C0F420AB29201FFF00CC0F91 /* ServerSelection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; };
 		C0F420AC29201FFF00CC0F91 /* ServerSelection.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -51,6 +52,7 @@
 		C07D6427291494AD00E5D9DF /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		C07D643229188A7500E5D9DF /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		C0D30D292946E09400127D65 /* LogContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogContentView.swift; sourceTree = "<group>"; };
+		C0E9520E2953E0E000945ABC /* Searchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Searchable.swift; sourceTree = "<group>"; };
 		C0F420AA29201FFF00CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F420C2292049B900CC0F91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -96,6 +98,7 @@
 				C0D30D292946E09400127D65 /* LogContentView.swift */,
 				C01B615B291EE534008BF777 /* LogDetailView.swift */,
 				C07D64072914932800E5D9DF /* LogRetrievalAssistantApp.swift */,
+				C0E9520E2953E0E000945ABC /* Searchable.swift */,
 				C07D6427291494AD00E5D9DF /* WindowManager.swift */,
 				C07D640B2914932900E5D9DF /* Assets.xcassets */,
 				C07D64102914932900E5D9DF /* LogRetrievalAssistant.entitlements */,
@@ -204,6 +207,7 @@
 				C07D643329188A7500E5D9DF /* Log.swift in Sources */,
 				C07D6428291494AD00E5D9DF /* WindowManager.swift in Sources */,
 				C01B615F291EE65B008BF777 /* Errors.swift in Sources */,
+				C0E9520F2953E0E000945ABC /* Searchable.swift in Sources */,
 				C01B615C291EE534008BF777 /* LogDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

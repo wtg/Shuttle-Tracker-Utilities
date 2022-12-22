@@ -8,7 +8,7 @@
 import HTTPStatus
 import KeyManagement
 
-struct Log: Decodable, Hashable, Identifiable, SignableForDeletion {
+struct Log: Decodable, Hashable, Identifiable, Searchable, SignableForDeletion {
 	
 	typealias DeletionRequest = SimpleDeletionRequest
 	
@@ -33,6 +33,12 @@ struct Log: Decodable, Hashable, Identifiable, SignableForDeletion {
 		
 	}
 	
+	enum SearchScope {
+		
+		case id, content
+		
+	}
+	
 	let id: UUID
 	
 	let content: String
@@ -45,6 +51,38 @@ struct Log: Decodable, Hashable, Identifiable, SignableForDeletion {
 		let url = FileManager.default.temporaryDirectory.appending(component: "\(self.id.uuidString).log")
 		try self.content.write(to: url, atomically: false, encoding: .utf8)
 		return url
+	}
+	
+	/// Checks whether the log is matched by the search text within the given search scope.
+	/// - Complexity: O(_m_ + _n_), where _m_ is the length of `searchText`and _n_ is the length of the target string that’s selected based on the search scope.
+	/// - Parameters:
+	///   - searchText: The search text.
+	///   - scope: The scope in which to check for a match.
+	/// - Returns: `true` if the log is matched by the search text; otherwise, `false`.
+	func isMatched(by searchText: some StringProtocol, in scope: SearchScope) -> Bool {
+		switch scope {
+		case .id:
+			let normalizedUUIDString = self.id.uuidString
+				.uppercased()
+				.filter { (character) in
+					let validCharacters = Set("0123456789ABCDEF")
+					return validCharacters.contains(character)
+				}
+			let normalizedSearchText = searchText
+				.uppercased()
+				.filter { (character) in
+					return character != "-"
+				}
+			return normalizedUUIDString.contains(normalizedSearchText)
+		case .content:
+			let normalizedContent = self.content.normalizedForSearch()
+			let normalizedSearchText = searchText.normalizedForSearch()
+			return normalizedSearchText
+				.split(separator: .whitespace)
+				.allSatisfy { (element) in
+					return normalizedContent.localizedCaseInsensitiveContains(element)
+				}
+		}
 	}
 	
 }
