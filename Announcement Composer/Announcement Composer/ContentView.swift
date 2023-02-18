@@ -121,60 +121,12 @@ struct ContentView: View {
 					.frame(width: 250)
 					.help("Choose the degree to which this announcement’s push notification interrupts app users.")
 				Button("Submit") {
-					guard let selectedKeyPair = self.selectedKeyPair else {
-						self.error = WrappedError(SubmissionError.noKeySelected)
-						return
-					}
-					let signedAnnouncement: Announcement
-					do {
-						signedAnnouncement = try self.announcement.signed(using: selectedKeyPair)
-					} catch let newError {
-						self.error = WrappedError(newError)
-						return
-					}
 					Task {
-						guard let baseURL = URL(string: self.baseURLString) else {
-							let newError = SubmissionError.invalidBaseURL
-							self.error = WrappedError(newError)
-							throw newError
-						}
-						let url = baseURL.appendingPathComponent("announcements", isDirectory: false)
-						var request = URLRequest(url: url)
-						request.httpMethod = "POST"
-						let response: URLResponse
 						do {
-							let encoder = JSONEncoder()
-							encoder.dateEncodingStrategy = .iso8601
-							assert(signedAnnouncement.signature != nil)
-							let data = try encoder.encode(signedAnnouncement)
-							(_, response) = try await URLSession.shared.upload(for: request, from: data)
-							self.announcement = Announcement()
-						} catch let newError {
-							self.error = WrappedError(newError)
-							throw newError
+							try await self.submitAnnouncement()
+						} catch let error {
+							self.error = WrappedError(error)
 						}
-						guard let httpResponse = response as? HTTPURLResponse else {
-							let newError = SubmissionError.malformedResponse
-							self.error = WrappedError(newError)
-							throw newError
-						}
-						let newError: SubmissionError
-						switch httpResponse.statusCode {
-						case 200:
-							self.doShowSuccessAlert = true
-							self.clear()
-							return
-						case 401:
-							newError = .keyNotVerified
-						case 403:
-							newError = .keyRejected
-						case 500:
-							newError = .internalServerError
-						default:
-							newError = .unknown
-						}
-						self.error = WrappedError(newError)
-						throw newError
 					}
 				}
 					.keyboardShortcut(.defaultAction)
@@ -202,6 +154,45 @@ struct ContentView: View {
 			.alert("The submission was successful!", isPresented: self.$doShowSuccessAlert) {
 				Button("Continue") { }
 			}
+	}
+	
+	private func submitAnnouncement() async throws {
+		guard let selectedKeyPair = self.selectedKeyPair else {
+			throw SubmissionError.noKeySelected
+		}
+		let signedAnnouncement = try self.announcement.signed(using: selectedKeyPair)
+		guard let baseURL = URL(string: self.baseURLString) else {
+			throw SubmissionError.invalidBaseURL
+		}
+		let url = baseURL.appendingPathComponent("announcements", isDirectory: false)
+		var request = URLRequest(url: url)
+		request.httpMethod = "POST"
+		let response: URLResponse
+		let encoder = JSONEncoder()
+		encoder.dateEncodingStrategy = .iso8601
+		assert(signedAnnouncement.signature != nil)
+		let data = try encoder.encode(signedAnnouncement)
+		(_, response) = try await URLSession.shared.upload(for: request, from: data)
+		self.announcement = Announcement()
+		guard let httpResponse = response as? HTTPURLResponse else {
+			throw SubmissionError.malformedResponse
+		}
+		let submissionError: SubmissionError
+		switch httpResponse.statusCode {
+		case 200:
+			self.doShowSuccessAlert = true
+			self.clear()
+			return
+		case 401:
+			submissionError = .keyNotVerified
+		case 403:
+			submissionError = .keyRejected
+		case 500:
+			submissionError = .internalServerError
+		default:
+			submissionError = .unknown
+		}
+		throw submissionError
 	}
 	
 	private func clear() {
