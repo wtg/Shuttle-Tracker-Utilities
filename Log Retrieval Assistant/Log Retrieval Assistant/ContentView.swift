@@ -177,7 +177,7 @@ struct ContentView: View {
 					.tag(Log.SearchScope.content)
 			}
 			.alert(isPresented: self.$error.$doShowAlert, error: self.$error) {
-				Button("Continue") { }
+				Button("Dismiss") { }
 			}
 			.sheet(item: self.$sheetType) {
 				Task {

@@ -83,7 +83,7 @@ struct LogDetailView: View {
 				}
 			}
 			.alert(isPresented: self.$error.$doShowAlert, error: self.$error) {
-				Button("Continue") { }
+				Button("Dismiss") { }
 			}
 			.logDeletion(
 				self.$logs,
@@ -159,7 +159,7 @@ struct LogDeletion: ViewModifier {
 				}
 			}
 			.alert("The deletion was successful!", isPresented: self.$doShowSuccessAlert) {
-				Button("Continue") { }
+				Button("Dismiss") { }
 			}
 	}
 	
