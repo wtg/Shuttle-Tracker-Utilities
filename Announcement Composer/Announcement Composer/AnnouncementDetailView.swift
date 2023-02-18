@@ -41,20 +41,32 @@ struct AnnouncementDetailView: View {
 			}
 			Spacer()
 			HStack {
-				switch self.announcement.scheduleType {
-				case .none:
-					EmptyView()
-				case .startOnly:
-					Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString)")
-				case .endOnly:
-					Text("\(self.announcement.end > .now ? "Expires" : "Expired") \(self.announcement.endString)")
-				case .startAndEnd:
-					Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString); \(self.announcement.end > .now ? "expires" : "expired") \(self.announcement.endString)")
+				VStack(alignment: .leading) {
+					switch self.announcement.scheduleType {
+					case .none:
+						EmptyView()
+					case .startOnly:
+						Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString)")
+					case .endOnly:
+						Text("\(self.announcement.end > .now ? "Expires" : "Expired") \(self.announcement.endString)")
+					case .startAndEnd:
+						Text("\(self.announcement.start > .now ? "Will be posted" : "Posted") \(self.announcement.startString); \(self.announcement.end > .now ? "expires" : "expired") \(self.announcement.endString)")
+					}
+					switch self.announcement.interruptionLevel {
+					case .passive:
+						Text("Passive")
+					case .active:
+						Text("Active")
+					case .timeSensitive:
+						Text("Time-sensitive")
+					case .critical:
+						Text("Critical")
+					}
 				}
+					.font(.footnote)
+					.foregroundColor(.secondary)
 				Spacer()
 			}
-				.font(.footnote)
-				.foregroundColor(.secondary)
 				.padding(.bottom)
 		}
 			.padding(.horizontal, 10)

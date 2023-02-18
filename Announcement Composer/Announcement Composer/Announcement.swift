@@ -17,6 +17,18 @@ struct Announcement: Codable, Hashable, Identifiable, Signable {
 		
 	}
 	
+	enum InterruptionLevel: String, Codable, Identifiable {
+		
+		case passive, active, timeSensitive, critical
+		
+		var id: Self {
+			get {
+				return self
+			}
+		}
+		
+	}
+	
 	let id: UUID
 	
 	var subject = "" {
@@ -36,6 +48,8 @@ struct Announcement: Codable, Hashable, Identifiable, Signable {
 	var end = Date.now + 86400
 	
 	private(set) var scheduleType = ScheduleType.none
+	
+	var interruptionLevel: InterruptionLevel = .passive
 	
 	var signature: Data?
 	
@@ -129,12 +143,12 @@ struct Announcement: Codable, Hashable, Identifiable, Signable {
 		self.id = UUID()
 	}
 	
-	static func == (_ lhs: Announcement, _ rhs: Announcement) -> Bool {
-		return lhs.id == rhs.id && lhs.subject == rhs.subject && lhs.body == rhs.body && lhs.start == rhs.start && lhs.end == rhs.end && lhs.scheduleType == rhs.scheduleType
-	}
-	
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(self.id)
+	}
+	
+	static func == (lhs: Announcement, rhs: Announcement) -> Bool {
+		return lhs.id == rhs.id && lhs.subject == rhs.subject && lhs.body == rhs.body && lhs.start == rhs.start && lhs.end == rhs.end && lhs.scheduleType == rhs.scheduleType && lhs.interruptionLevel == rhs.interruptionLevel
 	}
 	
 }

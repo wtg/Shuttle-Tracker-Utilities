@@ -108,6 +108,18 @@ struct ContentView: View {
 					self.clear()
 				}
 				Spacer()
+				Picker("Interruption Level", selection: self.$announcement.interruptionLevel) {
+					Text("Passive")
+						.tag(Announcement.InterruptionLevel.passive)
+					Text("Active")
+						.tag(Announcement.InterruptionLevel.active)
+					Text("Time-Sensitive")
+						.tag(Announcement.InterruptionLevel.timeSensitive)
+					Text("Critical")
+						.tag(Announcement.InterruptionLevel.critical)
+				}
+					.frame(width: 250)
+					.help("Choose the degree to which this announcement’s push notification interrupts app users.")
 				Button("Submit") {
 					guard let selectedKeyPair = self.selectedKeyPair else {
 						self.error = WrappedError(SubmissionError.noKeySelected)
