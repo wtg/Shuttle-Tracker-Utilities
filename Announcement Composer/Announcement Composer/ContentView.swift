@@ -45,7 +45,7 @@ struct ContentView: View {
 					HStack {
 						VStack {
 							HStack {
-								Toggle("Begin showing on a particular date", isOn: self.$announcement.hasStart)
+								Toggle("Start showing on a particular date", isOn: self.$announcement.hasStart)
 								Spacer()
 							}
 							if self.announcement.hasStart {
@@ -57,7 +57,7 @@ struct ContentView: View {
 						Spacer(minLength: 20)
 						VStack {
 							HStack {
-								Toggle("Finish showing on a particular date", isOn: self.$announcement.hasEnd)
+								Toggle("Stop showing on a particular date", isOn: self.$announcement.hasEnd)
 								Spacer()
 							}
 							if self.announcement.hasEnd {
