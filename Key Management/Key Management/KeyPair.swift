@@ -11,9 +11,9 @@ import UniformTypeIdentifiers
 
 public struct KeyPair: Codable, Identifiable, Hashable, FileDocument {
 	
-	public static var readableContentTypes: [UTType] = [.text]
+	public static let readableContentTypes: [UTType] = [.text]
 	
-	public private(set) var id = UUID()
+	public let id: UUID
 	
 	public let name: String
 	
@@ -26,6 +26,7 @@ public struct KeyPair: Codable, Identifiable, Hashable, FileDocument {
 	}
 	
 	public init(name: String) throws {
+		self.id = UUID()
 		self.name = name
 		self.privateKey = try SecureEnclave.P256.Signing.PrivateKey()
 	}
@@ -34,11 +35,7 @@ public struct KeyPair: Codable, Identifiable, Hashable, FileDocument {
 		throw KeyError.importUnsupported
 	}
 	
-	public static func == (lhs: KeyPair, rhs: KeyPair) -> Bool {
-		return lhs.privateKey.dataRepresentation == rhs.privateKey.dataRepresentation
-	}
-	
-	public func signature(for data: Data) throws -> Data {
+	public func signature(for data: some DataProtocol) throws -> Data {
 		let signature = try self.privateKey.signature(for: data)
 		return signature.rawRepresentation
 	}
@@ -52,6 +49,10 @@ public struct KeyPair: Codable, Identifiable, Hashable, FileDocument {
 			throw KeyError.serializationFailed
 		}
 		return FileWrapper(regularFileWithContents: contents)
+	}
+	
+	public static func == (lhs: KeyPair, rhs: KeyPair) -> Bool {
+		return lhs.privateKey.dataRepresentation == rhs.privateKey.dataRepresentation
 	}
 	
 }

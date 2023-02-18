@@ -32,15 +32,13 @@ struct KeyCreationSheet: View {
 	private var hasSubmitted = false
 	
 	@State
-	private var doShowAlert = false
-	
-	@State
 	private var error: WrappedError?
 	
 	@Binding
 	private(set) var sheetType: KeyManagerView.SheetType?
 	
-	@AppStorage("KeyPairs", store: DefaultsUtilities.store) private var keyPairs: [KeyPair] = []
+	@AppStorage("KeyPairs", store: DefaultsUtilities.store)
+	private var keyPairs: [KeyPair] = []
 	
 	var body: some View {
 		VStack {
@@ -54,7 +52,11 @@ struct KeyCreationSheet: View {
 				TextField("Name", text: self.$name)
 					.onSubmit {
 						if !self.isEmptyName && !self.isDuplicateName {
-							self.createKeyPair()
+							do {
+								try self.createKeyPair()
+							} catch let error {
+								self.error = WrappedError(error)
+							}
 						}
 					}
 				if self.isDuplicateName && !self.hasSubmitted {
@@ -70,7 +72,11 @@ struct KeyCreationSheet: View {
 				}
 					.keyboardShortcut(.cancelAction)
 				Button("Create") {
-					self.createKeyPair()
+					do {
+						try self.createKeyPair()
+					} catch let error {
+						self.error = WrappedError(error)
+					}
 				}
 					.keyboardShortcut(.defaultAction)
 					.disabled(self.isEmptyName || self.isDuplicateName)
@@ -86,15 +92,11 @@ struct KeyCreationSheet: View {
 			}
 	}
 	
-	private func createKeyPair() {
+	private func createKeyPair() throws {
 		defer {
 			self.sheetType = nil
 		}
-		guard let keyPair = try? KeyPair(name: self.name) else {
-			self.doShowAlert = true
-			self.error = WrappedError(KeyError.creationFailed)
-			return
-		}
+		let keyPair = try KeyPair(name: self.name)
 		self.keyPairs.append(keyPair)
 		self.hasSubmitted = true
 	}

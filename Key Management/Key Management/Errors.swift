@@ -5,25 +5,52 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-enum KeyError: String, Error {
+enum KeyError: Error {
 	
-	case creationFailed = "Failed to create a new key"
+	case serializationFailed
 	
-	case serializationFailed = "Failed to serialize the public key"
+	case importUnsupported
 	
-	case importUnsupported = "Importing keys is unsupported"
+	var localizedDescription: String {
+		get {
+			switch self {
+			case .serializationFailed:
+				return "Serialization of the public key failed."
+			case .importUnsupported:
+				return "Importing public keys is unsupported."
+			}
+		}
+	}
 	
 }
 
-enum SignatureError: String, Error {
+enum SignatureError: Error {
 	
-	case dataConversionFailed = "Failed to convert the content into raw data"
+	case dataConversionFailed
+	
+	var localizedDescription: String {
+		get {
+			switch self {
+			case .dataConversionFailed:
+				return "Conversion of the content into raw data failed."
+			}
+		}
+	}
 	
 }
 
-enum UnknownError: String, Error {
+enum UnknownError: Error {
 	
-	case unknown = "Unknown error"
+	case unknown
+	
+	var localizedDescription: String {
+		get {
+			switch self {
+			case .unknown:
+				return "An unknown error occurred."
+			}
+		}
+	}
 	
 }
 
@@ -33,11 +60,7 @@ public struct WrappedError: LocalizedError {
 	
 	public var errorDescription: String? {
 		get {
-			if let error = self.error as? any RawRepresentable<String> {
-				return error.rawValue
-			} else {
-				return self.error.localizedDescription
-			}
+			return self.error.localizedDescription
 		}
 	}
 	

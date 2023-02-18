@@ -54,17 +54,17 @@ extension SignableForDeletion where Self: Identifiable, ID == UUID {
 	
 }
 
+public struct SimpleDeletionRequest: Encodable {
+	
+	let signature: Data
+	
+}
+
 extension SignableForDeletion where DeletionRequest == SimpleDeletionRequest {
 	
 	public func deletionRequest(signedUsing keyPair: KeyPair) throws -> DeletionRequest {
 		let signature = try self.signatureForDeletion(using: keyPair)
 		return SimpleDeletionRequest(signature: signature)
 	}
-	
-}
-
-public struct SimpleDeletionRequest: Encodable {
-	
-	let signature: Data
 	
 }

@@ -21,10 +21,6 @@ extension SecureEnclave.P256.Signing.PrivateKey: Codable, Hashable {
 		try self.init(dataRepresentation: dataRepresentation)
 	}
 	
-	public static func == (lhs: SecureEnclave.P256.Signing.PrivateKey, rhs: SecureEnclave.P256.Signing.PrivateKey) -> Bool {
-		return lhs.dataRepresentation == rhs.dataRepresentation
-	}
-	
 	public func encode(to encoder: Encoder) throws {
 		var container = encoder.singleValueContainer()
 		try container.encode(self.dataRepresentation)
@@ -32,6 +28,10 @@ extension SecureEnclave.P256.Signing.PrivateKey: Codable, Hashable {
 	
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(self.dataRepresentation)
+	}
+	
+	public static func == (lhs: SecureEnclave.P256.Signing.PrivateKey, rhs: SecureEnclave.P256.Signing.PrivateKey) -> Bool {
+		return lhs.dataRepresentation == rhs.dataRepresentation
 	}
 	
 }
