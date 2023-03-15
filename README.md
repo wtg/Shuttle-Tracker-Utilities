@@ -1,5 +1,5 @@
 # Shuttle Tracker Utilities
-Currently, this repository contains the Announcement Composer, Log Retrieval Assistant, Mapping Utility, and Milestone Composer apps. You can download pre-built, pre-signed binaries from the `Build` directory.
+Currently, this repository contains the Announcement Composer, Log Retrieval Assistant, Mapping Utility, and Milestone Composer apps. You can download pre-built, notarized app packages from the `Build` directory.
 
 *Due to how GitHub handles macOS packages in its Web interface, you might need to download or to clone the entire repository to access any pre-built apps in the `Build` directory.*
 
