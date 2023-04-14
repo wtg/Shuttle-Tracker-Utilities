@@ -17,8 +17,8 @@ struct ContentView: View {
     private var entries = [Analytics.Entry]()
     
     private enum Options : String, Hashable, CaseIterable {
-        case total = "Total Entries", case cumulativeTotal = "Cumulative total", coldLaunches = "Cold Launches", boardBusTapped = "Board Bus Tapped", leaveBusTapped = "Leave Bus Tapped",
-        totalColorBlind = "Total Color Blind Users"
+        case total = "Total Entries", cumulativeTotal = "Cumulative total", coldLaunches = "Cold Launches", boardBusTapped = "Board Bus Tapped", leaveBusTapped = "Leave Bus Tapped", totalColorBlind = "Total Color Blind Users", manualBoardBuses = "Manually Boarded Buses", autoBoardBuses = "Automatically boarded buses", manualLeftBuses = "Manually Left Buses", autoLeftBuses = "Automatically left buses",
+            permissionsSheetOpened = "Permissions Sheet Opened", debugModeEnabled = "Debug Mode Enabled"
     }
     
     @State
@@ -50,7 +50,21 @@ struct ContentView: View {
             case .leaveBusTapped:
                 entryChart(eventType: .leaveBusTapped)
             case .totalColorBlind:
-                runningCountChart(eventType: .colorBlindModeToggled(enabled: true))
+                runningCountChart(increment: .colorBlindModeToggled(enabled: true), decrement: .colorBlindModeToggled(enabled: false))
+            case .cumulativeTotal:
+                runningCountChart(increment: nil, decrement: nil)
+            case .manualBoardBuses:
+                entryChart(eventType: .boardBusActivated(manual: true))
+            case .autoBoardBuses:
+                entryChart(eventType: .boardBusActivated(manual: false))
+            case .manualLeftBuses:
+                entryChart(eventType: .boardBusDeactivated(manual: true))
+            case .autoLeftBuses:
+                entryChart(eventType: .boardBusDeactivated(manual: false))
+            case .permissionsSheetOpened:
+                entryChart(eventType: .permissionsSheetOpened)
+            case .debugModeEnabled:
+                runningCountChart(increment: .debugModeToggled(enabled: true), decrement: .debugModeToggled(enabled: false))
             }
         }
             .navigationSplitViewStyle(.balanced)
@@ -64,13 +78,18 @@ struct ContentView: View {
         let entries = entries.filter({ eventType == nil || $0.eventType == eventType })
 
         let dates = entries.map({ $0.date }).sorted()
-        let users = Array(Set(entries.map({ $0.userID })))
+        //let users = Array(Set(entries.map({ $0.userID })))
         
         return ZStack {
             if let first = dates.first, let last = dates.last, let range = Calendar.current.dateComponents([.day], from: first, to: last).day {
+                let dateCounts = entries.reduce(into: [Date : Int]()) {
+                    let date = Calendar.current.date(byAdding: .day, value: Calendar.current.dateComponents([.day], from: first, to: $1.date).day!, to: first)!
+                    $0[date] = ($0[date] ?? 0) + 1
+                }
+                
                 let counts = (0..<range + 1).reduce(into: [Date: Int]()) {
                     let day = Calendar.current.date(byAdding: .day, value: $1, to: first)!
-                    $0[day] = entries.filter({ Calendar.current.dateComponents([.day], from: $0.date).day! == Calendar.current.dateComponents([.day], from: day).day! }).count
+                    $0[day] = dateCounts[day] ?? 0
                 }
                 
                 chart(counts: counts)
@@ -78,19 +97,26 @@ struct ContentView: View {
         }
     }
     
-    func runningCountChart(eventType: Analytics.EventType?) -> some View {
-        let entries = entries.filter({ eventType == nil || $0.eventType == eventType })
+    func runningCountChart(increment: Analytics.EventType?, decrement: Analytics.EventType?) -> some View {
+        let entries = entries.filter({ increment == nil || $0.eventType == increment || $0.eventType == decrement })
 
-        let users = entries.reduce(into: [UUID: Analytics.Entry]()) {
-            $0[$1.userID] = $1
-        }
-        let dates = users.map({ $1.date }).sorted()
+        let dates = entries.map({ $0.date }).sorted()
         
         return ZStack {
             if let first = dates.first, let last = dates.last, let range = Calendar.current.dateComponents([.day], from: first, to: last).day {
+                let incrementCounts = entries.filter({ increment == nil || $0.eventType == increment }).reduce(into: [Date : Int]()) {
+                    let date = Calendar.current.date(byAdding: .day, value: Calendar.current.dateComponents([.day], from: first, to: $1.date).day!, to: first)!
+                    $0[date] = ($0[date] ?? 0) + 1
+                }
+                
+                let decrementCounts = entries.filter({ $0.eventType == decrement }).reduce(into: [Date : Int]()) {
+                    let date = Calendar.current.date(byAdding: .day, value: Calendar.current.dateComponents([.day], from: first, to: $1.date).day!, to: first)!
+                    $0[date] = ($0[date] ?? 0) + 1
+                }
+                
                 let counts = (0..<range + 1).reduce(into: [Date: Int]()) {
                     let day = Calendar.current.date(byAdding: .day, value: $1, to: first)!
-                    var val = entries.filter({ Calendar.current.dateComponents([.day], from: $0.date).day! == Calendar.current.dateComponents([.day], from: day).day! }).count
+                    var val = (incrementCounts[day] ?? 0) - (decrementCounts[day] ?? 0)
                     if $1 > 0 {
                         let prevDay = Calendar.current.date(byAdding: .day, value: $1 - 1, to: first)!
                         if let prevVal = $0[prevDay] {
@@ -139,7 +165,7 @@ struct ContentView: View {
                             .shadow(color: .white, radius: 3)
                         Color.gray.opacity(0.3).frame(width: 2)
                         Spacer(minLength: 0)
-                    }
+                    }.opacity(abs(rangeEnd - rangeStart) > 0.001 ? 1 : 0)
                 )
                 .gesture(DragGesture().onChanged { event in
                     let rangeS = min(0.99, max(0.005, Float(min(event.startLocation.x, event.location.x) / reader.size.width)))
@@ -154,14 +180,16 @@ struct ContentView: View {
                         rangeStart = rangeS
                         rangeEnd = rangeE
                     }
-                }.onEnded { event in
-                    
                 })
             }
         }
-        .foregroundStyle(.linearGradient(colors: [.red, .purple], startPoint: .top, endPoint: .bottom))
+        .foregroundStyle(.linearGradient(colors: [.red, Color(red: 0.6, green: 0.2, blue: 0.2)], startPoint: .top, endPoint: .bottom))
         .frame(maxWidth: .infinity)
         .padding()
+        .onAppear {
+            rangeStart = 0
+            rangeEnd = 0
+        }
     }
     
     func refresh() async {
