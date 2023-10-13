@@ -3,6 +3,7 @@ import json
 import requests
 import uuid
 import datetime
+import base64
 
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
@@ -24,5 +25,26 @@ interuptionLevel = input("Enter the interruption level(p for passive, a for acti
 id = uuid.uuid4()
 announcementDict = {"body":body, "subject":subject, "start":start, "end":end, "scheduleType":scheduleType, "id":id}
 
-def submitAnnouncement():
+# cryptography variables
+privateKeyLocation = input("Enter the file location of the private key file: ")
+inFile = open(privateKeyLocation, "r")
+privateKeyArray = inFile.read().split("\n")
+inFile.close()
+privateKeyString = "\n".join(str(x) for x in privateKeyArray[2:len(privateKeyArray)-2])
+privateKeyBytes = base64.b64decode(privateKeyString)
+privateKey = Ed25519PrivateKey.from_private_bytes(privateKeyBytes)
+#print(privateKey)
+
+# posts announcements information to server
+def submitAnnouncement(announcementDict):
+    signature = base64.b64dencode(privateKey.sign(announcementDict["subject"] + announcementDict["body"]))
+    announcementDict["signature"] = signature
+    r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
+    # checks whether signature has been successfully read
+    if (r.status_code == 403):
+        print("Error Code 403: Signature was rejected, try another signing key.\n")
+    elif (r.status_code == 200):
+        print("Submission has been accepted.")
+    else:
+        print(f"Error code {r.status_code}: Aborted due to some unexpected error.")
     return
