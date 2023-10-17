@@ -7,10 +7,16 @@ import base64
 
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
+id = uuid.uuid4()
+
 keypath = input("Enter the path to the private key: ").strip()
+inFile = open(keypath, "r")
+privateKeyArray = inFile.read().split("\n")
+inFile.close()
 subject = input("Enter the subject: ").strip()
 body = input("Enter the body: ").strip()
 scheduleType = input("Enter the schedule type(startOnly, endOnly, startAndEnd): ").strip()
+
 if(scheduleType == "s" or scheduleType == "b"):
     startstr = input("Enter Start Date(year-month-day-hour-minute): ")
     startarr = startstr.split("-")
@@ -19,21 +25,24 @@ if(scheduleType == "e" or scheduleType == "b"):
     endstr = input("Enter End Date(year-month-day-hour-minute): ")
     endarr = endstr.split("-")
     end = datetime.datetime(int(endarr[0]), int(endarr[1]), int(endarr[2]), int(endarr[3]), int(endarr[4]), 00)
+
 start = start.isoformat() + "Z"
 end = end.isoformat() + "Z"
+
 interuptionLevel = input("Enter the interruption level(p for passive, a for active, t for timesensitive, c for critical): ").strip()
-id = uuid.uuid4()
+
 announcementDict = {"body":body, "subject":subject, "start":start, "end":end, "scheduleType":scheduleType, "id":id}
 
-# cryptography variables
-privateKeyLocation = input("Enter the file location of the private key file: ")
-inFile = open(privateKeyLocation, "r")
-privateKeyArray = inFile.read().split("\n")
-inFile.close()
-privateKeyString = "\n".join(str(x) for x in privateKeyArray[2:len(privateKeyArray)-2])
+# opening private key from file
+
+# file parsing
+privateKeyString = "".join(str(x) for x in privateKeyArray[1:len(privateKeyArray)-2])
+#convert to base64 (readable text)
+print(privateKeyString)
 privateKeyBytes = base64.b64decode(privateKeyString)
+print(privateKeyBytes)
 privateKey = Ed25519PrivateKey.from_private_bytes(privateKeyBytes)
-#print(privateKey)
+print(privateKey)
 
 # posts announcements information to server
 def submitAnnouncement(announcementDict):
@@ -48,3 +57,5 @@ def submitAnnouncement(announcementDict):
     else:
         print(f"Error code {r.status_code}: Aborted due to some unexpected error.")
     return
+
+#submitAnnouncement(announcementDict)
