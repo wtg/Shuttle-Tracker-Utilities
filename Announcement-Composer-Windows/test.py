@@ -1,4 +1,5 @@
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+import cryptography.hazmat.primitives.serialization
 import json
 import requests
 import uuid
@@ -10,8 +11,8 @@ end = start + datetime.timedelta(days=7)
 id = uuid.uuid4()
 
 keypath = input("Enter the path to the private key: ").strip()
-inFile = open(keypath, "r")
-privateKeyArray = inFile.read().split("\n")
+inFile = open(keypath, "rb")
+privateKeyFile = inFile.read()
 inFile.close()
 subject = input("Enter the subject: ").strip()
 body = input("Enter the body: ").strip()
@@ -31,22 +32,19 @@ end = end.isoformat() + "Z"
 
 interuptionLevel = input("Enter the interruption level(p for passive, a for active, t for timesensitive, c for critical): ").strip()
 
-announcementDict = {"body":body, "subject":subject, "start":start, "end":end, "scheduleType":scheduleType, "id":id}
+announcementDict = {"body":body, "subject":subject, "start":start, "end":end, "scheduleType":scheduleType, "id":str(id)}
 
-# opening private key from file
-
-# file parsing
-privateKeyString = "".join(str(x) for x in privateKeyArray[1:len(privateKeyArray)-2])
-#convert to base64 (readable text)
-print(privateKeyString)
-privateKeyBytes = base64.b64decode(privateKeyString)
-print(privateKeyBytes)
-privateKey = Ed25519PrivateKey.from_private_bytes(privateKeyBytes)
-print(privateKey)
+#converting file to private key object
+privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, None)
+#print(privateKey)
 
 # posts announcements information to server
 def submitAnnouncement(announcementDict):
-    signature = base64.b64dencode(privateKey.sign(announcementDict["subject"] + announcementDict["body"]))
+    concat = bytes(announcementDict["subject"] + announcementDict["body"], 'utf-8')
+    signedKey = privateKey.sign(concat)
+    #print(signedKey)
+    signature = base64.b64encode(signedKey).decode()
+    #print(signature)
     announcementDict["signature"] = signature
     r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
     # checks whether signature has been successfully read
@@ -58,4 +56,4 @@ def submitAnnouncement(announcementDict):
         print(f"Error code {r.status_code}: Aborted due to some unexpected error.")
     return
 
-#submitAnnouncement(announcementDict)
+submitAnnouncement(announcementDict)
