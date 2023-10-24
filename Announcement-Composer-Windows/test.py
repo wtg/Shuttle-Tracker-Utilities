@@ -5,15 +5,31 @@ import requests
 import uuid
 import datetime
 import base64
+import os
 
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
 id = uuid.uuid4()
 
-keypath = input("Enter the path to the private key: ").strip()
+keypath = input("Enter the path to the private key(if no key enter n): ").strip()
+if(keypath == "n"):
+    newPrivateKey = Ed25519PrivateKey.generate()
+    privatePEM = newPrivateKey.private_bytes(
+        encoding=cryptography.hazmat.primitives.serialization.Encoding.PEM,
+        format=cryptography.hazmat.primitives.serialization.PrivateFormat.OpenSSH,
+        encryption_algorithm=cryptography.hazmat.primitives.serialization.NoEncryption()
+    )
+    folderpath = os.path.expanduser("~/Documents/STKeys")
+    keypath = os.path.join(folderpath, "STprivatekey.pem")
+    if not os.path.exists(folderpath):
+        os.makedirs(folderpath)
+    with open(keypath, "wb") as private_key_file:
+        private_key_file.write(privatePEM)
+
 inFile = open(keypath, "rb")
 privateKeyFile = inFile.read()
 inFile.close()
+
 subject = input("Enter the subject: ").strip()
 body = input("Enter the body: ").strip()
 scheduleType = input("Enter the schedule type(startOnly, endOnly, startAndEnd): ").strip()
