@@ -30,18 +30,25 @@ inFile = open(keypath, "rb")
 privateKeyFile = inFile.read()
 inFile.close()
 
-subject = input("Enter the subject: ").strip()
-body = input("Enter the body: ").strip()
-scheduleType = input("Enter the schedule type(startOnly, endOnly, startAndEnd): ").strip()
+subject = input("Enter the subject:\n").strip()
+body = input("Enter the body:\n").strip()
 
-if(scheduleType == "startOnly" or scheduleType == "startAndEnd"):
-    startstr = input("Enter Start Date(year-month-day-hour-minute): ")
-    startarr = startstr.split("-")
-    start = datetime.datetime(int(startarr[0]), int(startarr[1]), int(startarr[2]), int(startarr[3]), int(startarr[4]), 00)
-if(scheduleType == "endOnly" or scheduleType == "startAndEnd"):
-    endstr = input("Enter End Date(year-month-day-hour-minute): ")
-    endarr = endstr.split("-")
-    end = datetime.datetime(int(endarr[0]), int(endarr[1]), int(endarr[2]), int(endarr[3]), int(endarr[4]), 00)
+while True:
+    try:
+        scheduleType = input("Enter the schedule type(startOnly, endOnly, startAndEnd): ").strip()
+        if(scheduleType == "startOnly" or scheduleType == "startAndEnd"):
+            startstr = input("Enter Start Date(year-month-day-hour-minute): ")
+            startarr = startstr.split("-")
+            start = datetime.datetime(int(startarr[0]), int(startarr[1]), int(startarr[2]), int(startarr[3]), int(startarr[4]), 00)
+            break
+        elif(scheduleType == "endOnly" or scheduleType == "startAndEnd"):
+            endstr = input("Enter End Date(year-month-day-hour-minute): ")
+            endarr = endstr.split("-")
+            end = datetime.datetime(int(endarr[0]), int(endarr[1]), int(endarr[2]), int(endarr[3]), int(endarr[4]), 00)
+            break
+        raise Exception(f"Unknown Schedule Type entered: {scheduleType}")
+    except Exception as e:
+        print("Error: ", e)
 
 #convert time to acceptable format
 start = start.replace(microsecond=00)
@@ -49,7 +56,15 @@ end = end.replace(microsecond=00)
 start = start.isoformat() + "Z"
 end = end.isoformat() + "Z"
 
-interruptionLevel = input("Enter the interruption level(passive, active, timeSensitive, critical): ").strip()
+while True:
+    try:
+        interruptionLevel = input("Enter the interruption level(passive, active, timeSensitive, critical): ").strip()
+        if(interruptionLevel != "passive" and interruptionLevel != "active" and interruptionLevel != "timeSensitive" and interruptionLevel != "critical"):
+            raise Exception(f"Unknown Interruption Level entered: {interruptionLevel}")
+        break
+    except Exception as e:
+        print("Error: ", e)
+
 
 announcementDict = {"scheduleType":scheduleType,"subject":subject,"end":end,"interruptionLevel":interruptionLevel,"body":body,"start":start,"id":str(id)}
 
