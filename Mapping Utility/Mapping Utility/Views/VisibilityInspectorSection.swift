@@ -15,13 +15,18 @@ struct VisibilityInspectorSection: View {
 	var body: some View {
 		InspectorSection("Visibility") {
 			Form {
-				// FIXME: This code currently fails to build due to a linker error that seems to be a symptom of a bug in Swift itself.
-//				@Bindable
-//				var mapState = self.mapState
-//				
-//				Toggle("Show buses", isOn: $mapState.doShowBuses)
-//				Toggle("Show stops", isOn: $mapState.doShowStops)
-//				Toggle("Show routes", isOn: $mapState.doShowRoutes)
+				Toggle(
+					"Show buses",
+					isOn: Bindable(self.mapState).doShowBuses
+				)
+				Toggle(
+					"Show stops",
+					isOn: Bindable(self.mapState).doShowStops
+				)
+				Toggle(
+					"Show routes",
+					isOn: Bindable(self.mapState).doShowRoutes
+				)
 			}
 		}
 	}

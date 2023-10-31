@@ -63,6 +63,7 @@ struct PinInspectorSection: View {
 							Task {
 								do {
 									try await API.updateBus(id: busID, location: location).perform()
+									self.busSubmissionStatus = HTTPStatusCodes.Success.ok
 								} catch let error as HTTPStatusCode {
 									self.busSubmissionStatus = error
 								}
@@ -90,6 +91,13 @@ struct PinInspectorSection: View {
 						Button("Randomize Trip Identifier") {
 							self.busSubmissionLocationID = UUID()
 						}
+						Spacer()
+					}
+					HStack {
+						Spacer()
+						Text(self.busSubmissionLocationID.uuidString)
+							.font(.caption)
+							.fontDesign(.monospaced)
 						Spacer()
 					}
 				}

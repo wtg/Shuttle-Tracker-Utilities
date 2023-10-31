@@ -42,33 +42,50 @@ struct ContentView: View {
 	
 	var body: some View {
 		HSplitView {
-			Map(position: self.$mapCameraPosition) {
-//				ForEach(self.mapState.buses) { (bus) in
-//					Marker(
-//						bus.title!, // MKAnnotation requires that the title property be optional, but our implementation always returns a non-nil value.
-//						systemImage: bus.iconSystemName,
-//						coordinate: bus.coordinate
-//					)
-//						.tint(bus.tintColor)
-//						.mapOverlayLevel(level: .aboveLabels)
-//				}
-//				ForEach(self.mapState.stops) { (stop) in
-//					Annotation(
-//						stop.title, // MKAnnotation requires that the title property be optional, but our implementation always returns a non-nil value.
-//						coordinate: stop.coordinate
-//					) {
-//						Circle()
-//							.size(width: 12, height: 12)
-//							.fill(.white)
-//							.stroke(.black, lineWidth: 3)
-//					}
-//				}
-//				ForEach(self.mapState.routes) { (route) in
-//					MapPolyline(points: route.mapPoints, contourStyle: .geodesic)
-//						.stroke(route.color, lineWidth: 5)
-//				}
+			MapReader { (mapProxy) in
+				Map(position: self.$mapCameraPosition) {
+					if self.mapState.doShowBuses {
+						ForEach(self.mapState.buses) { (bus) in
+							Marker(
+								bus.title,
+								systemImage: "bus",
+								coordinate: bus.location.coordinate.convertedForCoreLocation()
+							)
+							.tint(bus.tintColor)
+							.mapOverlayLevel(level: .aboveLabels)
+						}
+					}
+					if self.mapState.doShowStops {
+						ForEach(self.mapState.stops) { (stop) in
+							Annotation(
+								stop.title,
+								coordinate: stop.coordinate
+							) {
+								Circle()
+									.size(width: 12, height: 12)
+									.fill(.white)
+									.stroke(.black, lineWidth: 3)
+							}
+						}
+					}
+					if self.mapState.doShowRoutes {
+						ForEach(self.mapState.routes) { (route) in
+							MapPolyline(points: route.mapPoints, contourStyle: .geodesic)
+								.stroke(route.color, lineWidth: 5)
+							
+						}
+					}
+					if let coordinate = self.mapState.pinCoordinate {
+						Marker(coordinate: coordinate) { }
+					}
+				}
+					.mapStyle(.standard(emphasis: .muted, pointsOfInterest: .excludingAll))
+					.frame(minWidth: 400, idealWidth: 600)
+					.onTapGesture(count: 2, coordinateSpace: .local) { (point) in
+						let adjustedPoint = CGPoint(x: point.x, y: point.y + 100)
+						self.mapState.pinCoordinate = mapProxy.convert(adjustedPoint, from: .local)
+					}
 			}
-				.frame(minWidth: 400, idealWidth: 600)
 			if self.doShowInspector {
 				Inspector()
 					.frame(minWidth: 200, idealWidth: 200, maxWidth: 300, maxHeight: .infinity)

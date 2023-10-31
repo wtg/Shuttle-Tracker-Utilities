@@ -69,6 +69,18 @@ final class Bus: Codable, Identifiable {
 		}
 	}
 	
+	@MainActor
+	var tintColor: Color {
+		get {
+			switch self.location.type {
+			case .system:
+				return .red
+			case .user, .network:
+				return .green
+			}
+		}
+	}
+	
 	init(id: Int, routeID: UUID, location: Location) {
 		self.id = id
 		self.routeID = routeID

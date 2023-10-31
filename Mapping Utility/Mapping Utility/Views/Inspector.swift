@@ -19,14 +19,18 @@ struct Inspector: View {
 					.font(.title)
 				Spacer()
 			}
+				.padding(.horizontal)
 			ScrollView {
-				VisibilityInspectorSection()
-				PinInspectorSection()
-				AlgorithmsInspectorSection()
+				VStack {
+					VisibilityInspectorSection()
+					PinInspectorSection()
+					AlgorithmsInspectorSection()
+				}
+					.padding(.horizontal)
 				Spacer()
 			}
 		}
-			.padding()
+			.padding(.vertical)
 	}
 	
 }
