@@ -91,6 +91,15 @@ struct ContentView: View {
 				}
 				ToolbarItem {
 					Button {
+						Task {
+							await self.mapState.recenter(position: self.$mapCameraPosition)
+						}
+					} label: {
+						Label("Re-Center Map", systemImage: "location.viewfinder")
+					}
+				}
+				ToolbarItem {
+					Button {
 						self.sheetType = .serverSelection
 					} label: {
 						Label("Select Server", systemImage: "server.rack")

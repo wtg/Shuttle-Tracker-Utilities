@@ -21,6 +21,24 @@ struct MappingUtilityApp: App {
 			ContentView(mapCameraPosition: self.$mapCameraPosition)
 				.environment(MapState.shared)
 		}
+			.commands {
+				CommandGroup(before: .sidebar) {
+					Button("Re-Center Map") {
+						Task {
+							await MapState.shared.recenter(position: self.$mapCameraPosition)
+						}
+					}
+						.keyboardShortcut(KeyEquivalent("C"), modifiers: [.command, .shift])
+					Button("Refresh") {
+						Task {
+							await Self.refreshSequence.trigger()
+						}
+					}
+						.keyboardShortcut(KeyEquivalent("R"), modifiers: .command)
+					Divider()
+				}
+				CommandGroup(replacing: .newItem) { }
+			}
 	}
 	
 }
