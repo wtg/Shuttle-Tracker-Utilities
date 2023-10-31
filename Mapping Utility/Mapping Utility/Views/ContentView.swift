@@ -7,6 +7,7 @@
 
 import MapKit
 import OSLog
+import ServerSelection
 import SwiftUI
 
 struct ContentView: View {
@@ -139,7 +140,12 @@ struct ContentView: View {
 			} content: { (sheetType) in
 				switch sheetType {
 				case .serverSelection:
-					ServerSelectionSheet(sheetType: self.$sheetType)
+					let baseURL = Binding {
+						return API.baseURL
+					} set: { (newValue) in
+						API.baseURL = newValue
+					}
+					ServerSelectionSheet(baseURL: baseURL, item: self.$sheetType)
 				}
 			}
 			.task {
