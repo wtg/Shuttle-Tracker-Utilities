@@ -9,7 +9,8 @@ import SwiftUI
 
 struct Inspector: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		VStack {
@@ -30,11 +31,7 @@ struct Inspector: View {
 	
 }
 
-struct InspectorPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		Inspector()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	Inspector()
+		.environment(MapState.shared)
 }

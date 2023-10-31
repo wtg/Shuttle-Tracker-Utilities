@@ -6,34 +6,23 @@
 //
 
 import MapKit
+import SwiftUI
 
-protocol IdentifiableByRawValue: Identifiable, RawRepresentable { }
-
-extension IdentifiableByRawValue where RawValue: Hashable {
+enum MapConstants {
 	
-	var id: RawValue {
-		get {
-			return self.rawValue
-		}
-	}
-	
-}
-
-enum MapUtilities {
-	
-	enum Constants {
-		
-		static let originCoordinate = CLLocationCoordinate2D(latitude: 42.735, longitude: -73.688)
-		
-	}
+	static let originCoordinate = CLLocationCoordinate2D(latitude: 42.735, longitude: -73.688)
 	
 	static let mapRect = MKMapRect(
-		origin: MKMapPoint(Constants.originCoordinate),
+		origin: MKMapPoint(MapConstants.originCoordinate),
 		size: MKMapSize(
 			width: 10000,
 			height: 10000
 		)
 	)
+	
+	static let defaultCameraPosition: MapCameraPosition = .rect(MapConstants.mapRect)
+	
+	static let mapRectInsets = NSEdgeInsets(top: 100, left: 20, bottom: 20, right: 20)
 	
 }
 
@@ -58,8 +47,8 @@ extension MKMapPoint: Equatable {
 		self.init(coordinate.convertedForCoreLocation())
 	}
 	
-	public static func == (_ left: MKMapPoint, _ right: MKMapPoint) -> Bool {
-		return left.coordinate == right.coordinate
+	public static func == (lhs: MKMapPoint, rhs: MKMapPoint) -> Bool {
+		return lhs.coordinate == rhs.coordinate
 	}
 	
 }
@@ -67,6 +56,38 @@ extension MKMapPoint: Equatable {
 extension Notification.Name {
 	
 	static let refreshBuses = Notification.Name("RefreshBuses")
+	
+}
+
+extension JSONEncoder {
+	
+	convenience init(
+		dateEncodingStrategy: DateEncodingStrategy = .deferredToDate,
+		dataEncodingStrategy: DataEncodingStrategy = .base64,
+		nonConformingFloatEncodingStrategy: NonConformingFloatEncodingStrategy = .throw
+	) {
+		self.init()
+		self.keyEncodingStrategy = keyEncodingStrategy
+		self.dateEncodingStrategy = dateEncodingStrategy
+		self.dataEncodingStrategy = dataEncodingStrategy
+		self.nonConformingFloatEncodingStrategy = nonConformingFloatEncodingStrategy
+	}
+	
+}
+
+extension JSONDecoder {
+	
+	convenience init(
+		dateDecodingStrategy: DateDecodingStrategy = .deferredToDate,
+		dataDecodingStrategy: DataDecodingStrategy = .base64,
+		nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy = .throw
+	) {
+		self.init()
+		self.keyDecodingStrategy = keyDecodingStrategy
+		self.dateDecodingStrategy = dateDecodingStrategy
+		self.dataDecodingStrategy = dataDecodingStrategy
+		self.nonConformingFloatDecodingStrategy = nonConformingFloatDecodingStrategy
+	}
 	
 }
 

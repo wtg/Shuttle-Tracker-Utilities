@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AlgorithmsInspectorSection: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		InspectorSection("Algorithms") {
@@ -17,7 +18,11 @@ struct AlgorithmsInspectorSection: View {
 				Text("Is on Route")
 					.font(.headline)
 				Form {
-					TextField("Threshold", value: self.$mapState.thresholdForCheckingIsOnRoute, format: .number)
+					// FIXME: This code currently fails to build due to a linker error that seems to be a symptom of a bug in Swift itself.
+//					@Bindable
+//					var mapState = self.mapState
+//					
+//					TextField("Threshold", value: $mapState.thresholdForCheckingIsOnRoute, format: .number)
 				}
 				if let pinCoordinate = self.mapState.pinCoordinate {
 					ForEach(self.mapState.routes) { (route) in
@@ -39,11 +44,7 @@ struct AlgorithmsInspectorSection: View {
 	
 }
 
-struct AlgorithmsInspectorSectionPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		AlgorithmsInspectorSection()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	AlgorithmsInspectorSection()
+		.environment(MapState.shared)
 }

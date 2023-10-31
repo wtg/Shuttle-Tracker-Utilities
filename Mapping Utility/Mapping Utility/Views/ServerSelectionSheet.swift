@@ -9,13 +9,17 @@ import SwiftUI
 
 struct ServerSelectionSheet: View {
 	
-	@State private var baseURLString: String
+	@State
+	private var baseURLString = API.baseURL.absoluteString
 	
-	@State private var hasSubmitted = false
+	@State
+	private var hasSubmitted = false
 	
-	@State private var doShowAlert = false
+	@State
+	private var doShowAlert = false
 	
-	@Binding private(set) var sheetType: ContentView.SheetType?
+	@Binding
+	private var sheetType: ContentView.SheetType?
 	
 	var body: some View {
 		VStack {
@@ -32,7 +36,7 @@ struct ServerSelectionSheet: View {
 							API.baseURL = baseURL
 							self.sheetType = nil
 							Task {
-								await MapState.shared.refresh()
+								await MapState.shared.refreshAll()
 							}
 						}
 					}
@@ -47,13 +51,14 @@ struct ServerSelectionSheet: View {
 				}
 					.keyboardShortcut(.cancelAction)
 				Button("Save") {
-					if let baseURL = URL(string: self.baseURLString) {
-						API.baseURL = baseURL
+					guard let baseURL = self.sanitizedBaseURL() else {
+						return
 					}
+					API.baseURL = baseURL
 					self.sheetType = nil
 				}
-					.keyboardShortcut(.defaultAction)
 					.disabled(self.sanitizedBaseURL() == nil)
+					.keyboardShortcut(.defaultAction)
 			}
 				.padding(.top)
 		}
@@ -63,7 +68,6 @@ struct ServerSelectionSheet: View {
 	
 	init(sheetType: Binding<ContentView.SheetType?>) {
 		self._sheetType = sheetType
-		self._baseURLString = State(initialValue: API.baseURL.absoluteString)
 	}
 	
 	func sanitizedBaseURL() -> URL? {
@@ -78,12 +82,6 @@ struct ServerSelectionSheet: View {
 	
 }
 
-struct ServerSelectionSheetPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		ServerSelectionSheet(
-			sheetType: .constant(.serverSelection)
-		)
-	}
-	
+#Preview {
+	ServerSelectionSheet(sheetType: .constant(.serverSelection))
 }

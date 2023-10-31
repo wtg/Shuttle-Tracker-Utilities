@@ -7,7 +7,7 @@
 
 import MapKit
 
-class Stop: NSObject, Decodable, Identifiable, CustomAnnotation {
+final class Stop: Decodable, Identifiable {
 	
 	enum CodingKeys: String, CodingKey {
 		
@@ -25,23 +25,11 @@ class Stop: NSObject, Decodable, Identifiable, CustomAnnotation {
 		}
 	}
 	
-	var title: String? {
+	var title: String {
 		get {
 			return self.name
 		}
 	}
-	
-	let annotationView: MKAnnotationView = {
-		let annotationView = MKAnnotationView()
-		annotationView.displayPriority = .defaultHigh
-		annotationView.canShowCallout = true
-		annotationView.image = NSImage(systemSymbolName: "circle.fill", accessibilityDescription: nil)?
-			.withTintColor(.white)
-		annotationView.layer?.borderColor = .black
-		annotationView.layer?.borderWidth = 2
-		annotationView.layer?.cornerRadius = annotationView.frame.width / 2
-		return annotationView
-	}()
 	
 	required init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -53,15 +41,8 @@ class Stop: NSObject, Decodable, Identifiable, CustomAnnotation {
 
 extension Array where Element == Stop {
 	
-	static func download() async -> Array<Stop> {
-		return await withCheckedContinuation { continuation in
-			API.provider.request(.readStops) { (result) in
-				let stops = try? result
-					.get()
-					.map([Stop].self)
-				continuation.resume(returning: stops ?? [])
-			}
-		}
+	static func download() async -> Self {
+		return (try? await API.readStops.perform(as: Self.self)) ?? []
 	}
 	
 }

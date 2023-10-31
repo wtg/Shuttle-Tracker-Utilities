@@ -5,47 +5,67 @@
 //  Created by Gabriel Jacoby-Cooper on 1/8/22.
 //
 
-import CoreLocation
+import MapKit
 import SwiftUI
 
-class MapState: ObservableObject {
+@Observable
+@MainActor
+final class MapState {
 	
 	static let shared = MapState()
 	
-	@Published var buses = [Bus]()
+	private(set) var buses = [Bus]()
 	
-	@Published var stops = [Stop]()
+	private(set) var stops = [Stop]()
 	
-	@Published var routes = [Route]()
+	private(set) var routes = [Route]()
 	
-	@Published var doShowBuses = false
+	var doShowBuses = false
 	
-	@Published var doShowStops = true
+	var doShowStops = true
 	
-	@Published var doShowRoutes = true
+	var doShowRoutes = true
 	
-	@Published var pinCoordinate: CLLocationCoordinate2D?
+	var pinCoordinate: CLLocationCoordinate2D?
 	
-	@Published var thresholdForCheckingIsOnRoute: Double = 5
+	var thresholdForCheckingIsOnRoute: Double = 5
 	
+	@ObservationIgnored
 	lazy var pinLatitude = Binding {
-		return self.pinCoordinate?.latitude ?? MapUtilities.Constants.originCoordinate.latitude
+		return self.pinCoordinate?.latitude ?? MapConstants.originCoordinate.latitude
 	} set: { (newValue, transaction) in
 		self.pinCoordinate?.latitude = newValue
 	}
 	
+	@ObservationIgnored
 	lazy var pinLongitude = Binding {
-		return self.pinCoordinate?.longitude ?? MapUtilities.Constants.originCoordinate.longitude
+		return self.pinCoordinate?.longitude ?? MapConstants.originCoordinate.longitude
 	} set: { (newValue) in
 		self.pinCoordinate?.longitude = newValue
 	}
 	
 	private init() { }
 	
-	@MainActor func refresh() async {
+	func refreshBuses() async {
 		self.buses = await [Bus].download()
-		self.stops = await [Stop].download()
-		self.routes = await [Route].download()
+	}
+	
+	func refreshAll() async {
+		async let buses = [Bus].download()
+		async let stops = [Stop].download()
+		async let routes = [Route].download()
+		self.buses = await buses
+		self.stops = await stops
+		self.routes = await routes
+	}
+	
+	func recenter(position: Binding<MapCameraPosition>) async {
+		let dx = (MapConstants.mapRectInsets.left + MapConstants.mapRectInsets.right) * -15
+		let dy = (MapConstants.mapRectInsets.top + MapConstants.mapRectInsets.bottom) * -15
+		let mapRect = self.routes.boundingMapRect.insetBy(dx: dx, dy: dy)
+		withAnimation {
+			position.wrappedValue = .rect(mapRect)
+		}
 	}
 	
 }
