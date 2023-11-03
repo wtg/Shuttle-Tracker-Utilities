@@ -30,6 +30,8 @@ inFile = open(keypath, "rb")
 privateKeyFile = inFile.read()
 inFile.close()
 
+pas = input("Enter Password. If none, enter 'n'").strip()
+
 subject = input("Enter the subject:\n").strip()
 body = input("Enter the body:\n").strip()
 
@@ -69,7 +71,11 @@ while True:
 announcementDict = {"scheduleType":scheduleType,"subject":subject,"end":end,"interruptionLevel":interruptionLevel,"body":body,"start":start,"id":str(id)}
 
 #converting file to private key object
-privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, None)
+if(pas == 'n'):
+    privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, None)
+else:
+    pas = bytes(pas,'utf-8')
+    privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, pas)
 
 # posts announcements information to server
 def submitAnnouncement(announcementDict):
