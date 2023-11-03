@@ -9,41 +9,45 @@ import SwiftUI
 
 struct AlgorithmsInspectorSection: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		InspectorSection("Algorithms") {
-			VStack(alignment: .leading) {
-				Text("Is on Route")
-					.font(.headline)
-				Form {
-					TextField("Threshold", value: self.$mapState.thresholdForCheckingIsOnRoute, format: .number)
-				}
-				if let pinCoordinate = self.mapState.pinCoordinate {
-					ForEach(self.mapState.routes) { (route) in
-						if route.checkIfValid(coordinate: pinCoordinate, threshold: self.mapState.thresholdForCheckingIsOnRoute) {
-							Text("Is on route “\(route.name)”")
-						}
-						else {
-							Text("Is not on route “\(route.name)”")
-								.foregroundColor(.secondary)
-						}
+			HStack {
+				VStack(alignment: .leading) {
+					Text("Is on Route")
+						.font(.headline)
+					Form {
+						TextField(
+							"Threshold",
+							value: Bindable(self.mapState).thresholdForCheckingIsOnRoute,
+							format: .number
+						)
 					}
-				} else {
-					Text("No Pin on Map")
-						.foregroundColor(.secondary)
+					if let pinCoordinate = self.mapState.pinCoordinate {
+						ForEach(self.mapState.routes) { (route) in
+							if route.checkIfValid(coordinate: pinCoordinate, threshold: self.mapState.thresholdForCheckingIsOnRoute) {
+								Text("Is on route “\(route.name)”")
+							}
+							else {
+								Text("Is not on route “\(route.name)”")
+									.foregroundColor(.secondary)
+							}
+						}
+					} else {
+						Text("No Pin on Map")
+							.foregroundColor(.secondary)
+					}
 				}
+				Spacer()
 			}
 		}
 	}
 	
 }
 
-struct AlgorithmsInspectorSectionPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		AlgorithmsInspectorSection()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	AlgorithmsInspectorSection()
+		.environment(MapState.shared)
 }

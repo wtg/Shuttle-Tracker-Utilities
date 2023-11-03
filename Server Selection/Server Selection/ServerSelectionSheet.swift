@@ -25,7 +25,7 @@ public struct ServerSelectionSheet<Item>: View {
 				.url()
 			}
 			
-			// wholeMatch(in:) crashes when the provided string doesn’t have a URL host component, so exit this getter early instead
+			// wholeMatch(in:) crashes when the provided string doesn’t have a URL host component, so we exit this getter early instead.
 			guard !self.baseURLString.hasSuffix("://") else {
 				return nil
 			}
@@ -49,7 +49,7 @@ public struct ServerSelectionSheet<Item>: View {
 				Spacer()
 			}
 			Form {
-				// TextField has issues with data formatters, so proxy the value through a string instead
+				// TextField has issues with data formatters, so we proxy the value through a string instead.
 				TextField("Base URL", text: self.$baseURLString)
 					.onSubmit {
 						if let newBaseURL = self.newBaseURL {
@@ -71,7 +71,10 @@ public struct ServerSelectionSheet<Item>: View {
 				}
 					.keyboardShortcut(.cancelAction)
 				Button("Save") {
-					self.baseURL = self.newBaseURL! // newBaseURL should not be nil because this button would otherwise be disabled
+					guard let newBaseURL = self.newBaseURL else {
+						return
+					}
+					self.baseURL = newBaseURL
 					self.item = nil
 				}
 					.keyboardShortcut(.defaultAction)

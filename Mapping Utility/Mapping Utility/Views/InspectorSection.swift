@@ -9,7 +9,8 @@ import SwiftUI
 
 struct InspectorSection<Content>: View where Content: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	let title: String
 	
@@ -21,7 +22,7 @@ struct InspectorSection<Content>: View where Content: View {
 		}
 	}
 	
-	init<S>(_ title: S, @ViewBuilder content: () -> Content) where S: StringProtocol {
+	init(_ title: some StringProtocol, @ViewBuilder content: () -> Content) {
 		self.title = String(title)
 		self.content = content()
 	}

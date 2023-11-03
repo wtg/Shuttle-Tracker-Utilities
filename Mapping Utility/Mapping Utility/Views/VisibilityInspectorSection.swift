@@ -9,25 +9,31 @@ import SwiftUI
 
 struct VisibilityInspectorSection: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		InspectorSection("Visibility") {
 			Form {
-				Toggle("Show buses", isOn: self.$mapState.doShowBuses)
-				Toggle("Show stops", isOn: self.$mapState.doShowStops)
-				Toggle("Show routes", isOn: self.$mapState.doShowRoutes)
+				Toggle(
+					"Show buses",
+					isOn: Bindable(self.mapState).doShowBuses
+				)
+				Toggle(
+					"Show stops",
+					isOn: Bindable(self.mapState).doShowStops
+				)
+				Toggle(
+					"Show routes",
+					isOn: Bindable(self.mapState).doShowRoutes
+				)
 			}
 		}
 	}
 	
 }
 
-struct VisibilityInspectorSectionPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		VisibilityInspectorSection()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	VisibilityInspectorSection()
+		.environment(MapState.shared)
 }

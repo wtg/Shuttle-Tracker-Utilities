@@ -5,27 +5,33 @@
 //  Created by Gabriel Jacoby-Cooper on 1/19/22.
 //
 
+import HTTPStatus
 import SwiftUI
 
 import enum Moya.MoyaError
 
 struct PinInspectorSection: View {
 	
-	@State private var busID: Int?
+	@State
+	private var busID: Int?
 	
-	@State private var busSubmissionStatusCode: Int?
+	@State
+	private var busSubmissionStatus: (any HTTPStatusCode)?
 	
-	@State private var busSubmissionLocationID = UUID()
+	@State
+	private var busSubmissionLocationID = UUID()
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		InspectorSection("Pin") {
 			if self.mapState.pinCoordinate == nil {
 				Button("Drop Pin") {
-					self.mapState.pinCoordinate = MapUtilities.Constants.originCoordinate
+					self.mapState.pinCoordinate = MapConstants.originCoordinate
 				}
-			} else {
+			}
+			if let pinCoordinate = self.mapState.pinCoordinate {
 				VStack(alignment: .leading) {
 					Text("Coordinate")
 						.font(.headline)
@@ -45,38 +51,39 @@ struct PinInspectorSection: View {
 						)
 							.labelsHidden()
 						Button("Submit as Bus Location") {
+							guard let busID = self.busID else {
+								return
+							}
 							let location = Bus.Location(
 								id: self.busSubmissionLocationID,
 								date: .now,
-								coordinate: self.mapState.pinCoordinate!.convertedToCoordinate(),
+								coordinate: pinCoordinate.convertedToCoordinate(),
 								type: .user
 							)
-							API.provider.request(.updateBus(id: self.busID!, location: location)) { (result) in
+							Task {
 								do {
-									self.busSubmissionStatusCode = try result.get().statusCode
-								} catch let error as MoyaError {
-									if case .statusCode(let response) = error {
-										self.busSubmissionStatusCode = response.statusCode
-									} else {
-										self.busSubmissionStatusCode = -1
-									}
-								} catch {
-									self.busSubmissionStatusCode = -1
+									try await API.updateBus(id: busID, location: location).perform()
+									self.busSubmissionStatus = HTTPStatusCodes.Success.ok
+								} catch let error as HTTPStatusCode {
+									self.busSubmissionStatus = error
 								}
-								Task {
-									try await Task.sleep(for: .seconds(2))
-									self.busSubmissionStatusCode = nil
-								}
+								try await Task.sleep(for: .seconds(2))
+								self.busSubmissionStatus = nil
 							}
 						}
 							.disabled(self.busID == nil)
 							.layoutPriority(1)
 					}
-					if let busSubmissionStatusCode = self.busSubmissionStatusCode {
-						if busSubmissionStatusCode < 0 {
-							Text("An unknown error occured")
-						} else {
-							Text("Received HTTP status code \(busSubmissionStatusCode)")
+					Group {
+						switch self.busSubmissionStatus {
+						case .some(HTTPStatusCodes.Success.ok):
+							Text("Submitted bus location")
+						case .some(let code as any Error & HTTPStatusCode):
+							Text(code.localizedDescription)
+						case .some(let code):
+							Text("HTTP \(code.rawValue)")
+						case .none:
+							EmptyView()
 						}
 					}
 					HStack {
@@ -84,6 +91,13 @@ struct PinInspectorSection: View {
 						Button("Randomize Trip Identifier") {
 							self.busSubmissionLocationID = UUID()
 						}
+						Spacer()
+					}
+					HStack {
+						Spacer()
+						Text(self.busSubmissionLocationID.uuidString)
+							.font(.caption)
+							.fontDesign(.monospaced)
 						Spacer()
 					}
 				}
@@ -97,11 +111,7 @@ struct PinInspectorSection: View {
 	
 }
 
-struct PinInspectorSectionPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		PinInspectorSection()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	PinInspectorSection()
+		.environment(MapState.shared)
 }

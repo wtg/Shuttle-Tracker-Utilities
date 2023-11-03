@@ -9,7 +9,8 @@ import SwiftUI
 
 struct Inspector: View {
 	
-	@EnvironmentObject private var mapState: MapState
+	@Environment(MapState.self)
+	private var mapState
 	
 	var body: some View {
 		VStack {
@@ -18,23 +19,23 @@ struct Inspector: View {
 					.font(.title)
 				Spacer()
 			}
+				.padding(.horizontal)
 			ScrollView {
-				VisibilityInspectorSection()
-				PinInspectorSection()
-				AlgorithmsInspectorSection()
+				VStack {
+					VisibilityInspectorSection()
+					PinInspectorSection()
+					AlgorithmsInspectorSection()
+				}
+					.padding(.horizontal)
 				Spacer()
 			}
 		}
-			.padding()
+			.padding(.vertical)
 	}
 	
 }
 
-struct InspectorPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		Inspector()
-			.environmentObject(MapState.shared)
-	}
-	
+#Preview {
+	Inspector()
+		.environment(MapState.shared)
 }

@@ -8,15 +8,13 @@
 import SwiftUI
 import MapKit
 
-class Bus: NSObject, Codable, CustomAnnotation {
+final class Bus: Codable, Identifiable {
 	
 	struct Location: Codable {
 		
 		enum LocationType: String, Codable {
 			
-			case system = "system"
-			
-			case user = "user"
+			case system, user, network
 			
 		}
 		
@@ -29,7 +27,13 @@ class Bus: NSObject, Codable, CustomAnnotation {
 		let type: LocationType
 		
 		func convertForCoreLocation() -> CLLocation {
-			return CLLocation(coordinate: self.coordinate.convertedForCoreLocation(), altitude: .nan, horizontalAccuracy: .nan, verticalAccuracy: .nan, timestamp: self.date)
+			return CLLocation(
+				coordinate: self.coordinate.convertedForCoreLocation(),
+				altitude: .nan,
+				horizontalAccuracy: .nan,
+				verticalAccuracy: .nan,
+				timestamp: self.date
+			)
 		}
 		
 	}
@@ -40,19 +44,15 @@ class Bus: NSObject, Codable, CustomAnnotation {
 	
 	private(set) var location: Location
 	
-	var coordinate: CLLocationCoordinate2D {
-		get {
-			return self.location.coordinate.convertedForCoreLocation()
-		}
-	}
-	
-	var title: String? {
+	@MainActor
+	var title: String {
 		get {
 			return "Bus \(self.id)"
 		}
 	}
 	
-	var subtitle: String? {
+	@MainActor
+	var subtitle: String {
 		get {
 			let formatter = RelativeDateTimeFormatter()
 			formatter.dateTimeStyle = .named
@@ -69,24 +69,15 @@ class Bus: NSObject, Codable, CustomAnnotation {
 		}
 	}
 	
-	var annotationView: MKAnnotationView {
+	@MainActor
+	var tintColor: Color {
 		get {
-			let markerAnnotationView = MKMarkerAnnotationView()
-			markerAnnotationView.displayPriority = .required
-			markerAnnotationView.canShowCallout = true
-			let colorBlindMode = UserDefaults.standard.bool(forKey: "ColorBlindMode")
-			let colorBlindSymbolName: String
 			switch self.location.type {
 			case .system:
-				markerAnnotationView.markerTintColor = colorBlindMode ? .systemPurple : .systemRed
-				colorBlindSymbolName = "circle.dotted"
-			case .user:
-				markerAnnotationView.markerTintColor = .systemGreen
-				colorBlindSymbolName = "scope"
+				return .red
+			case .user, .network:
+				return .green
 			}
-			let symbolName = colorBlindMode ? colorBlindSymbolName : "bus"
-			markerAnnotationView.glyphImage = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
-			return markerAnnotationView
 		}
 	}
 	
@@ -96,28 +87,16 @@ class Bus: NSObject, Codable, CustomAnnotation {
 		self.location = location
 	}
 	
-	static func == (_ left: Bus, _ right: Bus) -> Bool {
-		return left.id == right.id
+	static func == (lhs: Bus, rhs: Bus) -> Bool {
+		return lhs.id == rhs.id
 	}
 	
 }
 
 extension Array where Element == Bus {
 	
-	static func download() async -> [Bus] {
-		return await withCheckedContinuation { (continuation) in
-			API.provider.request(.readBuses) { (result) in
-				let decoder = JSONDecoder()
-				decoder.dateDecodingStrategy = .iso8601
-				let buses = try? result
-					.get()
-					.map([Bus].self, using: decoder)
-					.filter { (bus) in
-						return bus.location.date.timeIntervalSinceNow > -300
-					}
-				continuation.resume(returning: buses ?? [])
-			}
-		}
+	static func download() async -> Self {
+		return (try? await API.readBuses.perform(as: Self.self)) ?? []
 	}
 	
 }

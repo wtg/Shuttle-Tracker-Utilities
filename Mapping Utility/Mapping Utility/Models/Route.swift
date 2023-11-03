@@ -9,9 +9,9 @@ import MapKit
 import SwiftUI
 import Turf
 
-class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
+final class Route: Collection, Decodable, Identifiable {
 	
-	enum CodingKeys: String, CodingKey {
+	private enum CodingKeys: String, CodingKey {
 		
 		case id, coordinates, name, colorName
 		
@@ -35,46 +35,20 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 	
 	let color: Color
 	
-	var polylineRenderer: MKPolylineRenderer {
-		get {
-			let polyline = self.mapPoints.withUnsafeBufferPointer { (mapPointsPointer) -> MKPolyline in
-				return MKPolyline(points: mapPointsPointer.baseAddress!, count: mapPointsPointer.count)
-			}
-			let polylineRenderer = MKPolylineRenderer(polyline: polyline)
-			polylineRenderer.strokeColor = NSColor(self.color)
-				.withAlphaComponent(0.7)
-			polylineRenderer.lineWidth = 5
-			return polylineRenderer
-		}
-	}
-	
 	var coordinate: CLLocationCoordinate2D {
 		get {
-			return MapUtilities.Constants.originCoordinate
+			return MapConstants.originCoordinate
 		}
 	}
 	
 	var boundingMapRect: MKMapRect {
 		get {
-			let minX = self.reduce(into: self.first!.x) { (x, mapPoint) in
-				if mapPoint.x < x {
-					x = mapPoint.x
-				}
-			}
-			let maxX = self.reduce(into: self.first!.x) { (x, mapPoint) in
-				if mapPoint.x > x {
-					x = mapPoint.x
-				}
-			}
-			let minY = self.reduce(into: self.first!.y) { (y, mapPoint) in
-				if mapPoint.y < y {
-					y = mapPoint.y
-				}
-			}
-			let maxY = self.reduce(into: self.first!.x) { (y, mapPoint) in
-				if mapPoint.y > y {
-					y = mapPoint.y
-				}
+			let minX = self.min { return $0.x < $1.x }?.x
+			let maxX = self.max { return $0.x < $1.x }?.x
+			let minY = self.min { return $0.y < $1.y }?.y
+			let maxY = self.max { return $0.y < $1.y }?.y
+			guard let minX, let maxX, let minY, let maxY else {
+				return MKMapRect.null
 			}
 			return MKMapRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
 		}
@@ -95,10 +69,6 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 		return self.mapPoints[position]
 	}
 	
-	static func == (_ left: Route, _ right: Route) -> Bool {
-		return left.mapPoints == right.mapPoints
-	}
-	
 	func index(after oldIndex: Int) -> Int {
 		return oldIndex + 1
 	}
@@ -114,19 +84,24 @@ class Route: NSObject, Collection, Decodable, Identifiable, MKOverlay {
 		return distance < threshold
 	}
 	
+	static func == (lhs: Route, rhs: Route) -> Bool {
+		return lhs.id == rhs.id
+	}
+	
 }
 
 extension Array where Element == Route {
 	
-	static func download() async -> [Route] {
-		return await withCheckedContinuation { continuation in
-			API.provider.request(.readRoutes) { (result) in
-				let routes = try? result
-					.get()
-					.map([Route].self)
-				continuation.resume(returning: routes ?? [])
+	var boundingMapRect: MKMapRect {
+		get {
+			return self.reduce(into: .null) { (partialResult, route) in
+				partialResult = partialResult.union(route.boundingMapRect)
 			}
 		}
+	}
+	
+	static func download() async -> Self {
+		return (try? await API.readRoutes.perform(as: Self.self)) ?? []
 	}
 	
 }

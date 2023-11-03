@@ -5,15 +5,40 @@
 //  Created by Gabriel Jacoby-Cooper on 1/8/22.
 //
 
+import MapKit
 import SwiftUI
 
-@main struct MappingUtilityApp: App {
+@main
+struct MappingUtilityApp: App {
+	
+	static let refreshSequence = RefreshSequence(interval: .seconds(5))
+	
+	@State
+	private var mapCameraPosition: MapCameraPosition = .automatic
 	
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
-				.environmentObject(MapState.shared)
+			ContentView(mapCameraPosition: self.$mapCameraPosition)
+				.environment(MapState.shared)
 		}
+			.commands {
+				CommandGroup(before: .sidebar) {
+					Button("Re-Center Map") {
+						Task {
+							await MapState.shared.recenter(position: self.$mapCameraPosition)
+						}
+					}
+						.keyboardShortcut(KeyEquivalent("C"), modifiers: [.command, .shift])
+					Button("Refresh") {
+						Task {
+							await Self.refreshSequence.trigger()
+						}
+					}
+						.keyboardShortcut(KeyEquivalent("R"), modifiers: .command)
+					Divider()
+				}
+				CommandGroup(replacing: .newItem) { }
+			}
 	}
 	
 }
