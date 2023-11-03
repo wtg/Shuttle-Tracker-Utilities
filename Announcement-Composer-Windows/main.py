@@ -84,6 +84,7 @@ def submitAnnouncement(announcementDict):
     signature = base64.b64encode(signedKey).decode()
     announcementDict["signature"] = signature
     r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
+    #r = requests.post("https://staging.shuttletracker.app/announcements", data=jason.dumps(announcementDict))
     # checks whether signature has been successfully read
     if (r.status_code == 403):
         print("Error Code 403: Signature was rejected, try another signing key.\n")
