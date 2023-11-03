@@ -7,11 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C018B1CF2AF167BC00297A10 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018B1CE2AF167BC00297A10 /* Server.swift */; };
 		C0F4209829201B6600CC0F91 /* ServerSelection.h in Headers */ = {isa = PBXBuildFile; fileRef = C0F4209729201B6600CC0F91 /* ServerSelection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C0F420A929201C3200CC0F91 /* ServerSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F420A829201C3200CC0F91 /* ServerSelectionSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C018B1CE2AF167BC00297A10 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C0F4209429201B6600CC0F91 /* ServerSelection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ServerSelection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F4209729201B6600CC0F91 /* ServerSelection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSelection.h; sourceTree = "<group>"; };
 		C0F420A829201C3200CC0F91 /* ServerSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSelectionSheet.swift; sourceTree = "<group>"; };
@@ -50,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				C0F4209729201B6600CC0F91 /* ServerSelection.h */,
+				C018B1CE2AF167BC00297A10 /* Server.swift */,
 				C0F420A829201C3200CC0F91 /* ServerSelectionSheet.swift */,
 			);
 			path = "Server Selection";
@@ -143,6 +146,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C018B1CF2AF167BC00297A10 /* Server.swift in Sources */,
 				C0F420A929201C3200CC0F91 /* ServerSelectionSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -293,6 +297,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.serverselection;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -325,6 +330,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gerzer.shuttletracker.serverselection;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
