@@ -54,7 +54,7 @@ struct KeyCreationSheet: View {
 						if !self.isEmptyName && !self.isDuplicateName {
 							do {
 								try self.createKeyPair()
-							} catch let error {
+							} catch {
 								self.error = WrappedError(error)
 							}
 						}
@@ -74,7 +74,7 @@ struct KeyCreationSheet: View {
 				Button("Create") {
 					do {
 						try self.createKeyPair()
-					} catch let error {
+					} catch {
 						self.error = WrappedError(error)
 					}
 				}
