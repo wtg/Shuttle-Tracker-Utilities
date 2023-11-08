@@ -6,15 +6,19 @@
 //
 
 import KeyManagement
+import ServerSelection
 import SwiftUI
 
 @main
 struct AnnouncementComposerApp: App {
 	
+	private static let serverSelectionAppGroupID = "SYBLH277NF.com.gerzer.shuttletracker.serverselection"
+	
 	var body: some Scene {
 		WindowGroup {
 			ContentView()
 				.frame(minWidth: 800, minHeight: 600)
+				.serverSelection(appGroupID: Self.serverSelectionAppGroupID)
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.main.rawValue])
 			.commands {
@@ -32,6 +36,7 @@ struct AnnouncementComposerApp: App {
 		WindowGroup {
 			AnnouncementManagerView()
 				.frame(width: 700, height: 500)
+				.serverSelection(appGroupID: Self.serverSelectionAppGroupID)
 		}
 			.handlesExternalEvents(matching: [WindowManager.Window.announcementManager.rawValue])
 			.windowToolbarStyle(.unifiedCompact)
