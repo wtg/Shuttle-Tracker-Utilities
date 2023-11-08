@@ -9,23 +9,21 @@ import SwiftData
 import SwiftUI
 
 @Model
-public final class Server: Identifiable {
+public final class Server {
 	
-	public static let production = try! Server(
-		id: UUID(uuidString: "1BBA964A-B05D-4E77-95BB-5301C1F2C34C")!,
+	public static let production = Server(
 		name: "Production",
-		baseURL: URL(string: "https://shuttletracker.app")!
+		baseURL: URL(string: "https://shuttletracker.app")!,
+		isEditable: false
 	)
 	
-	public static let staging = try! Server(
-		id: UUID(uuidString: "C99A231C-ED95-43C6-B284-21586CA63264")!,
+	public static let staging = Server(
 		name: "Staging",
-		baseURL: URL(string: "https://staging.shuttletracker.app")!
+		baseURL: URL(string: "https://staging.shuttletracker.app")!,
+		isEditable: false
 	)
 	
-	private static let container = try! ModelContainer(for: Server.self, configurations: ModelConfiguration(for: Server.self))
-	
-	public let id: UUID
+	static let defaultServers: [Server] = [.production, .staging]
 	
 	public private(set) var name: String
 	
@@ -33,22 +31,32 @@ public final class Server: Identifiable {
 	
 	let isEditable: Bool
 	
-	init(name: String, baseURL: URL) {
-		self.id = UUID()
-		self.name = name
-		self.baseURL = baseURL
-		self.isEditable = true
+	convenience init(name: String, baseURL: URL) {
+		self.init(name: name, baseURL: baseURL, isEditable: true)
 	}
 	
-	private init(id: UUID, name: String, baseURL: URL) throws {
-		let configuration = ModelConfiguration(for: Self.self)
-		let container = try ModelContainer(for: Self.self, configurations: configuration)
-		let context = ModelContext(container)
-		self.id = id
+	private init(name: String, baseURL: URL, isEditable: Bool) {
 		self.name = name
 		self.baseURL = baseURL
-		self.isEditable = false
-		context.insert(self)
+		self.isEditable = isEditable
+	}
+	
+}
+
+extension Sequence where Element == Server {
+	
+	var allAreNonEditable: Bool {
+		get {
+			return self.allSatisfy { (server) in
+				return !server.isEditable
+			}
+		}
+	}
+	
+	func hasServer(for baseURL: URL) -> Bool {
+		return self.contains { (server) in
+			return server.baseURL == baseURL
+		}
 	}
 	
 }

@@ -5,23 +5,12 @@
 //  Created by Gabriel Jacoby-Cooper on 11/12/22.
 //
 
+import OSLog
 import RegexBuilder
 import SwiftData
 import SwiftUI
 
 public struct ServerSelectionSheet<Item>: View {
-	
-	@State
-	private var hasSubmitted = false
-	
-	@State
-	private var doShowAlert = false
-	
-	@Binding
-	private(set) var server: Server
-	
-	@State
-	private var selectedServer: Server?
 	
 	private var newBaseURL: URL? {
 		get {
@@ -39,13 +28,16 @@ public struct ServerSelectionSheet<Item>: View {
 	}
 	
 	@State
-	private var newName: String = ""
+	private var newName = ""
 	
 	@State
-	private var newBaseURLString: String = ""
+	private var newBaseURLString = ""
 	
-	@Binding
-	private(set) var item: Item?
+	@State
+	private var doShowResetSavedServersAlert = false
+	
+	@State
+	private var didResetSavedServers = false
 	
 	@Environment(\.dismiss)
 	private var dismiss
@@ -56,6 +48,17 @@ public struct ServerSelectionSheet<Item>: View {
 	@Query
 	private var servers: [Server]
 	
+	@Binding
+	private(set) var server: Server
+	
+	@State
+	private var selectedServer: Server
+	
+	@Binding
+	private(set) var item: Item?
+	
+	private let logger = Logger(subsystem: "com.gerzer.shuttletracker.serverselection", category: "ServerSelectionSheet")
+	
 	public var body: some View {
 		VStack(alignment: .leading) {
 			HStack {
@@ -64,75 +67,159 @@ public struct ServerSelectionSheet<Item>: View {
 					.bold()
 				Spacer()
 			}
-			Picker("Server", selection: self.$selectedServer) {
-				ForEach(self.servers) { (server) in
-					HStack {
-						VStack {
-							Text(server.name)
-							Text(server.baseURL.absoluteString)
-						}
-						if server.isEditable {
-							Button("Delete", systemImage: "x.circle.fill") {
-								self.modelContext.delete(server)
+			Form {
+				Section {
+					Picker("Server", selection: self.$selectedServer) {
+						ForEach(self.servers) { (server) in
+							VStack {
+								HStack(alignment: .top) {
+									VStack(alignment: .leading) {
+										Text(server.name)
+										Text(server.baseURL.absoluteString)
+											.monospaced()
+									}
+									Spacer()
+									if server.isEditable {
+										Button("Delete", systemImage: "minus.circle.fill") {
+											self.modelContext.delete(server)
+										}
+											.buttonStyle(.borderless)
+											.labelStyle(.iconOnly)
+									}
+								}
+								Divider()
 							}
-								.buttonStyle(.borderless)
+								.tag(server)
 						}
 					}
+						.pickerStyle(.radioGroup)
+					HStack {
+						Button(role: .destructive) {
+							self.doShowResetSavedServersAlert = true
+						} label: {
+							HStack {
+								Text("Reset Saved Servers")
+								if self.didResetSavedServers {
+									Text("✓")
+								}
+							}
+						}
+							.disabled(self.servers.allAreNonEditable)
+						Spacer()
+					}
 				}
-			}
-				.pickerStyle(.inline)
-				.labelsHidden()
-			Form {
-				Section("New Server") {
+				Divider()
+				Section {
 					TextField("Name", text: self.$newName)
 					
 					// TextField has issues with data formatters, so we proxy the value through a string instead.
 					TextField("Base URL", text: self.$newBaseURLString)
 					
-					if self.newBaseURL == nil {
-						Text("This URL is invalid.")
+					if self.newBaseURL == nil && !self.newBaseURLString.isEmpty {
+						Text("This base URL is invalid.")
+					} else if let newBaseURL = self.newBaseURL, self.servers.hasServer(for: newBaseURL) {
+						Text("There’s already a saved server with this base URL.")
+							.lineLimit(nil)
 					}
 					Button("Add") {
-						guard !self.newName.isEmpty, let newBaseURL = self.newBaseURL else {
+						guard !self.newName.isEmpty, let newBaseURL = self.newBaseURL, !self.servers.hasServer(for: newBaseURL) else {
+							self.logger.log("The new server cannot be added because the data are in an invalid state.")
 							return
 						}
-						let newServer = Server(name: newName, baseURL: newBaseURL)
+						let newServer = Server(name: self.newName, baseURL: newBaseURL)
 						self.modelContext.insert(newServer)
-						try! self.modelContext.save()
 						self.newName = ""
 						self.newBaseURLString = ""
 					}
-						.disabled(self.newName.isEmpty || self.newBaseURL == nil)
+						.disabled(
+							self.newName.isEmpty || self.newBaseURL == nil || self.newBaseURL.map { (newBaseURL) in
+								return self.servers.hasServer(for: newBaseURL)
+							} ?? false
+						)
+				} header: {
+					Text("New Server")
+						.bold()
 				}
 			}
-			HStack {
-				Spacer()
-				Button(role: .cancel) {
-					self.item = nil
-				} label: {
-					Text("Cancel")
-				}
-					.keyboardShortcut(.cancelAction)
-				Button("Save") {
-					guard let selectedServer = self.selectedServer else {
-						return
-					}
-					self.server = selectedServer
-					self.dismiss()
-				}
-					.keyboardShortcut(.defaultAction)
-					.disabled(self.selectedServer == nil)
-			}
-				.padding(.top)
 		}
 			.padding()
-			.frame(minWidth: 300)
-			.modelContainer(for: Server.self, isAutosaveEnabled: false)
+			.frame(minWidth: 300, idealWidth: 500)
+			.toolbar {
+				ToolbarItem(placement: .confirmationAction) {
+					Button("Save") {
+						do {
+							try self.modelContext.save()
+						} catch {
+							self.logger.log(level: .error, "Failed to save server data: \(error, privacy: .public)")
+						}
+						self.server = self.selectedServer
+						self.dismiss()
+					}
+						.keyboardShortcut(.defaultAction)
+						.disabled(!self.modelContext.hasChanges && self.selectedServer.baseURL == self.server.baseURL)
+				}
+				ToolbarItem(placement: .cancellationAction) {
+					Button("Cancel", role: .cancel) {
+						self.modelContext.rollback()
+						self.dismiss()
+					}
+						.keyboardShortcut(.cancelAction)
+				}
+			}
+			.alert("Reset Saved Servers", isPresented: self.$doShowResetSavedServersAlert) {
+				Button("Reset", role: .destructive) {
+					for server in self.servers where server.isEditable {
+						self.modelContext.delete(server)
+					}
+					self.insertDefaultServers()
+					do {
+						try self.modelContext.save()
+						self.didResetSavedServers = true
+					} catch {
+						self.logger.log(level: .error, "Failed to save server data: \(error, privacy: .public)")
+					}
+				}
+				Button("Cancel", role: .cancel) { }
+			} message: {
+				Text("Are you sure that you want to reset the saved servers? This action cannot be undone.")
+			}
+			.task {
+				self.insertDefaultServers()
+				do {
+					try self.modelContext.save()
+				} catch {
+					self.logger.log(level: .error, "Failed to save server data: \(error, privacy: .public)")
+				}
+				let currentServer = self.servers.first { (candidate) in
+					return candidate.baseURL == self.server.baseURL
+				}
+				if let currentServer {
+					self.selectedServer = currentServer
+				}
+			}
+			.onChange(of: self.servers.allAreNonEditable) { (_, newValue) in
+				if !newValue {
+					self.didResetSavedServers = false
+				}
+			}
 	}
 	
 	public init(server: Binding<Server>, item: Binding<Item?>) {
 		self._server = server
+		self._selectedServer = State(initialValue: server.wrappedValue)
 		self._item = item
+	}
+	
+	private func insertDefaultServers() {
+		for server in Server.defaultServers {
+			let isDuplicate = self.servers.contains { (candidate) in
+				return candidate.baseURL == server.baseURL && !candidate.isEditable
+			}
+			guard !isDuplicate else {
+				continue
+			}
+			self.modelContext.insert(server)
+		}
 	}
 	
 }
