@@ -124,7 +124,7 @@ struct ContentView: View {
 					Task {
 						do {
 							try await self.submitAnnouncement()
-						} catch let error {
+						} catch {
 							self.error = WrappedError(error)
 						}
 					}
@@ -177,22 +177,22 @@ struct ContentView: View {
 		guard let httpResponse = response as? HTTPURLResponse else {
 			throw SubmissionError.malformedResponse
 		}
-		let submissionError: SubmissionError
+		let error: SubmissionError
 		switch httpResponse.statusCode {
 		case 200:
 			self.doShowSuccessAlert = true
 			self.clear()
 			return
 		case 401:
-			submissionError = .keyNotVerified
+			error = .keyNotVerified
 		case 403:
-			submissionError = .keyRejected
+			error = .keyRejected
 		case 500:
-			submissionError = .internalServerError
+			error = .internalServerError
 		default:
-			submissionError = .unknown
+			error = .unknown
 		}
-		throw submissionError
+		throw error
 	}
 	
 	private func clear() {

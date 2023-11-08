@@ -5,38 +5,82 @@
 //  Created by Gabriel Jacoby-Cooper on 11/16/21.
 //
 
-enum SubmissionError: String, Error {
+import Foundation
+
+enum SubmissionError: LocalizedError {
 	
-	case noKeySelected = "No key is selected"
+	case noKeySelected
 	
-	case invalidBaseURL = "Invalid base URL for the server"
+	case invalidBaseURL
 	
-	case malformedResponse = "Received a malformed response from the server"
+	case malformedResponse
 	
-	case keyNotVerified = "The selected key couldn’t be verified by the server"
+	case keyNotVerified
 	
-	case keyRejected = "The selected key was rejected by the server"
+	case keyRejected
 	
-	case internalServerError = "The server encountered an internal error"
+	case internalServerError
 	
-	case unknown = "Unknown submission error"
+	case unknown
+	
+	var errorDescription: String? {
+		get {
+			switch self {
+			case .noKeySelected:
+				return "No key is selected."
+			case .invalidBaseURL:
+				return "The server base URL is invalid."
+			case .malformedResponse:
+				return "The server sent a malformed response."
+			case .keyNotVerified:
+				return "The server couldn’t verify the selected key."
+			case .keyRejected:
+				return "The server rejected the selected key."
+			case .internalServerError:
+				return "The server encountered an internal error."
+			case .unknown:
+				return "An unknown submission error occurred."
+			}
+		}
+	}
 	
 }
 
-enum DeletionError: String, Error {
+enum DeletionError: LocalizedError {
 	
-	case noKeySelected = "No key is selected"
+	case noKeySelected
 	
-	case invalidBaseURL = "Invalid base URL for the server"
+	case invalidBaseURL
 	
-	case malformedResponse = "Received a malformed response from the server"
+	case malformedResponse
 	
-	case keyNotVerified = "The selected key couldn’t be verified by the server"
+	case keyNotVerified
 	
-	case keyRejected = "The selected key was rejected by the server"
+	case keyRejected
 	
-	case internalServerError = "The server encountered an internal error"
+	case internalServerError
 	
-	case unknown = "Unknown deletion error"
+	case unknown
+	
+	var errorDescription: String? {
+		get {
+			switch self {
+			case .noKeySelected:
+				return "No key is selected."
+			case .invalidBaseURL:
+				return "The server base URL is invalid."
+			case .malformedResponse:
+				return "The server sent a malformed response."
+			case .keyNotVerified:
+				return "The server couldn’t verify the selected key."
+			case .keyRejected:
+				return "The server rejected the selected key."
+			case .internalServerError:
+				return "The server encountered an internal error."
+			case .unknown:
+				return "An unknown deletion error occurred."
+			}
+		}
+	}
 	
 }

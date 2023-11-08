@@ -123,8 +123,8 @@ struct AnnouncementManagerView: View {
 			let decoder = JSONDecoder()
 			decoder.dateDecodingStrategy = .iso8601
 			self.announcements = try decoder.decode([Announcement].self, from: data)
-		} catch let newError {
-			self.error = WrappedError(newError)
+		} catch {
+			self.error = WrappedError(error)
 		}
 	}
 	
