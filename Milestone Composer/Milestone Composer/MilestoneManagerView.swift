@@ -123,8 +123,8 @@ struct MilestoneManagerView: View {
 			let decoder = JSONDecoder()
 			decoder.dateDecodingStrategy = .iso8601
 			self.milestones = try decoder.decode([Milestone].self, from: data)
-		} catch let newError {
-			self.error = WrappedError(newError)
+		} catch {
+			self.error = WrappedError(error)
 		}
 	}
 	

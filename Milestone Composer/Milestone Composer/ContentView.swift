@@ -134,15 +134,15 @@ struct ContentView: View {
 					let signedMilestone: Milestone
 					do {
 						signedMilestone = try self.milestone.signed(using: selectedKeyPair)
-					} catch let newError {
-						self.error = WrappedError(newError)
+					} catch {
+						self.error = WrappedError(error)
 						return
 					}
 					Task {
 						guard let baseURL = URL(string: self.baseURLString) else {
-							let newError = SubmissionError.invalidBaseURL
-							self.error = WrappedError(newError)
-							throw newError
+							let error = SubmissionError.invalidBaseURL
+							self.error = WrappedError(error)
+							throw error
 						}
 						let url = baseURL.appendingPathComponent("milestones", isDirectory: false)
 						var request = URLRequest(url: url)
@@ -155,32 +155,32 @@ struct ContentView: View {
 							print(String(data: data, encoding: .utf8)!)
 							(_, response) = try await URLSession.shared.upload(for: request, from: data)
 							self.milestone = Milestone()
-						} catch let newError {
-							self.error = WrappedError(newError)
-							throw newError
+						} catch {
+							self.error = WrappedError(error)
+							throw error
 						}
 						guard let httpResponse = response as? HTTPURLResponse else {
-							let newError = SubmissionError.malformedResponse
-							self.error = WrappedError(newError)
-							throw newError
+							let error = SubmissionError.malformedResponse
+							self.error = WrappedError(error)
+							throw error
 						}
-						let newError: SubmissionError
+						let error: SubmissionError
 						switch httpResponse.statusCode {
 						case 200:
 							self.doShowSuccessAlert = true
 							self.clear()
 							return
 						case 401:
-							newError = .keyNotVerified
+							error = .keyNotVerified
 						case 403:
-							newError = .keyRejected
+							error = .keyRejected
 						case 500:
-							newError = .internalServerError
+							error = .internalServerError
 						default:
-							newError = .unknown
+							error = .unknown
 						}
-						self.error = WrappedError(newError)
-						throw newError
+						self.error = WrappedError(error)
+						throw error
 					}
 				}
 					.keyboardShortcut(.defaultAction)
