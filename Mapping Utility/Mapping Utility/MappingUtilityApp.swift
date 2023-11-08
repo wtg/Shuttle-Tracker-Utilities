@@ -6,12 +6,15 @@
 //
 
 import MapKit
+import ServerSelection
 import SwiftUI
 
 @main
 struct MappingUtilityApp: App {
 	
 	static let refreshSequence = RefreshSequence(interval: .seconds(5))
+	
+	private static let serverSelectionAppGroupID = "SYBLH277NF.com.gerzer.shuttletracker.serverselection"
 	
 	@State
 	private var mapCameraPosition: MapCameraPosition = .automatic
@@ -20,6 +23,7 @@ struct MappingUtilityApp: App {
 		WindowGroup {
 			ContentView(mapCameraPosition: self.$mapCameraPosition)
 				.environment(MapState.shared)
+				.serverSelection(appGroupID: Self.serverSelectionAppGroupID)
 		}
 			.commands {
 				CommandGroup(before: .sidebar) {
