@@ -130,10 +130,6 @@ struct AnnouncementManagerView: View {
 	
 }
 
-struct AnnouncementManagerViewPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		AnnouncementManagerView()
-	}
-	
+#Preview {
+	AnnouncementManagerView()
 }
