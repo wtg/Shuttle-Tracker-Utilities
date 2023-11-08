@@ -23,7 +23,7 @@ struct LogDetailView: View {
 	private var doTriggerDeletion = false
 	
 	@WrappedError
-	private var error: Error?
+	private var error: (any Error)?
 	
 	var body: some View {
 		Group {
@@ -143,7 +143,7 @@ struct LogDeletion: ViewModifier {
 								try await self.logs.delete(baseURL: self.baseURL, keyPair: keyPair)
 								self.doShowSuccessAlert = true
 								try await self.refresh()
-							} catch let error {
+							} catch {
 								self.errorProjection.error = error
 							}
 						}

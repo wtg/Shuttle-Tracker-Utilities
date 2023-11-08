@@ -136,7 +136,7 @@ struct ContentView: View {
 						Task {
 							do {
 								try await self.refresh()
-							} catch let error {
+							} catch {
 								self.error = error
 							}
 						}
@@ -183,7 +183,7 @@ struct ContentView: View {
 				Task {
 					do {
 						try await self.refresh()
-					} catch let error {
+					} catch {
 						self.error = error
 					}
 				}
@@ -196,7 +196,7 @@ struct ContentView: View {
 			.task {
 				do {
 					try await self.refresh()
-				} catch let error {
+				} catch {
 					self.error = error
 				}
 			}
