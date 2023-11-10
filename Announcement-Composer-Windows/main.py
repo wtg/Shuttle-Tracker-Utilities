@@ -6,31 +6,43 @@ import uuid
 import datetime
 import base64
 import os
+import argparse
 
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
 id = uuid.uuid4()
+parser = argparse.ArgumentParser()
+parser.add_argument("-k", 
+                    "--key_path",                 
+                    help = "File path where users\'s private key is stored"
+)
+args = parser.parse_args()
+keyPath = args.key_path
+generateKey = False
+if (keyPath is None):
+    userChoice = input("Do you want to generate a key? [y/n]")
+    if (userChoice.lower() in ["y", "yes"]):
+        generateKey = True
 
-keypath = input("Enter the path to the private key(if no key enter n): ").strip()
-if(keypath == "n"):
+if(generateKey == True):
     newPrivateKey = Ed25519PrivateKey.generate()
     privatePEM = newPrivateKey.private_bytes(
         encoding=cryptography.hazmat.primitives.serialization.Encoding.PEM,
         format=cryptography.hazmat.primitives.serialization.PrivateFormat.OpenSSH,
-        encryption_algorithm=cryptography.hazmat.primitives.serialization.NoEncryption()
+        encryption_algorithm=cryptography.hazmat.primitives.serialization.NoEncryption()    
     )
     folderpath = os.path.expanduser("~/Documents/STKeys")
-    keypath = os.path.join(folderpath, "STprivatekey.pem")
+    keyPath = os.path.join(folderpath, "STprivatekey.pem")
     if not os.path.exists(folderpath):
         os.makedirs(folderpath)
-    with open(keypath, "wb") as private_key_file:
+    with open(keyPath, "wb") as private_key_file:
         private_key_file.write(privatePEM)
 
-inFile = open(keypath, "rb")
+inFile = open(keyPath, "rb")
 privateKeyFile = inFile.read()
 inFile.close()
 
-pas = input("Enter Password. If none, enter 'n'").strip()
+passphrase = input("Enter Password. If none, enter 'n'").strip()
 
 subject = input("Enter the subject:\n").strip()
 body = input("Enter the body:\n").strip()
@@ -67,15 +79,16 @@ while True:
     except Exception as e:
         print("Error: ", e)
 
-
 announcementDict = {"scheduleType":scheduleType,"subject":subject,"end":end,"interruptionLevel":interruptionLevel,"body":body,"start":start,"id":str(id)}
 
 #converting file to private key object
-if(pas == 'n'):
+if(passphrase == 'n'):
+    print("running")
     privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, None)
 else:
-    pas = bytes(pas,'utf-8')
-    privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, pas)
+    passphrase = bytes(passphrase,'utf-8')
+    print(passphrase)
+    privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, passphrase)
 
 # posts announcements information to server
 def submitAnnouncement(announcementDict):
@@ -95,3 +108,5 @@ def submitAnnouncement(announcementDict):
     return
 
 submitAnnouncement(announcementDict)
+
+#/mnt/c/Users/Jayaram/Desktop/Important Files/Personal Files/Server Private Key
