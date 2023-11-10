@@ -8,6 +8,7 @@
 import Foundation
 import HTTPStatus
 import Moya
+import ServerSelection
 
 typealias HTTPMethod = Moya.Method
 
@@ -27,11 +28,11 @@ enum API: TargetType {
 	
 	static let lastVersion = 2
 	
-	static var baseURL = URL(string: "https://staging.shuttletracker.app")!
+	static var server: Server = .staging
 	
 	var baseURL: URL {
 		get {
-			return Self.baseURL
+			return Self.server.baseURL
 		}
 	}
 	

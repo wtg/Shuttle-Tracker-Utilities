@@ -5,13 +5,13 @@
 //  Created by Gabriel Jacoby-Cooper on 3/15/22.
 //
 
-enum KeyError: Error {
+enum KeyError: LocalizedError {
 	
 	case serializationFailed
 	
 	case importUnsupported
 	
-	var localizedDescription: String {
+	var errorDescription: String? {
 		get {
 			switch self {
 			case .serializationFailed:
@@ -24,11 +24,11 @@ enum KeyError: Error {
 	
 }
 
-enum SignatureError: Error {
+enum SignatureError: LocalizedError {
 	
 	case dataConversionFailed
 	
-	var localizedDescription: String {
+	var errorDescription: String? {
 		get {
 			switch self {
 			case .dataConversionFailed:
@@ -39,11 +39,11 @@ enum SignatureError: Error {
 	
 }
 
-enum UnknownError: Error {
+enum UnknownError: LocalizedError {
 	
 	case unknown
 	
-	var localizedDescription: String {
+	var errorDescription: String? {
 		get {
 			switch self {
 			case .unknown:

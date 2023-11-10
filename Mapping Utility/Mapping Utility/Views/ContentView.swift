@@ -140,12 +140,12 @@ struct ContentView: View {
 			} content: { (sheetType) in
 				switch sheetType {
 				case .serverSelection:
-					let baseURL = Binding {
-						return API.baseURL
+					let server = Binding {
+						return API.server
 					} set: { (newValue) in
-						API.baseURL = newValue
+						API.server = newValue
 					}
-					ServerSelectionSheet(baseURL: baseURL, item: self.$sheetType)
+					ServerSelectionSheet(server: server, item: self.$sheetType)
 				}
 			}
 			.task {

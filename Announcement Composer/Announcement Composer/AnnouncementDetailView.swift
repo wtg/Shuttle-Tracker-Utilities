@@ -94,14 +94,14 @@ struct AnnouncementDetailView: View {
 				Button("Cancel", role: .cancel) { }
 					.keyboardShortcut(.cancelAction)
 				Button("Delete", role: .destructive) {
-					Task {
+					Task.detached {
 						let url = self.baseURL
 							.appendingPathComponent("announcements")
 							.appendingPathComponent(self.announcement.id.uuidString)
 						guard let selectedKeyPair = self.selectedKeyPair else {
-							let newError = DeletionError.noKeySelected
-							self.error = WrappedError(newError)
-							throw newError
+							let error = DeletionError.noKeySelected
+							self.error = WrappedError(error)
+							throw error
 						}
 						var request = URLRequest(url: url)
 						request.httpMethod = "DELETE"
@@ -111,31 +111,30 @@ struct AnnouncementDetailView: View {
 							let data = try JSONEncoder().encode(deletionRequest)
 							(_, response) = try await URLSession.shared.upload(for: request, from: data)
 							await self.deletionHandler()
-						} catch let newError {
-							self.error = WrappedError(newError)
-							throw newError
+						} catch {
+							self.error = WrappedError(error)
+							throw error
 						}
 						guard let httpResponse = response as? HTTPURLResponse else {
-							let newError = DeletionError.malformedResponse
-							self.error = WrappedError(newError)
-							throw newError
+							let error = DeletionError.malformedResponse
+							self.error = WrappedError(error)
+							throw error
 						}
-						let newError: DeletionError
+						let error: DeletionError
 						switch httpResponse.statusCode {
 						case 200:
 							self.doShowSuccessAlert = true
 							return
 						case 401:
-							newError = .keyNotVerified
+							error = .keyNotVerified
 						case 403:
-							newError = .keyRejected
+							error = .keyRejected
 						case 500:
-							newError = .internalServerError
+							error = .internalServerError
 						default:
-							newError = .unknown
+							error = .unknown
 						}
-						self.error = WrappedError(newError)
-						throw newError
+						self.error = WrappedError(error)
 					}
 				}
 			} message: {

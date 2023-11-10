@@ -22,7 +22,7 @@ enum OperationError: LocalizedError {
 	
 	case unknown
 	
-	var localizedDescription: String {
+	var errorDescription: String? {
 		get {
 			switch self {
 			case .noKeySelected:
@@ -38,12 +38,6 @@ enum OperationError: LocalizedError {
 			case .unknown:
 				return "An unknown operation error occurred."
 			}
-		}
-	}
-	
-	var errorDescription: String? {
-		get {
-			return self.localizedDescription
 		}
 	}
 	
@@ -68,19 +62,9 @@ struct WrappedError: DynamicProperty {
 		@Binding
 		var doShowAlert: Bool
 		
-		var localizedDescription: String {
-			get {
-				return self.error?.localizedDescription ?? Self.unknownDescription
-			}
-		}
-		
 		var errorDescription: String? {
 			get {
-				if let localizedError = self.error as? any LocalizedError {
-					return localizedError.errorDescription ?? localizedError.localizedDescription
-				} else {
-					return self.error?.localizedDescription ?? Self.unknownDescription
-				}
+				return self.error?.localizedDescription ?? Self.unknownDescription
 			}
 		}
 		

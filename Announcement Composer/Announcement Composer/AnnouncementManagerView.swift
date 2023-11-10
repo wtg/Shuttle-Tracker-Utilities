@@ -29,7 +29,7 @@ struct AnnouncementManagerView: View {
 	private var selectedAnnouncement: Announcement?
 	
 	@State
-	private var baseURL = URL(string: "https://shuttletracker.app")!
+	private var server: Server = .production
 	
 	@State
 	private var error: WrappedError?
@@ -49,7 +49,7 @@ struct AnnouncementManagerView: View {
 							VStack {
 								List(announcements, selection: self.$selectedAnnouncement) { (announcement) in
 									NavigationLink(announcement.subject) {
-										AnnouncementDetailView(announcement: announcement, baseURL: self.baseURL) {
+										AnnouncementDetailView(announcement: announcement, baseURL: self.server.baseURL) {
 											await self.refresh()
 										}
 									}
@@ -106,7 +106,7 @@ struct AnnouncementManagerView: View {
 			} content: { (sheetType) in
 				switch sheetType {
 				case .serverSelection:
-					ServerSelectionSheet(baseURL: self.$baseURL, item: self.$sheetType)
+					ServerSelectionSheet(server: self.$server, item: self.$sheetType)
 				}
 			}
 			.task {
@@ -117,23 +117,19 @@ struct AnnouncementManagerView: View {
 	private func refresh() async {
 		self.selectedAnnouncement = nil
 		self.announcements = nil
-		let url = self.baseURL.appendingPathComponent("announcements")
+		let url = self.server.baseURL.appendingPathComponent("announcements")
 		do {
 			let (data, _) = try await URLSession.shared.data(from: url)
 			let decoder = JSONDecoder()
 			decoder.dateDecodingStrategy = .iso8601
 			self.announcements = try decoder.decode([Announcement].self, from: data)
-		} catch let newError {
-			self.error = WrappedError(newError)
+		} catch {
+			self.error = WrappedError(error)
 		}
 	}
 	
 }
 
-struct AnnouncementManagerViewPreviews: PreviewProvider {
-	
-	static var previews: some View {
-		AnnouncementManagerView()
-	}
-	
+#Preview {
+	AnnouncementManagerView()
 }
