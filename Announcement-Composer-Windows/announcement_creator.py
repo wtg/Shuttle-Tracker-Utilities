@@ -108,5 +108,3 @@ def submitAnnouncement(announcementDict):
     return
 
 submitAnnouncement(announcementDict)
-
-#/mnt/c/Users/Jayaram/Desktop/Important Files/Personal Files/Server Private Key
