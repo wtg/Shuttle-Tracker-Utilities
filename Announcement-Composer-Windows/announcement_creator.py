@@ -11,7 +11,7 @@ import argparse
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
 id = uuid.uuid4()
-serverChoice = input("Do you want to get the announcement from the staging or production server? [s/p] ")
+serverChoice = input("Do you want to post the announcement to the staging or production server? [s/p] ")
 parser = argparse.ArgumentParser()
 parser.add_argument("-k", 
                     "--key_path",                 
