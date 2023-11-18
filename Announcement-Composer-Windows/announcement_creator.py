@@ -99,7 +99,7 @@ def submitAnnouncement(announcementDict, server):
     announcementDict["signature"] = signature
     r = None
     if (serverChoice in ["s", "staging"]):
-        r = requests.post("https://staging.shuttletracker.app/announcements", data=jason.dumps(announcementDict))
+        r = requests.post("https://staging.shuttletracker.app/announcements", data=json.dumps(announcementDict))
     elif (serverChoice in ["p", "production"]):
         r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
     if (r.status_code == 403):
