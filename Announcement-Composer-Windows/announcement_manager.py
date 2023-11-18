@@ -23,7 +23,10 @@ def displayAllAnnouncements(requestList):
     print("Announcements:")
     for r in requestList:
         uuid, subject, start = r["id"],  r["subject"], r["start"]
-        print(f"[{counter}] {subject}: {uuid}")
+        countStr = str(counter)
+        if (counter < 10):
+            countStr="0"+str(counter)
+        print(f"[{countStr}] {subject}: {uuid}")
         counter+=1
     print()
     return
@@ -38,7 +41,7 @@ def viewDetails(requestList, announceNum):
         counter+=1
     uuid, subject, body, scheduleType = requestObj["id"],  requestObj["subject"], requestObj["body"], requestObj["scheduleType"]
     start, end, interruptionLevel, signature = requestObj["start"], requestObj["end"], requestObj["interruptionLevel"], requestObj["signature"]
-    print(f"Announcement #{announceNum}:")
+    print(f"\nAnnouncement #{announceNum}:")
     print(f"--- UUID: {uuid}")
     print(f"--- Subject: {subject}")
     print(f"--- Body: {body}")
