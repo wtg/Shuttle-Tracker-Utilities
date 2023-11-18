@@ -27,6 +27,7 @@ def displayAllAnnouncements(requestList):
         uuid, subject, start = r["id"],  r["subject"], r["start"]
         print(f"[{counter}] {subject}: {uuid}")
         counter+=1
+    print()
     return
 
 def viewDetails(requestList, announceNum):
@@ -39,31 +40,31 @@ def viewDetails(requestList, announceNum):
         counter+=1
     uuid, subject, body, scheduleType = requestObj["id"],  requestObj["subject"], requestObj["body"], requestObj["scheduleType"]
     start, end, interruptionLevel, signature = requestObj["start"], requestObj["end"], requestObj["interruptionLevel"], requestObj["signature"]
-    print("Announcement #{announceNum}:")
-    print("--- UUID: {uuid}")
-    print("--- Subject: {subject}")
-    print("--- Body: {body}")
-    print("--- Schedule Type: {scheduleType}")
-    print("--- Start Date: {start}")
-    print("--- End Date: {end}")
-    print("--- Interruption Level: {interruptionLevel}")
-    print("--- Signature: {signature}")
+    print(f"Announcement #{announceNum}:")
+    print(f"--- UUID: {uuid}")
+    print(f"--- Subject: {subject}")
+    print(f"--- Body: {body}")
+    print(f"--- Schedule Type: {scheduleType}")
+    print(f"--- Start Date: {start}")
+    print(f"--- End Date: {end}")
+    print(f"--- Interruption Level: {interruptionLevel}")
+    print(f"--- Signature: {signature}")
     return
 
 def deleteAnnouncement(requestDict, announceNum):
     return
 
-
 userCommand = ""
 while (True):
-    userCommand = input("What action would the user like to do? [v/d] ")
     displayAllAnnouncements(userRequests)
+    userCommand = input("What action would the user like to do? [v/d] ")
     if (userCommand.lower() == "v"):
-        num = int(input("Which announcement would you like to view? "))
+        num = int(input("\nWhich announcement would you like to view? "))
         viewDetails(userRequests, num)
     elif (userCommand.lower() == "d"):
         num = int(input("Which announcement would you like to delete? "))
         deleteAnnouncement(userRequests, num)
-    elif (userCommand.lower() in ["quit", "exit"]):
+    elif (userCommand.lower() in ["quit", "exit", "q", "x"]):
         break
+    print()
 
