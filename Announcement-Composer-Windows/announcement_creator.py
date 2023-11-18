@@ -11,6 +11,7 @@ import argparse
 start = datetime.datetime.now()
 end = start + datetime.timedelta(days=7)
 id = uuid.uuid4()
+serverChoice = input("Do you want to get the announcement from the staging or production server? [s/p] ")
 parser = argparse.ArgumentParser()
 parser.add_argument("-k", 
                     "--key_path",                 
@@ -91,14 +92,16 @@ else:
     privateKey = cryptography.hazmat.primitives.serialization.load_ssh_private_key(privateKeyFile, passphrase)
 
 # posts announcements information to server
-def submitAnnouncement(announcementDict):
+def submitAnnouncement(announcementDict, server):
     concat = bytes(announcementDict["subject"] + announcementDict["body"], 'utf-8')
     signedKey = privateKey.sign(concat)
     signature = base64.b64encode(signedKey).decode()
     announcementDict["signature"] = signature
-    r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
-    #r = requests.post("https://staging.shuttletracker.app/announcements", data=jason.dumps(announcementDict))
-    # checks whether signature has been successfully read
+    r = None
+    if (serverChoice in ["s", "staging"]):
+        r = requests.post("https://staging.shuttletracker.app/announcements", data=jason.dumps(announcementDict))
+    elif (serverChoice in ["p", "production"]):
+        r = requests.post("https://shuttletracker.app/announcements", data=json.dumps(announcementDict))
     if (r.status_code == 403):
         print("Error Code 403: Signature was rejected, try another signing key.\n")
     elif (r.status_code == 200):
@@ -107,4 +110,4 @@ def submitAnnouncement(announcementDict):
         print(f"Error code {r.status_code}: Aborted due to some unexpected error.")
     return
 
-submitAnnouncement(announcementDict)
+submitAnnouncement(announcementDict, serverChoice)

@@ -18,8 +18,6 @@ while (True):
     else:
         print("Please type in a valid command. [s/p] ")
      
-            
-
 def displayAllAnnouncements(requestList):
     counter = 1
     print("Announcements:")
