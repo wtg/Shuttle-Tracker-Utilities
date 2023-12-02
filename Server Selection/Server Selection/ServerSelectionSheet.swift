@@ -77,6 +77,7 @@ public struct ServerSelectionSheet<Item>: View {
 										Text(server.name)
 										Text(server.baseURL.absoluteString)
 											.monospaced()
+											.textSelection(.enabled)
 									}
 									Spacer()
 									if server.isEditable {
