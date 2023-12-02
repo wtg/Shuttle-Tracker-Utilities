@@ -6,15 +6,31 @@
 //
 
 import KeyManagement
+import ServerSelection
 import SwiftUI
 
 struct ContentView: View {
 	
+	private enum SheetType: Identifiable {
+		
+		case serverSelection
+		
+		var id: Self {
+			get {
+				return self
+			}
+		}
+		
+	}
+	
 	@State
 	private var announcement = Announcement()
 	
+	@LazyServer
+	private var server = .production
+	
 	@State
-	private var baseURLString = "https://shuttletracker.app"
+	private var sheetType: SheetType?
 	
 	@State
 	private var doShowSuccessAlert = false
@@ -94,8 +110,18 @@ struct ContentView: View {
 				Divider()
 					.padding(.vertical, 10)
 				Section {
-					TextField("Base URL", text: self.$baseURLString, prompt: Text("Base URL"))
-						.labelsHidden()
+					HStack {
+						Text(self.server.name)
+						Divider()
+						Text(self.server.baseURL.absoluteString)
+							.monospaced()
+							.textSelection(.enabled)
+						Spacer()
+						Button("Select Server…") {
+							self.sheetType = .serverSelection
+						}
+					}
+						.frame(height: 20)
 				} header: {
 					Text("Server")
 						.font(.headline)
@@ -154,6 +180,12 @@ struct ContentView: View {
 			.alert("The submission was successful!", isPresented: self.$doShowSuccessAlert) {
 				Button("Continue") { }
 			}
+			.sheet(item: self.$sheetType) { (sheetType) in
+				switch sheetType {
+				case .serverSelection:
+					ServerSelectionSheet(server: self.$server, item: self.$sheetType)
+				}
+			}
 	}
 	
 	private func submitAnnouncement() async throws {
@@ -161,10 +193,7 @@ struct ContentView: View {
 			throw SubmissionError.noKeySelected
 		}
 		let signedAnnouncement = try self.announcement.signed(using: selectedKeyPair)
-		guard let baseURL = URL(string: self.baseURLString) else {
-			throw SubmissionError.invalidBaseURL
-		}
-		let url = baseURL.appendingPathComponent("announcements", isDirectory: false)
+		let url = self.server.baseURL.appendingPathComponent("announcements", isDirectory: false)
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"
 		let response: URLResponse
