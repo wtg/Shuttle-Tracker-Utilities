@@ -424,7 +424,7 @@
 /* Begin XCRemoteSwiftPackageReference section */
 		C0C8DCF92946CFAB009D6047 /* XCRemoteSwiftPackageReference "HTTP-Status" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Gerzer/HTTP-Status/";
+			repositoryURL = "https://github.com/wtg/HTTP-Status/";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
